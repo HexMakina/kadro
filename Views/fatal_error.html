@@ -1,0 +1,34 @@
+{extends file='skeleton.tpl'}
+
+{block name=html_title append} Oops{/block}
+
+{block name=html_head_style}
+{literal}
+*{margin:0; padding:0; font-family:sans-serif; color:#FFF;}
+html,body {height: 100%; background-color: #333;}
+h1{position:absolute; top:11px; left:11px}
+footer{position:absolute; bottom:11px; left:11px}
+h2{margin:1em 0em;}
+div{position:absolute; left:50%; top:50%; transform: translate(-50%,-50%);}
+{/literal}
+{/block}
+
+{block name=body}
+  <h1>{$APP_NAME}</h1>
+  <div>
+    <h2>Oops.</h1>
+    {if isset($message)}
+      <p>{$message}</p>
+    {/if}
+    
+    {if isset($user_messages)}
+      {foreach $user_messages as $level => $messages}
+        {foreach $messages as $message}
+          <p>{$message}</p>
+        {/foreach}
+      {/foreach}
+    {/if}    
+  </div>
+  
+  <footer>Powered by <a href="https://hexmakina.eu">HexMakina.eu</a></footer>
+{/block}

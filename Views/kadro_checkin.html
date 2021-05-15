@@ -1,0 +1,47 @@
+{extends file='skeleton.tpl'}
+
+{block name=html_title append} Checkin Station{/block}
+
+{block name=html_style}
+<style>
+{literal}
+  *{font-family:sans-serif; font-size:1em; color:#000; border-color:#C08;}
+  html, body {background-color: #fff; background-image:none; text-align:center}
+
+  #login_form{position:absolute; left:50%; top:30%; transform: translate(-50%,-30%); width:100%; max-width: 17em; padding:1em;}
+  header{margin-bottom:3em;}
+  img{ max-width:13em;}
+
+  label, input{display:block; width:100%; text-align:left;}
+  input{outline:none; border:0; border-bottom:1px solid #C08; padding:0.5rem 0; margin:1rem 0 0.2rem 0;}
+  button{width:88%; margin-top:4em; padding:1rem 0; background-color:#C08; color:#FFF; border-radius:1rem;}
+  .ox-warning{color:red;}
+
+  footer{position:absolute; bottom:11px; right:11px}
+{/literal}
+</style>
+{/block}
+
+{block name=body}
+<div id="login_form">
+  <header>
+    {block name=header_content}
+      {block name=message_handler}{include file="_partials/message_handler.html"}{/block}
+      {block name=header_logo}LOGO{/block}
+    {/block}
+  </header>
+  
+  <form action="{block name=form_action}{if isset($checkin_route)}{$checkin_route}{/if}{/block}" method="POST">
+    {Form::input('username', '', ['required', 'autofocus'])}
+    <label for="username">{block name=label_username}USERNAME{/block}</label>
+
+    
+    {Form::password('password')}
+    <label for="password">{block name=label_password}PASSWORD{/block}</label>
+    
+    <button type="submit">{block name=label_submit}SUBMIT{/block}</button>
+  </form>
+</div>
+
+<footer>{block name=footer_content}Powered by <a href="https://hexmakina.be">HexMakina.be</a>{/block}</footer>
+{/block}

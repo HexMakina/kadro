@@ -1,0 +1,12 @@
+{if isset($operator)}
+
+  {Form::hidden('operator_username', $operator->username())}
+  {Form::hidden('operator_id', $operator->operator_id())}
+
+  {TableToForm::field($operator, 'name', ['name'=> 'operator_name', 'label' => L('MODEL_operator_FIELD_name')])}
+
+  {Form::label('operator_language_code', L('MODEL_operator_FIELD_language_code'))}
+  {Form::select('operator_language_code', ['fra' => L('KADRO_LINGVO_CODE_fra'), 'nld' => L('KADRO_LINGVO_CODE_nld')], $form_model->get('operator_language_code'))}
+  {TableToForm::field_with_label($operator, 'email', ['name' => 'operator_email'])}
+
+{/if}

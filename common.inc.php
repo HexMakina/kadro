@@ -34,7 +34,7 @@ namespace HexMakina\kadro
 	set_error_handler('\HexMakina\kadro\Logger\LogLaddy::error_handler');
 	set_exception_handler('\HexMakina\kadro\Logger\LogLaddy::exception_handler');
 
-	\HexMakina\Debugger::init();
+	\HexMakina\Debugger\Debugger::init();
 
 	//---------------------------------------------------------------     parametroj
 	require_once 'configs/settings.php';

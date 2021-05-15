@@ -1,0 +1,65 @@
+{if !isset($listing)}
+  {$listing = []}
+{/if}
+
+{block name=page_content}
+<div id="{block name=listing_container_id}{/block}" class="{block name=listing_container_class append}listing{/block}">
+{if count($listing) > 0}
+  {if !isset($listing_fields)}
+    {$sample = current($listing)}
+    {$listing_fields = array_keys(get_object_vars($sample))}
+  {/if}
+  
+  <ul>
+    <li class="w3-row">
+      <span class="w3-col l4">{L('MODEL_common_FIELD_occured_on')}</span>
+      <span class="w3-col l4">2</span>
+      <span class="w3-col l4">3</span>
+    </li>
+    
+    {block name=listing_thead}
+    {foreach $listing_fields as $field => $label}<th scope="col">{L($label)}</th>{/foreach}
+    {/block}
+  </ul>
+
+
+  <table id="{block name=listing_table_id}{/block}" class="{block name=listing_table_class}{/block}">
+  <thead>
+    <tr {block name=listing_thead_row_attribute}{/block}>
+    {block name=listing_thead}
+    {foreach $listing_fields as $field => $label}<th scope="col">{L($label)}</th>{/foreach}
+    {/block}
+  </tr>
+  </thead>
+  
+  <tbody>
+  {block name=listing_tbody}
+    {foreach $listing as $looper}
+    <tr {block name=listing_tbody_row_attribute}{/block}>
+      {foreach $listing_fields as $field => $label}{$value = $looper->get($field)}
+      <td>{if $label@first} <a href="{$controller->route_model($looper)}">{$value}</a>{else} {$value}{/if}</td>
+      {/foreach}
+    </tr>
+    {/foreach}
+  {/block}
+  </tbody>
+  </table>
+  
+{/if}
+
+  {block name=listing_tfooter}TFOOTER {/block}
+</div>
+
+{* <header {block name=page_header_attribute}{/block}>
+  {block name=page_header_content}
+  <div {block name=page_header_content_1_attribute}style="float:left"{/block}>{block name=page_header_content_1}{count($listing)}{/block}</div>
+  <div {block name=page_header_content_2_attribute}style="float:left"{/block}>{block name=page_header_content_2}{L('KADRO_LISTO')}{/block}</div>
+  <div {block name=page_header_content_3_attribute}style="float:left"{/block}>{block name=page_header_content_3}
+    {if isset($listing_actions)} {foreach $listing_actions as $action_url => $action_label}<a href="{$action_url}">{$action_label}</a>{/foreach}{/if}
+    {if isset($route_new)}<a href="{$route_new}">new</a>{/if}
+    <a href="{$controller->route_back()}">cancel</a>
+    {/block}</div>
+  {/block}
+</header>
+*}
+{/block}

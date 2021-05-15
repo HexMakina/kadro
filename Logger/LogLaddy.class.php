@@ -14,10 +14,11 @@ namespace HexMakina\kadro\Logger;
 use \HexMakina\Crudites\{Crudites,CruditesException,Table};
 use \HexMakina\Crudites\TableInterface;
 
+
 class LogLaddy implements LoggerInterface
 {
   use \Psr\Log\LoggerTrait; // PSR implementation
-  use \HexMakina\Debugger;
+  use \HexMakina\Debugger\Debugger;
 
   const LOG_TABLE_NAME = 'kadro_action_logger';
   const REPORTING_USER = 'user_messages';
@@ -103,16 +104,16 @@ class LogLaddy implements LoggerInterface
     if($message==self::INTERNAL_ERROR || $message== self::USER_EXCEPTION)
     {
       $this->has_halting_messages = true;
-      $display_error = Debugger::format_throwable_message($context['class'], $context['code'], $context['file'], $context['line'], $context['text']);
+      $display_error = \HexMakina\Debugger\Debugger::format_throwable_message($context['class'], $context['code'], $context['file'], $context['line'], $context['text']);
       error_log($display_error);
-      $display_error.= Debugger::format_trace($context['trace'], false);
+      $display_error.= \HexMakina\Debugger\Debugger::format_trace($context['trace'], false);
       self::HTTP_500($display_error);
     }
     elseif($this->system_halted($level)) // analyses error level
     {
-      $display_error = sprintf(PHP_EOL.'%s in file %s:%d'.PHP_EOL.'%s', $level, Debugger::format_file($context['file']), $context['line'], $message);
+      $display_error = sprintf(PHP_EOL.'%s in file %s:%d'.PHP_EOL.'%s', $level, \HexMakina\Debugger\Debugger::format_file($context['file']), $context['line'], $message);
       error_log($display_error);
-      $display_error.= Debugger::format_trace($context['trace'], false);
+      $display_error.= \HexMakina\Debugger\Debugger::format_trace($context['trace'], false);
       self::HTTP_500($display_error);
     }
     else
@@ -126,7 +127,7 @@ class LogLaddy implements LoggerInterface
 
   public static function HTTP_500($display_error)
   {
-    Debugger::display_errors($display_error);
+    \HexMakina\Debugger\Debugger::display_errors($display_error);
     http_response_code(500);
     die;
   }
@@ -142,8 +143,8 @@ class LogLaddy implements LoggerInterface
   // ----------------------------------------------------------- User messages:add one
   public function report_to_user($level, $message, $context = [])
   {
-    if(defined("L::$message")) // message isa translatable code
     {
+    if(defined("L::$message")) // message isa translatable code
       foreach($context as $i => $param) // message need translated params
         if(defined("L::$param"))
           $context[$i] = L($param);

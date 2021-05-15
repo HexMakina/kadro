@@ -1,0 +1,12 @@
+{if isset($operator)}
+  {if $operator->is_new()}
+    {$data_url = $controller->router()->prehop('otto_distinct_field_where', ['model' => 'Operator', 'field' => 'username', 'format' => 'json'])}
+    {include file='_partials/forms/input.autocomplete.html' field_name='operator_username' field_value=$operator->username() field_label=L('MODEL_operator_FIELD_username') }
+    {$data_url = null}
+  {else}
+    {TableToForm::field($operator, 'operator_username', ['value' => $operator->username(), 'name' => 'disabled_username', 'disabled', 'label' => L('MODEL_operator_FIELD_username')])}
+  {/if}
+
+  {Form::password('operator_password', '', ['label' => L('MODEL_operator_FIELD_password')])}
+  {Form::password('operator_password_verification', '', ['label' => L('MODEL_operator_FIELD_password_verification')])}
+{/if}

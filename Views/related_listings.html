@@ -1,0 +1,32 @@
+{if !empty($related_listings)}
+
+<div class="ox-tabs-container w3-section" id="related_listing_tabs_{$form_model_type}">
+<header>
+<div class="w3-bar">
+  {block name=related_listing_bar_items}
+  {$collection_found = null}
+  {foreach $related_listings as $model_type => $listing}
+    {if current($listing)}
+      <a class="w3-bar-item w3-button {if is_null($collection_found)}w3-primary{else}w3-secondary{/if} w3-padding ox-tabs-link" href="#related_{$model_type}" role="tab">{L('MODEL_'|cat:$model_type|cat:'_INSTANCES')} {Marker::span(count($listing), ['class'=>'w3-badge'])}</a>
+      {if is_null($collection_found)}{$collection_found = $model_type}{/if}
+    {/if}
+  {/foreach}
+  
+  {foreach $related_listings as $model_type => $listing}
+    {if !current($listing)}
+      <a class="w3-bar-item w3-button w3-secondary w3-padding ox-tabs-link" href="#related_{$model_type}" role="tab">{L('MODEL_'|cat:$model_type|cat:'_INSTANCES')} <span class="w3-badge w3-badge-alias">{count($listing)}</span></a>
+    {/if}
+  {/foreach}
+  
+  {/block}
+</div>
+</header>
+
+{foreach $related_listings as $model_type => $listing name="related_listings"}
+  <div class="ox-tabs-content" id="related_{$model_type}" role="tabpanel" {if (is_null($collection_found) && $listing@first) || (!is_null($collection_found) && $collection_found == $model_type)}style="display:block;"{/if}>
+    {$listing_template = $model_type|cat:'/listing.html'}
+    {include file=$listing_template listing=$listing}
+  </div>
+{/foreach}
+</div>
+{/if}

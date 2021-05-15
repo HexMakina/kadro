@@ -11,6 +11,12 @@ class StateAgent
   // $options : https://www.php.net/manual/fr/session.configuration.php
   public function __construct($options)
   {
+    if(isset($options['session_name']))
+    {
+      session_name($options['session_name']);
+      unset($options['session_name']);
+    }
+    
     session_start($options); // https://www.php.net/manual/fr/function.session-start.php
   }
 

@@ -1,2 +1,2 @@
 # kadro
-framework for building web application
+framework for building php web application

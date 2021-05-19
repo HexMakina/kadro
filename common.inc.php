@@ -113,6 +113,7 @@ namespace HexMakina\kadro
 	$smarty->assign('APP_NAME', $box->get('settings.app.name'));
 
 	//---------------------------------------------------------------     lingva
+
 	$languages=\HexMakina\Lezer\Lezer::languages_by_file(APP_BASE.'locale/');
 
   $smarty->assign('languages', $languages);
@@ -136,7 +137,7 @@ namespace HexMakina\kadro
 	else if($cookies_enabled === true && array_key_exists('lang', $_COOKIE) && array_key_exists($_COOKIE['lang'], $languages))
 		$language=$_COOKIE['lang'];
 
-	if(is_null($language))
+	if(is_null($language) && !empty($languages))
 	{
 		if(count($languages) === 1)
 			$language=key($languages);
@@ -144,11 +145,10 @@ namespace HexMakina\kadro
 			$language=$box->get('settings.default.language');
 		else
 			throw new \Exception('FALLBACK_TO_DEFAULT_LANGUAGE_FAILED');
+		$i18n = new \HexMakina\Lezer\Lezer(APP_BASE.'locale/'.$language.'/user_interface.json', APP_BASE.'locale/cache/', $language);
+		$i18n->init();
+		$smarty->assign('language', $language);
 	}
-
-	$i18n = new \HexMakina\Lezer\Lezer(APP_BASE.'locale/'.$language.'/user_interface.json', APP_BASE.'locale/cache/', $language);
-	$i18n->init();
-	$smarty->assign('language', $language);
 }
 
 ?>

@@ -17,11 +17,9 @@ class TradukoController extends \HexMakina\kadro\Controllers\ORMController
 		return $this->router()->prehop('traduko');
 	}
 
-  public function update_file()
+  public function update_file($lang='fra')
   {
-    $lang = 'fra';
     $res = Traduko::filter(['lang' => $lang]);
-
     $assoc = [];
     foreach($res as $id => $trad)
     {

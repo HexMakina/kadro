@@ -72,8 +72,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     if($this->router()->submits())
     {
-      $this->form_model->import($this->router()->submitted());
-
+      $this->form_model->import($this->sanitize_post_data($this->router()->submitted()));
       $pk_values = $this->model_class_name::table()->primary_keys_match($this->router()->submitted());
 
       $this->load_model = $this->model_class_name::exists($pk_values);
@@ -88,6 +87,19 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     if(!is_null($this->load_model) && $this->load_model->traceable())
       $this->viewport('load_model_history', $this->load_model->traces() ?? []);
+  }
+
+  private sanitize_post_data($post_data=[])
+  {
+    foreach($this->model_class_name::table()->columns() as $col)
+    {
+      // boolean as checkboxes are 'on'.. 
+      if($col->is_boolean() && !empty($post_data[$col->name()]) && $post_data[$col->name()] == 'on')
+        $post_data[$col->name()] = true;
+
+    }
+
+    return $post_data;
   }
 
   public function has_load_model()

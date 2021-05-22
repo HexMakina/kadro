@@ -89,19 +89,6 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
       $this->viewport('load_model_history', $this->load_model->traces() ?? []);
   }
 
-  private sanitize_post_data($post_data=[])
-  {
-    foreach($this->model_class_name::table()->columns() as $col)
-    {
-      // boolean as checkboxes are 'on'.. 
-      if($col->is_boolean() && !empty($post_data[$col->name()]) && $post_data[$col->name()] == 'on')
-        $post_data[$col->name()] = true;
-
-    }
-
-    return $post_data;
-  }
-
   public function has_load_model()
   {
     return !empty($this->load_model);
@@ -122,6 +109,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
   public function persist_model($model) : ?ModelInterface
   {
     $this->errors = $model->save($this->operator()->operator_id()); // returns [errors]
+    vd($this->errors);
     if(empty($this->errors()))
     {
       $this->logger()->nice('KADRO_CRUDITES_INSTANCE_ALTERED', ['MODEL_'.get_class($model)::model_type().'_INSTANCE']);
@@ -360,6 +348,19 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
       $route = $this->route_model($route);
 
     return parent::route_factory($route, $route_params);
+  }
+
+  private function sanitize_post_data($post_data=[])
+  {
+    foreach($this->model_class_name::table()->columns() as $col)
+    {
+      if($col->is_boolean())
+      {
+          $post_data[$col->name()] = !empty($post_data[$col->name()]);
+      }
+    }
+
+    return $post_data;
   }
 }
 ?>

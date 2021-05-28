@@ -81,7 +81,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     }
     else
     {
-      $this->logger()->warning('KADRO_CRUDITES_ERR_QUERY_FAILED');
+      $this->logger()->warning('CRUDITES_ERR_QUERY_FAILED');
     }
 
     $this->router()->hop_back();

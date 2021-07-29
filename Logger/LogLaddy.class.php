@@ -141,6 +141,7 @@ class LogLaddy implements LoggerInterface
   // ----------------------------------------------------------- User messages
 
   // ----------------------------------------------------------- User messages:add one
+  /* Before decoupling with Lezer
   public function report_to_user($level, $message, $context = [])
   {
     {
@@ -157,8 +158,20 @@ class LogLaddy implements LoggerInterface
     $_SESSION[self::REPORTING_USER] = $_SESSION[self::REPORTING_USER] ?? [];
     $_SESSION[self::REPORTING_USER][$level] = $_SESSION[self::REPORTING_USER][$level] ?? [];
 
-    // $_SESSION[self::REPORTING_USER][$level][] = microtime(true)." $message";
-    $_SESSION[self::REPORTING_USER][$level][] = $message;
+    // $_SESSION[self::REPORTING_USER][$level][] = $message; // this
+    $_SESSION[self::REPORTING_USER][$level][] = [$message, $context];
+  }
+*/
+  // ----------------------------------------------------------- User messages:add one
+  public function report_to_user($level, $message, $context = [])
+  {
+    if(!isset($_SESSION[self::REPORTING_USER]))
+      $_SESSION[self::REPORTING_USER] = [];
+
+    if(!isset($_SESSION[self::REPORTING_USER][$level]))
+      $_SESSION[self::REPORTING_USER][$level] = [];
+
+    $_SESSION[self::REPORTING_USER][$level][] = [$message, $context];
   }
 
   // ----------------------------------------------------------- User messages:get all

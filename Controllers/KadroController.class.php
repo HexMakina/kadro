@@ -142,6 +142,7 @@ class KadroController implements Interfaces\DisplayController
     $smarty = $this->box('template_engine');
 
     $template = $this->find_template($smarty, $custom_template); // throws Exception if nothing found
+
 		$this->viewport('controller', $this);
 
     $this->viewport('user_messages', $this->logger()->get_user_report());
@@ -203,8 +204,10 @@ class KadroController implements Interfaces\DisplayController
     $templates = array_unique($templates);
 
     while(!is_null($tpl_path = array_shift($templates)))
+    {
       if($smarty->templateExists($tpl_path))
         return $tpl_path;
+    }
 
     throw new \Exception('KADRO_ERR_NO_TEMPLATE_TO_DISPLAY');
   }

@@ -63,5 +63,7 @@ class TradukoController extends \HexMakina\kadro\Controllers\ORMController
     $languages = array_keys(array_slice(Traduko::inspect(Traduko::table_name())->columns(), 4));
     foreach($languages as $l)
       self::create_file($locale_path, $l);
+
+    return $languages;
   }
 }

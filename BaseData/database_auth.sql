@@ -2,10 +2,11 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 
 START TRANSACTION;
 
-DROP TABLE IF EXISTS `kadro_operator`;
-DROP TABLE IF EXISTS `kadro_permission`;
 DROP TABLE IF EXISTS `kadro_acl`;
 DROP TABLE IF EXISTS `kadro_action_logger`;
+
+DROP TABLE IF EXISTS `kadro_operator`;
+DROP TABLE IF EXISTS `kadro_permission`;
 
 -- --------------------------------------------------------
 --
@@ -84,7 +85,6 @@ ALTER TABLE `kadro_acl`
   ADD CONSTRAINT `kadro_acl-has-kadro_permission.id` FOREIGN KEY (`permission_id`) REFERENCES `kadro_permission` (`id`);
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `kadro_action_logger`
 --
@@ -102,7 +102,5 @@ CREATE TABLE `kadro_action_logger` (
 ALTER TABLE `kadro_action_logger`
   ADD PRIMARY KEY (`query_table`,`query_id`,`query_type`,`query_on`);
 -- --------------------------------------------------------
-
-
 
 COMMIT;

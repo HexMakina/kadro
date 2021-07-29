@@ -34,23 +34,28 @@ class TradukoController extends \HexMakina\kadro\Controllers\ORMController
     $assoc = [];
     foreach($res as $id => $trad)
     {
-      $assoc[$trad->kategorio] = $assoc[$trad->kategorio] ?? [];
-      $assoc[$trad->kategorio][$trad->sekcio] = $assoc[$trad->kategorio][$trad->sekcio] ?? [];
+      if(!isset($assoc[$trad->kategorio]))
+        $assoc[$trad->kategorio] = [];
+      if(!isset($assoc[$trad->kategorio][$trad->sekcio]))
+        $assoc[$trad->kategorio][$trad->sekcio] = [];
+
       $assoc[$trad->kategorio][$trad->sekcio][$trad->referenco] = $trad->$lang;
     }
-    // test directory access
+
+    // try
+    // {
     $path_to_file = $locale_path.'/'.$lang;
+    // test directory access & creation
+    if(!JSON::exists($path_to_file))
+      JSON::make_dir($path_to_file);
 
-    try{
-      if(!JSON::exists($path_to_file))
-        JSON::make_dir($path_to_file);
-
-      $file = new JSON($path_to_file.'/'.self::JSON_FILENAME, 'w+');
-      $file->set_content(JSON::from_php($assoc));
-    }catch(\Exception $e)
-    {
-      ddt($e);
-    }
+    $file = new JSON($path_to_file.'/'.self::JSON_FILENAME, 'w+');
+    $file->set_content(JSON::from_php($assoc));
+    // }
+    // catch(\Exception $e)
+    // {
+    //   ddt($e);
+    // }
   }
 
   public static function init($locale_path)

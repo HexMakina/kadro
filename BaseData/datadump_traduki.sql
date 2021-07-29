@@ -1,3 +1,4 @@
+START TRANSACTION;
 
 INSERT INTO `kadro_traduki` (`id`, `kategorio`, `sekcio`, `referenco`, `epo`, `fra`, `nld`) VALUES
 (571, 'KADRO', 'LOGGER', 'ACTION', NULL, 'Action', NULL),
@@ -120,3 +121,6 @@ INSERT INTO `kadro_traduki` (`id`, `kategorio`, `sekcio`, `referenco`, `epo`, `f
 (496, 'DATETIME', 'UNIT', 'YEAR_ABBREV', NULL, 'an', NULL),
 (447, 'DATETIME', 'UNIT', 'YEAR_PLURAL', NULL, 'ans', NULL),
 (7, 'DATETIME', 'RANGE', 'YESTERDAY', NULL, 'hier', NULL);
+
+
+COMMIT;

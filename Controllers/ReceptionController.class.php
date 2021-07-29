@@ -15,17 +15,6 @@ class ReceptionController extends KadroController
     return false;
   }
 
-  public function setup()
-  {
-    TradukoController::init($this->box('settings.locale_data_path'));
-    $this->viewport('database_connection', false);
-    $this->viewport('database_structure', false);
-
-    $this->display(__FUNCTION__, 'standalone');
-    $this->logger()->clean_user_report();
-    die;
-  }
-
   public function welcome(OperatorInterface $operator)
   {
 

@@ -1,7 +1,7 @@
 --
 -- Dumping data for table `kadro_language_code`
 --
-
+START TRANSACTION;
 INSERT INTO `kadro_language_code` (`id`, `Part3`, `Part2B`, `Part2T`, `Part1`, `Scope`, `Type`, `Ref_Name`, `Comment`) VALUES
 (1, 'aaa', '', '', '', 'I', 'L', 'Ghotuo', ''),
 (2, 'aab', '', '', '', 'I', 'L', 'Alumu-Tesu', ''),
@@ -104,8 +104,8 @@ INSERT INTO `kadro_language_code` (`id`, `Part3`, `Part2B`, `Part2T`, `Part1`, `
 (99, 'aem', '', '', '', 'I', 'L', 'Arem', ''),
 (100, 'aen', '', '', '', 'I', 'L', 'Armenian Sign Language', ''),
 (101, 'aeq', '', '', '', 'I', 'L', 'Aer', ''),
-(102, 'aer', '', '', '', 'I', 'L', 'Eastern Arrernte', ''),
 (103, 'aes', '', '', '', 'I', 'E', 'Alsea', ''),
+(102, 'aer', '', '', '', 'I', 'L', 'Eastern Arrernte', ''),
 (104, 'aeu', '', '', '', 'I', 'L', 'Akeu', ''),
 (105, 'aew', '', '', '', 'I', 'L', 'Ambakich', ''),
 (106, 'aey', '', '', '', 'I', 'L', 'Amele', ''),
@@ -7868,3 +7868,4 @@ INSERT INTO `kadro_language_code` (`id`, `Part3`, `Part2B`, `Part2T`, `Part1`, `
 (7855, 'zyp', '', '', '', 'I', 'L', 'Zyphe Chin', ''),
 (7856, 'zza', 'zza', 'zza', '', 'M', 'L', 'Zaza', ''),
 (7857, 'zzj', '', '', '', 'I', 'L', 'Zuojiang Zhuang', '');
+COMMIT;

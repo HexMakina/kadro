@@ -8,6 +8,11 @@ class ACL extends \HexMakina\ORM\TightModel
   const TABLE_NAME = 'kadro_acl';
   const TABLE_ALIAS = 'acl';
 
+  public function traceable() : bool
+	{
+		return false;
+	}
+
   public static function match(OperatorInterface $op, $permission_name)
   {
     return in_array($permission_name, self::permissions_names_for($op));
@@ -16,15 +21,15 @@ class ACL extends \HexMakina\ORM\TightModel
   public static function query_retrieve($filters=[], $options=[]) : BaseQuery
   {
     $options['eager'] = false;
-    $res = parent::query_retrieve($filters,$options);
+    $ret = parent::query_retrieve($filters,$options);
     $eager_params = [];
     $eager_params[Permission::table_name()]=Permission::table_alias();
     $eager_params[Operator::table_name()]=Operator::table_alias();
     $eager_params[ACL::table_name()]=ACL::table_alias();
 
-    $res->eager($eager_params);
+    $ret->eager($eager_params);
 
-    return $res;
+    return $ret;
   }
 
   public static function permissions_for(OperatorInterface $op)
@@ -48,6 +53,14 @@ class ACL extends \HexMakina\ORM\TightModel
     return explode(',',$operator_with_perms->get('permission_names'));
   }
 
+  public static function allow_in(OperatorInterface $op, Permission $p)
+  {
+    $ret = new ACL();
+    $ret->set('operator_id', $op->get_id());
+    $ret->set('permission_id', $p->get_id());
+    $ret->save($op->get_id());
+    return $ret;
+  }
 
 }
 

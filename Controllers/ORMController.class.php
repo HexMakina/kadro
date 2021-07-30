@@ -130,8 +130,9 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     if(!isset($filters['date_start']))  $filters['date_start'] = $this->box('StateAgent')->filters('date_start');
     if(!isset($filters['date_stop']))   $filters['date_stop'] = $this->box('StateAgent')->filters('date_stop');
 
+    // dd($filters);
     $listing = $class_name::filter($filters);
-
+    // dd($listing);
     $this->viewport_listing($class_name, $listing, $this->find_template($this->box('template_engine'), __FUNCTION__));
   }
 

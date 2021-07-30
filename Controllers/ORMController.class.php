@@ -351,7 +351,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
   {
     foreach($this->model_class_name::table()->columns() as $col)
     {
-      if($col->is_boolean())
+      if($col->type()->is_boolean())
       {
           $post_data[$col->name()] = !empty($post_data[$col->name()]);
       }

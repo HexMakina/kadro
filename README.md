@@ -1,18 +1,22 @@
 # kadro
-framework for building PHP web applications
+PHP framework for building PHP web applications
 
-## Auth
+## 1. Auth
 ### Operators
 ### Permissions
 ### ACL
 
-## Router
-## Container
-## Logger
-## StateAgent
-## PSR4 Autoloader
-## Models
-## Controllers
-## Views
+## 2. PSR Services
+### Router
+### PSR-3 Logger
+### PSR-4 Autoloader
+### PSR-11 Container
+
+## 3. StateAgent
+
+## 4. MVC
+### Models
+### Controllers
+### Views
 
 ## Installation script

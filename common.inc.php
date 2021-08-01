@@ -107,7 +107,7 @@ namespace HexMakina\kadro
 	$smarty->registerClass('Lezer', 			'\HexMakina\Lezer\Lezer');
 	$smarty->registerClass('Marker', 			'\HexMakina\Format\HTML\Marker');
 	$smarty->registerClass('Form', 				'\HexMakina\Format\HTML\Form');
-	$smarty->registerClass('TableToForm',	'\HexMakina\Crudites\TableToForm');
+	$smarty->registerClass('TableToForm',	'\HexMakina\kadro\TableToForm');
 	$smarty->registerClass('Dato', 				'\HexMakina\Format\Tempo\Dato');
 
 	$smarty->assign('APP_NAME', $box->get('settings.app.name'));

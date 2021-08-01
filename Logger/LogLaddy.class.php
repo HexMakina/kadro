@@ -269,6 +269,7 @@ class LogLaddy implements LoggerInterface
   private static function map_error_level_to_log_level($level) : string
   {
     // http://php.net/manual/en/errorfunc.constants.php
+    $m=[];
 
     $m[E_ERROR]=$m[E_PARSE]=$m[E_CORE_ERROR]=$m[E_COMPILE_ERROR]=$m[E_USER_ERROR]=$m[E_RECOVERABLE_ERROR]=LogLevel::ALERT;
     $m[1]=$m[4]=$m[16]=$m[64]=$m[256]=$m[4096]=LogLevel::ALERT;

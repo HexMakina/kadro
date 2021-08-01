@@ -12,7 +12,7 @@ class FileManager
   
   function __construct($file_manageable_model, $filetype)
   {
-    if(!is_subclass_of($file_manageable_model, '\HexMakina\ORM\TightModel'))
+    if(!is_subclass_of($file_manageable_model, '\HexMakina\Crudites\TightModel'))
       throw new \Exception("__construct($file_manageable_model) // only Model items are manageable");
 
     $this->pmi = $file_manageable_model;

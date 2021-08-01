@@ -1,7 +1,7 @@
 <?php
 
 namespace HexMakina\kadro\Controllers;
-use \HexMakina\ORM\Interfaces\ModelInterface;
+use \HexMakina\Crudites\Interfaces\ModelInterface;
 
 abstract class ORMController extends KadroController implements Interfaces\ORMController
 {
@@ -341,7 +341,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     if(is_null($route) && $this->router()->submits())
       $route = $this->form_model;
 
-    if(!is_null($route) && is_subclass_of($route, '\HexMakina\ORM\Interfaces\ModelInterface'))
+    if(!is_null($route) && is_subclass_of($route, '\HexMakina\Crudites\Interfaces\ModelInterface'))
       $route = $this->route_model($route);
 
     return parent::route_factory($route, $route_params);

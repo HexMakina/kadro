@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Auth;
 use \HexMakina\Crudites\Queries\BaseQuery;
 
-class ACL extends \HexMakina\ORM\TightModel
+class ACL extends \HexMakina\Crudites\TightModel
 {
   const TABLE_NAME = 'kadro_acl';
   const TABLE_ALIAS = 'acl';
@@ -18,7 +18,7 @@ class ACL extends \HexMakina\ORM\TightModel
     return in_array($permission_name, self::permissions_names_for($op));
   }
 
-  public static function query_retrieve($filters=[], $options=[]) : BaseQuery
+  public static function query_retrieve($filters=[], $options=[]) : Select
   {
     $options['eager'] = false;
     $ret = parent::query_retrieve($filters,$options);

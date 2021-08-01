@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Models;
 
 use \HexMakina\Crudites\Queries\BaseQuery;
-use \HexMakina\ORM\TightModel;
+use \HexMakina\Crudites\TightModel;
 
 class Lingvo extends TightModel
 {

@@ -4,7 +4,7 @@ namespace HexMakina\kadro\Auth;
 
 // use \HexMakina\kadro\Auth\{OperatorInterface};
 use \HexMakina\Crudites\Queries\BaseQuery;
-use \HexMakina\ORM\TightModel;
+use \HexMakina\Crudites\TightModel;
 
 class Operator extends TightModel implements OperatorInterface
 {
@@ -67,7 +67,7 @@ class Operator extends TightModel implements OperatorInterface
     return $this->get('language_code');
   }
 
-	public static function query_retrieve($filters=[], $options=[]) : BaseQuery
+	public static function query_retrieve($filters=[], $options=[]) : Select
 	{
 		$Query = static::table()->select();
   	if(isset($options['eager']) && $options['eager'] === true)

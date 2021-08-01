@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Models;
 
 use \HexMakina\Crudites\Queries\BaseQuery;
-use \HexMakina\ORM\TightModel;
+use \HexMakina\Crudites\TightModel;
 
 class Traduko extends TightModel
 {
@@ -20,7 +20,7 @@ class Traduko extends TightModel
     return false;
   }
   
-  public static function query_retrieve($filters=[], $options=[]) : BaseQuery
+  public static function query_retrieve($filters=[], $options=[]) : Select
   {
     $Query = static::table()->select();
     $Query->order_by(['kategorio', 'ASC']);

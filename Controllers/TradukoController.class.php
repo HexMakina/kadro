@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Models\Traduko;
-use \HexMakina\Format\File\Text\JSON;
+use \HexMakina\LocalFS\Text\JSON;
 
 class TradukoController extends \HexMakina\kadro\Controllers\ORMController
 {

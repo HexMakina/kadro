@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro
 {
-	use \HexMakina\Format\File\FileSystem;
+	use \HexMakina\LocalFS\FileSystem;
 
 	define('KADRO_BASE', APP_BASE.'/lib/kadro/'); // this is project dependant, should be in settings
 	// define('QIVIVE_BASE', APP_BASE.'/lib/qivive/'); // this is project dependant, should be in settings
@@ -25,7 +25,7 @@ namespace HexMakina\kadro
 
 	// $loader->addNamespace('HexMakina\kadro', KADRO_BASE);
 	// $loader->addNamespace('HexMakina\qivive', QIVIVE_BASE);
-	// $loader->addNamespace('HexMakina\Format\File', __DIR__.'/Format/File');
+	// $loader->addNamespace('HexMakina\LocalFS', __DIR__.'/Format/File');
 	$loader->addNamespaceTree(KADRO_BASE);
 
 	//---------------------------------------------------------------     erara raportado

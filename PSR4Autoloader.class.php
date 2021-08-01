@@ -1,7 +1,7 @@
 <?php
 namespace HexMakina\kadro;
 
-use \HexMakina\Format\File\FileSystem;
+use \HexMakina\LocalFS\FileSystem;
 
 class PSR4Autoloader
 {

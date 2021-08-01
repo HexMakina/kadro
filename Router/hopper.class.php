@@ -133,9 +133,9 @@ class hopper extends \AltoRouter implements RouterInterface
   {
     return $this->namedRoutes;
   }
-  
+
   /*
-   * @param string route_name requires
+   * @param route_name string  requires
    *  - a valid AltoRouter route name
    *  - OR a Descendant of Model
    * @route_params requires
@@ -144,8 +144,6 @@ class hopper extends \AltoRouter implements RouterInterface
    */
   public function prehop($route, $route_params=[])
   {
-    $url = null;
-
     try{
       $url = $this->generate($route, $route_params);
     }catch(\Exception $e){
@@ -182,7 +180,7 @@ class hopper extends \AltoRouter implements RouterInterface
   }
 
   // hops back to previous page (referer()), or home if no referer
-  public function hop_back($add = array())
+  public function hop_back()
   {
     if(!is_null($back = $this->referer()))
       $this->hop_url($back);

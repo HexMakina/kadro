@@ -7,12 +7,12 @@ namespace HexMakina\kadro
 	define('KADRO_BASE', APP_BASE.'/lib/kadro/'); // this is project dependant, should be in settings
 	// define('QIVIVE_BASE', APP_BASE.'/lib/qivive/'); // this is project dependant, should be in settings
 
-	set_include_path(implode(PATH_SEPARATOR, [get_include_path(), APP_BASE.'/lib/', APP_BASE.'/vendor/', KADRO_BASE]));
+	set_include_path(implode(PATH_SEPARATOR, [get_include_path(), APP_BASE, APP_BASE.'/lib/', APP_BASE.'/vendor/', KADRO_BASE]));
 
 	//---------------------------------------------------------------     autoloader
-  require 'vendor/autoload.php';
+  require APP_BASE.'vendor/autoload.php';
 
-	require 'lib/kadro/PSR4Autoloader.class.php';
+	require 'PSR4Autoloader.class.php';
 	$loader=new PSR4Autoloader;
 	$loader->register(); //Register loader with SPL autoloader stack.
 
@@ -37,7 +37,7 @@ namespace HexMakina\kadro
 	\HexMakina\Debugger\Debugger::init();
 
 	//---------------------------------------------------------------     parametroj
-	require_once 'configs/settings.php';
+	require_once APP_BASE.'configs/settings.php';
 	$box=new Container\LeMarchand($settings);
 
   foreach($box->get('settings.app.namespaces') as $namespace => $path)

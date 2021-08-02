@@ -11,31 +11,17 @@
 
 namespace HexMakina\kadro\Logger;
 
-use \HexMakina\Crudites\{Crudites,CruditesException,Table};
-use \HexMakina\Crudites\TableInterface;
-
-
 class LogLaddy implements LoggerInterface
 {
   use \Psr\Log\LoggerTrait; // PSR implementation
   use \HexMakina\Debugger\Debugger;
 
-  const LOG_TABLE_NAME = 'kadro_action_logger';
   const REPORTING_USER = 'user_messages';
-
   const INTERNAL_ERROR = 'error';
-
-  // TODO: separate KadroException (parent of all operational exceptions)
-  // from \Exception (parent of all exception)
-  // CruditesException must Extend KadroException, and all throw new \Exception must be S & D
-  // Only then the notion of USER_EXCEPTION will be pertinent
-  // create KadroException, ew constant KADRO_EXCEPTION, adapt code, test ..
   const USER_EXCEPTION = 'exception';
-
   const LOG_LEVEL_SUCCESS = 'ok';
 
   private $has_halting_messages = false;
-
 
   /**
    * Everything went fine, which is always nice.
@@ -81,7 +67,6 @@ class LogLaddy implements LoggerInterface
 
   public function system_halted($level)
   {
-
     switch($level)
     {
       case LogLevel::ERROR:
@@ -184,75 +169,6 @@ class LogLaddy implements LoggerInterface
   public function clean_user_report()
   {
     unset($_SESSION[self::REPORTING_USER]);
-  }
-
-  // ----------------------------------------------------------- CRUD Tracking:get for one model
-  // public function history($table, $id, $sort='DESC')
-  // {
-  //   $table_alias = 'logladdy';
-  //   $table = Crudites::inspect(self::LOG_TABLE_NAME);
-  //   $q = $table->select(["$table_alias.*", 'name'], $table_alias);
-  //   $q->join([User::table_name(), 'u'], [[$table_alias,'query_by', 'u','id']], 'INNER');
-  //   $q->aw_fields_eq(['query_table' => $table, 'query_id' => $id], $table_alias);
-  //
-  //   $q->order_by(['query_on', $sort]);
-  //   $q->run();
-  //   $res = $q->ret_ass();
-  //
-  //   return $res;
-  // }
-
-  // ----------------------------------------------------------- CRUD Tracking:get for many models
-  public function changes($options=[])
-  {
-
-    if(!isset($options['limit']) || empty($options['limit']))
-      $limit = 1000;
-    else  $limit = intval($options['limit']);
-
-    // TODO SELECT field order can't change without adapting the result parsing code (foreach $res)
-    $table = Crudites::inspect(self::LOG_TABLE_NAME);
-    $select_fields = ['SUBSTR(query_on, 1, 10) AS working_day', 'query_table', 'query_id',  'GROUP_CONCAT(DISTINCT query_type, "-", query_by) as action_by'];
-    $q = $table->select($select_fields);
-    $q->order_by(['', 'working_day', 'DESC']);
-    $q->order_by([self::LOG_TABLE_NAME, 'query_table', 'DESC']);
-    $q->order_by([self::LOG_TABLE_NAME, 'query_id', 'DESC']);
-
-    $q->group_by('working_day');
-    $q->group_by('query_table');
-    $q->group_by('query_id');
-    $q->having("action_by NOT LIKE '%D%'");
-    $q->limit($limit);
-
-    foreach($options as $o => $v)
-    {
-          if(preg_match('/id/', $o))                    $q->aw_eq('query_id', $v);
-      elseif(preg_match('/tables/', $o))                $q->aw_string_in('query_table', is_array($v) ? $v : [$v]);
-      elseif(preg_match('/table/', $o))                 $q->aw_eq('query_table', $v);
-      elseif(preg_match('/(type|action)/', $o))         $q->aw_string_in('query_type', is_array($v) ? $v : [$v]);
-      elseif(preg_match('/(date|query_on)/', $o))       $q->aw_like('query_on', "$v%");
-      elseif(preg_match('/(oper|user|query_by)/', $o))  $q->aw_eq('query_by', $v);
-    }
-
-    try{$q->run();}
-    catch(CruditesException $e){vdt($e);return false;}
-
-    $res = $q->ret_num(); // ret num to list()
-    // ddt($res);
-    $ret = [];
-
-    foreach($res as $r)
-    {
-      list($working_day, $class, $instance_id, $logs) = $r;
-
-      if(!isset($ret[$working_day]))
-        $ret[$working_day] = [];
-      if(!isset($ret[$working_day][$class]))
-        $ret[$working_day][$class] = [];
-
-      $ret[$working_day][$class][$instance_id] = $logs;
-    }
-    return $ret;
   }
 
   // ----------------------------------------------------------- Error level mapping from \Psr\Log\LogLevel.php & http://php.net/manual/en/errorfunc.constants.php

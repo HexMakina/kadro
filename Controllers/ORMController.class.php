@@ -106,7 +106,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
   public function persist_model($model) : ?ModelInterface
   {
-    $this->errors = $model->save($this->operator()->operator_id()); // returns [errors]
+    $this->errors = $model->save($this->operator()->operator_id(), $this->tracer()); // returns [errors]
     if(empty($this->errors()))
     {
       $this->logger()->nice('CRUDITES_INSTANCE_ALTERED', ['MODEL_'.get_class($model)::model_type().'_INSTANCE']);
@@ -240,7 +240,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     if(!$this->router()->submits())
       throw new \Exception('KADRO_ROUTER_MUST_SUBMIT');
 
-    if($this->load_model->destroy($this->operator()->operator_id()) === false)
+    if($this->load_model->destroy($this->operator()->operator_id(), $this->tracer()) === false)
     {
       $this->logger()->info('CRUDITES_ERR_INSTANCE_IS_UNDELETABLE', [''.$this->load_model]);
       $this->route_back($this->load_model);

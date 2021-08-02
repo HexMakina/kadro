@@ -55,6 +55,10 @@ class KadroController implements Interfaces\DisplayController
     return $this->box('OperatorInterface');
   }
 
+  public function tracer() : TracerInterface
+  {
+    return $this->box('TracerInterface');
+  }
 
   public function requires_operator()
   {

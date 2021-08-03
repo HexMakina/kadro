@@ -83,8 +83,8 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         $this->form_model = clone $this->load_model;
     }
 
-    if(!is_null($this->load_model) && $this->load_model->traceable())
-      $this->viewport('load_model_history', $this->load_model->traces() ?? []);
+    if(!is_null($this->load_model) && is_subclass_of($this->load_model, '\HexMakina\Crudites\Interfaces\TraceableInterface') && $this->load_model->traceable())
+      $this->viewport('load_model_history', $this->tracer()->traces_by_model($this->load_model));
   }
 
   public function has_load_model()

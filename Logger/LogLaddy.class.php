@@ -13,8 +13,8 @@ namespace HexMakina\kadro\Logger;
 
 class LogLaddy implements LoggerInterface
 {
-  use \Psr\Log\LoggerTrait; // PSR implementation
-  use \HexMakina\Debugger\Debugger;
+  use \Psr\Log\LoggerTrait;           // PSR implementation
+  use \HexMakina\Debugger\Debugger;   // Debugger
 
   const REPORTING_USER = 'user_messages';
   const INTERNAL_ERROR = 'error';
@@ -31,6 +31,7 @@ class LogLaddy implements LoggerInterface
    *
    * @return void
    */
+
   public function nice($message, array $context = array())
   {
       $this->log(LogLevel::NICE, $message, $context);
@@ -82,23 +83,22 @@ class LogLaddy implements LoggerInterface
 
   public function log($level, $message, array $context = [])
   {
-
     $display_error = null;
 
     // --- Handles Throwables (exception_handler())
     if($message==self::INTERNAL_ERROR || $message== self::USER_EXCEPTION)
     {
       $this->has_halting_messages = true;
-      $display_error = \HexMakina\Debugger\Debugger::format_throwable_message($context['class'], $context['code'], $context['file'], $context['line'], $context['text']);
+      $display_error = self::format_throwable_message($context['class'], $context['code'], $context['file'], $context['line'], $context['text']);
       error_log($display_error);
-      $display_error.= \HexMakina\Debugger\Debugger::format_trace($context['trace'], false);
+      $display_error.= self::format_trace($context['trace'], false);
       self::HTTP_500($display_error);
     }
     elseif($this->system_halted($level)) // analyses error level
     {
-      $display_error = sprintf(PHP_EOL.'%s in file %s:%d'.PHP_EOL.'%s', $level, \HexMakina\Debugger\Debugger::format_file($context['file']), $context['line'], $message);
+      $display_error = sprintf(PHP_EOL.'%s in file %s:%d'.PHP_EOL.'%s', $level, self::format_file($context['file']), $context['line'], $message);
       error_log($display_error);
-      $display_error.= \HexMakina\Debugger\Debugger::format_trace($context['trace'], false);
+      $display_error.= self::format_trace($context['trace'], true);
       self::HTTP_500($display_error);
     }
     else
@@ -112,7 +112,7 @@ class LogLaddy implements LoggerInterface
 
   public static function HTTP_500($display_error)
   {
-    \HexMakina\Debugger\Debugger::display_errors($display_error);
+    self::display_errors($display_error);
     http_response_code(500);
     die;
   }
@@ -125,28 +125,6 @@ class LogLaddy implements LoggerInterface
 
   // ----------------------------------------------------------- User messages
 
-  // ----------------------------------------------------------- User messages:add one
-  /* Before decoupling with Lezer
-  public function report_to_user($level, $message, $context = [])
-  {
-    {
-    if(defined("L::$message")) // message isa translatable code
-      foreach($context as $i => $param) // message need translated params
-        if(defined("L::$param"))
-          $context[$i] = L($param);
-
-      $message = L($message, $context);
-    }
-
-    // $_SESSION[self::REPORTING_USER][$level][] = date('Y-m-d H:i:s.u').' '.$message;
-    // ddt($message);
-    $_SESSION[self::REPORTING_USER] = $_SESSION[self::REPORTING_USER] ?? [];
-    $_SESSION[self::REPORTING_USER][$level] = $_SESSION[self::REPORTING_USER][$level] ?? [];
-
-    // $_SESSION[self::REPORTING_USER][$level][] = $message; // this
-    $_SESSION[self::REPORTING_USER][$level][] = [$message, $context];
-  }
-*/
   // ----------------------------------------------------------- User messages:add one
   public function report_to_user($level, $message, $context = [])
   {

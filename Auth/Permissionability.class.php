@@ -21,16 +21,16 @@ trait Permissionability
         $ret[]="$p";
       return $ret;
     }
-    
-    else 
+
+    else
     {
       return ACL::permissions_names_for($this);
     }
-  }  
-  
+  }
+
   public function permissions()
   {
-    
+
     if(!is_null($this->permissions))
       return $this->permissions;
     $permission_unique_keys = null;
@@ -49,16 +49,16 @@ trait Permissionability
     {
       $this->permissions = ACL::permissions_for($this);
     }
-    
+
     return $this->permissions;
   }
-  
+
   public function has_permission($p) : bool
   {
     // new instances or inactive operators, none shall pass
     if($this->is_new() === true || $this->is_active()  === false)
       return false;
-    
+
     $permission_name = $permission_id = null;
     if(is_subclass_of($p, '\HexMakina\kadro\Auth\Permission'))
     {
@@ -69,7 +69,6 @@ trait Permissionability
       $permission_id = $p;
     else
       $permission_name = $p;
-
 
     if(!is_null($this->get('permission_names')) && !is_null($permission_name))
     {
@@ -98,5 +97,3 @@ trait Permissionability
     return false;
   }
 }
-
-

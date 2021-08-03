@@ -12,12 +12,12 @@ class Operator extends TightModel implements OperatorInterface
 
   use Permissionability;
 
-	public function __toString()
+  public function __toString()
   {
     return $this->get('username');
   }
 
-	public function is_active() : bool
+  public function is_active() : bool
   {
     return !empty($this->get('active'));
   }
@@ -38,14 +38,14 @@ class Operator extends TightModel implements OperatorInterface
   }
 
   public function password_change($string)
-	{
-		$this->password = password_hash($string, PASSWORD_DEFAULT);
-	}
+  {
+    $this->password = password_hash($string, PASSWORD_DEFAULT);
+  }
 
-	public function password_verify($string) : bool
-	{
-		return password_verify($string, $this->password());
-	}
+  public function password_verify($string) : bool
+  {
+    return password_verify($string, $this->password());
+  }
 
   public function name()
   {
@@ -61,39 +61,38 @@ class Operator extends TightModel implements OperatorInterface
     return $this->get('phone');
   }
 
-	public function language_code()
+  public function language_code()
   {
     return $this->get('language_code');
   }
 
-	public static function query_retrieve($filters=[], $options=[]) : Select
-	{
-		$Query = static::table()->select();
-  	if(isset($options['eager']) && $options['eager'] === true)
-		{
+  public static function query_retrieve($filters=[], $options=[]) : Select
+  {
+    $Query = static::table()->select();
+    if(isset($options['eager']) && $options['eager'] === true)
+    {
       $Query->group_by('id');
 
       $Query->auto_join([ACL::table(), 'acl'], null, 'LEFT OUTER');
       $Query->auto_join([Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
-			$Query->select_also(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
-		}
+      $Query->select_also(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
+    }
 
-		if(isset($filters['model']) && !empty($filters['model']))
-		{
-			$model = $filters['model'];
-			$Query->join([static::otm('t'), static::otm('a')],[[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
-			$Query->aw_fields_eq(['model_id' => $filters['model']->get_id(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
-		}
+    if(isset($filters['model']) && !empty($filters['model']))
+    {
+      $model = $filters['model'];
+      $Query->join([static::otm('t'), static::otm('a')],[[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
+      $Query->aw_fields_eq(['model_id' => $filters['model']->get_id(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
+    }
 
     $Query->order_by([$Query->table_label(), 'name', 'ASC']);
 
 
-		return $Query;
-	}
+    return $Query;
+  }
 
-	public function immortal() : bool
-	{
-		return true; // never delete a user, always deactivate
-	}
+  public function immortal() : bool
+  {
+    return true; // never delete a user, always deactivate
+  }
 }
-

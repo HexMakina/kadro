@@ -79,4 +79,4 @@ class StateAgent
     return session_destroy();
   }
 }
-?>
+

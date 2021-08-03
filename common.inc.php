@@ -151,4 +151,4 @@ namespace HexMakina\kadro
 	}
 }
 
-?>
+

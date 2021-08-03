@@ -11,4 +11,4 @@ class LamentException extends \Exception implements ContainerExceptionInterface
     return parent::__construct("HellBound Error using '$configuration'");
   }  
 }
-?>
+

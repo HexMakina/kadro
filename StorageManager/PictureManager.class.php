@@ -314,4 +314,4 @@ class PictureManager extends FileManager
 }
 
 
-?>
+

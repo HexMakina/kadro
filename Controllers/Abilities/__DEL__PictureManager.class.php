@@ -302,4 +302,4 @@ trait PictureManager
 }
 
 
-?>
+

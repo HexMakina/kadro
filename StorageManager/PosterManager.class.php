@@ -20,4 +20,4 @@ class PosterManager extends PictureManager
 
 }
 
-?>
+

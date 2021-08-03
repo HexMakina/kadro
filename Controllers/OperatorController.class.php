@@ -115,4 +115,4 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     $this->router()->hop_back();
   }
 }
-?>
+

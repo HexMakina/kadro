@@ -96,4 +96,4 @@ class Operator extends TightModel implements OperatorInterface
 		return true; // never delete a user, always deactivate
 	}
 }
-?>
+

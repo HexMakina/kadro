@@ -31,4 +31,4 @@ class Traduko extends TightModel
   }
 }
 
-?>
+

@@ -23,4 +23,4 @@ trait Breadcrumb
     return $ret;
   }
 }
-?>
+

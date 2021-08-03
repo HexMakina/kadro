@@ -15,4 +15,4 @@ class SnapshotManager extends PictureManager
   }
 }
 
- ?>
+ 

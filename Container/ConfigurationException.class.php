@@ -10,4 +10,4 @@ class ConfigurationException extends \Exception implements NotFoundExceptionInte
     return parent::__construct("Unkown configuration '$configuration'");
   }
 }
-?>
+

@@ -130,4 +130,4 @@ class Lingvo extends TightModel
   }
 
 }
-?>
+

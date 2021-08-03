@@ -9,5 +9,3 @@ interface EventInterface
   public function event_value(); // event date: when is the event ?
   public function event_field(); // event date field name
 }
-
-?>

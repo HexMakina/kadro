@@ -20,4 +20,4 @@ interface OperatorInterface
   public function name();
 }
 
-?>
+

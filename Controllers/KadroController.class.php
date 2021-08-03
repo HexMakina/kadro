@@ -256,4 +256,4 @@ class KadroController implements Interfaces\DisplayController
   }
 }
 
-?>
+

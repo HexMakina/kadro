@@ -24,7 +24,7 @@ class TradukoController extends \HexMakina\kadro\Controllers\ORMController
     $locale_path = $this->box('settings.locale_data_path');
     self::create_file($locale_path, $lang);
 
-    $this->logger()->nice('KADRO_SYSTEM_FILE_UPDATED', [$report_filename]);
+    $this->logger()->nice(L('KADRO_SYSTEM_FILE_UPDATED', [$report_filename]));
     $this->router()->hop('traduko');
   }
 

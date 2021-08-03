@@ -109,11 +109,11 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     $this->errors = $model->save($this->operator()->operator_id(), $this->tracer()); // returns [errors]
     if(empty($this->errors()))
     {
-      $this->logger()->nice('CRUDITES_INSTANCE_ALTERED', ['MODEL_'.get_class($model)::model_type().'_INSTANCE']);
+      $this->logger()->nice(L('CRUDITES_INSTANCE_ALTERED', ['MODEL_'.get_class($model)::model_type().'_INSTANCE']));
       return $model;
     }
     foreach($this->errors() as $field => $error_msg)
-      $this->logger()->warning($error_msg, [$field]);
+      $this->logger()->warning(L($error_msg, [$field]));
 
     return null;
   }
@@ -197,7 +197,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
   {
     if(!is_null($this->router()->params('id')) && is_null($this->load_model))
     {
-      $this->logger()->warning('CRUDITES_ERR_INSTANCE_NOT_FOUND', ['MODEL_'.$this->model_class_name::model_type().'_INSTANCE']);
+      $this->logger()->warning(L('CRUDITES_ERR_INSTANCE_NOT_FOUND', ['MODEL_'.$this->model_class_name::model_type().'_INSTANCE']));
       $this->router()->hop($this->model_class_name::model_type());
     }
   }
@@ -211,7 +211,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
   {
     if(is_null($this->load_model))
     {
-      $this->logger()->warning('CRUDITES_ERR_INSTANCE_NOT_FOUND', ['MODEL_'.$this->model_type.'_INSTANCE']);
+      $this->logger()->warning(L('CRUDITES_ERR_INSTANCE_NOT_FOUND', ['MODEL_'.$this->model_type.'_INSTANCE']));
       $this->router()->hop($this->model_type);
     }
 
@@ -224,13 +224,13 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
   {
     if(is_null($this->load_model))
     {
-      $this->logger()->warning('CRUDITES_ERR_INSTANCE_NOT_FOUND', ['MODEL_'.$this->model_type.'_INSTANCE']);
+      $this->logger()->warning(L('CRUDITES_ERR_INSTANCE_NOT_FOUND', ['MODEL_'.$this->model_type.'_INSTANCE']));
       $this->router()->hop($this->model_type);
     }
     elseif($this->load_model->immortal())
     {
 
-      $this->logger()->warning('CRUDITES_ERR_INSTANCE_IS_IMMORTAL', ['MODEL_'.$this->model_type.'_INSTANCE']);
+      $this->logger()->warning(L('CRUDITES_ERR_INSTANCE_IS_IMMORTAL', ['MODEL_'.$this->model_type.'_INSTANCE']));
       $this->router()->hop($this->route_model($this->load_model));
     }
   }
@@ -242,12 +242,12 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     if($this->load_model->destroy($this->operator()->operator_id(), $this->tracer()) === false)
     {
-      $this->logger()->info('CRUDITES_ERR_INSTANCE_IS_UNDELETABLE', [''.$this->load_model]);
+      $this->logger()->info(L('CRUDITES_ERR_INSTANCE_IS_UNDELETABLE', [''.$this->load_model]));
       $this->route_back($this->load_model);
     }
     else
     {
-      $this->logger()->nice('CRUDITES_INSTANCE_DESTROYED', ['MODEL_'.$this->model_type.'_INSTANCE']);
+      $this->logger()->nice(L('CRUDITES_INSTANCE_DESTROYED', ['MODEL_'.$this->model_type.'_INSTANCE']));
       $this->route_back($this->model_type);
     }
   }
@@ -360,4 +360,3 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     return $post_data;
   }
 }
-

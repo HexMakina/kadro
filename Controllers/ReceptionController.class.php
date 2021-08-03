@@ -69,15 +69,13 @@ class ReceptionController extends KadroController
         throw new \Exception('ERR_WRONG_LOGIN_OR_PASSWORD');
 
       $this->box('StateAgent')->operator_id($operator->get_id());
-      $this->logger()->nice('PAGE_CHECKIN_WELCOME', ["$operator"]);
+      $this->logger()->nice(L('PAGE_CHECKIN_WELCOME', [$operator->name()]));
       $this->router()->hop();
 
     } catch (\Exception $e) {
-      $this->logger()->warning('KADRO_operator_'.$e->getMessage());
+      $this->logger()->warning(L('KADRO_operator_'.$e->getMessage()));
       $this->router()->hop('checkin');
     }
   }
 
 }
-
-

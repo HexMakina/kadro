@@ -46,7 +46,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     //------------------------------------------------------------- PASSWORDS
     if($this->form_model->get('password') != $this->form_model->get('password_verification'))
     {
-      $this->logger()->warning('KADRO_operator_ERR_PASSWORDS_MISMATCH');
+      $this->logger()->warning(L('KADRO_operator_ERR_PASSWORDS_MISMATCH'));
       return $this->edit();
     }
     // else unset($this->form_model->password_verification);
@@ -77,11 +77,11 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     if(Operator::toggle_boolean(Operator::table_name(), 'active', $operator->operator_id()) === true)
     {
       $confirmation_message = $operator->is_active() ? 'KADRO_operator_DISABLED' : 'KADRO_operator_ENABLED';
-      $this->logger()->nice($confirmation_message, [$operator->get('name')]);
+      $this->logger()->nice(L($confirmation_message, [$operator->name()]));
     }
     else
     {
-      $this->logger()->warning('CRUDITES_ERR_QUERY_FAILED');
+      $this->logger()->warning(L('CRUDITES_ERR_QUERY_FAILED'));
     }
 
     $this->router()->hop_back();
@@ -115,4 +115,3 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     $this->router()->hop_back();
   }
 }
-

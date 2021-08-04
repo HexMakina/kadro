@@ -34,7 +34,7 @@ class ACL extends \HexMakina\Crudites\TightModel
 
   public static function permissions_for(OperatorInterface $op)
   {
-    $res = self::any(['operator_id'=>$op->get_id()]);
+    $res = self::any(['operator_id'=>$op->operator_id()]);
 
     $permission_ids = [];
     foreach($res as $r)
@@ -56,12 +56,10 @@ class ACL extends \HexMakina\Crudites\TightModel
   public static function allow_in(OperatorInterface $op, Permission $p)
   {
     $ret = new ACL();
-    $ret->set('operator_id', $op->get_id());
+    $ret->set('operator_id', $op->operator_id());
     $ret->set('permission_id', $p->get_id());
     $ret->save($op->get_id());
     return $ret;
   }
 
 }
-
-

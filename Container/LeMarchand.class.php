@@ -13,7 +13,7 @@ class LeMarchand implements ContainerInterface
     $this->configurations['settings'] = $settings;
   }
   
-  public function __debugInfo()
+  public function __debugInfo() : array
   {
     $dbg = get_object_vars($this);
     $dbg['configurations']['template_engine'] = isset($dbg['configurations']['template_engine'])? get_class($dbg['configurations']['template_engine']) : 'NOT SET';

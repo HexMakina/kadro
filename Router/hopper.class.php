@@ -31,7 +31,7 @@ class hopper extends \AltoRouter implements RouterInterface
     $this->map(self::REQUEST_GET, '', $settings['route_home'], self::ROUTE_HOME_NAME);
   }
 
-  public function __debugInfo()
+  public function __debugInfo() : array
   {
     $dbg = get_object_vars($this);
     $dbg['routes'] = count($dbg['routes']);

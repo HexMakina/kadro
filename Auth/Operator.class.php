@@ -80,7 +80,6 @@ class Operator extends TightModel implements OperatorInterface
 
     if(isset($filters['model']) && !empty($filters['model']))
     {
-      $model = $filters['model'];
       $Query->join([static::otm('t'), static::otm('a')],[[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
       $Query->aw_fields_eq(['model_id' => $filters['model']->get_id(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
     }

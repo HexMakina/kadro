@@ -51,7 +51,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     	$this->conclude();
 
     if(method_exists($this, 'display'))
-    	$template = $this->display($custom_template);
+    	$this->display($custom_template); // ret value ignored..
   }
 
   public function prepare()

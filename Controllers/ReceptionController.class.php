@@ -2,14 +2,11 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use \Psr\Container\ContainerInterface;
 use HexMakina\kadro\Auth\{Operator,Permission,ACL};
 use HexMakina\kadro\Auth\{OperatorInterface,AccessRefusedException};
 
 class ReceptionController extends KadroController
 {
-  private $guest = null;
-
   public function requires_operator()
   {
     return false;

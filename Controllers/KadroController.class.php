@@ -6,7 +6,7 @@ use \Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExcep
 
 use \HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
 use \HexMakina\kadro\Router\RouterInterface;
-use \HexMakina\kadro\Logger\LoggerInterface;
+use \HexMakina\Logger\LoggerInterface;
 use \HexMakina\Crudites\Interfaces\TracerInterface;
 
 class KadroController implements Interfaces\DisplayController

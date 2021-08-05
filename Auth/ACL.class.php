@@ -1,7 +1,7 @@
 <?php
 
 namespace HexMakina\kadro\Auth;
-use \HexMakina\Crudites\Queries\Select;
+use \HexMakina\Crudites\Interfaces\SelectInterface;
 
 class ACL extends \HexMakina\Crudites\TightModel
 {

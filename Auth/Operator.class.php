@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Auth;
 
-use \HexMakina\Crudites\Queries\Select;
+use \HexMakina\Crudites\Interfaces\SelectInterface;
 use \HexMakina\Crudites\TightModel;
 
 class Operator extends TightModel implements OperatorInterface

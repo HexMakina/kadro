@@ -18,7 +18,7 @@ class ACL extends \HexMakina\Crudites\TightModel
     return in_array($permission_name, self::permissions_names_for($op));
   }
 
-  public static function query_retrieve($filters=[], $options=[]) : Select
+  public static function query_retrieve($filters=[], $options=[]) : SelectInterface
   {
     $options['eager'] = false;
     $ret = parent::query_retrieve($filters,$options);

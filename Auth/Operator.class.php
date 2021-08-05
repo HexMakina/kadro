@@ -66,7 +66,7 @@ class Operator extends TightModel implements OperatorInterface
     return $this->get('language_code');
   }
 
-  public static function query_retrieve($filters=[], $options=[]) : Select
+  public static function query_retrieve($filters=[], $options=[]) : SelectInterface
   {
     $Query = static::table()->select();
     if(isset($options['eager']) && $options['eager'] === true)

@@ -11,7 +11,4 @@ class Permission extends \HexMakina\Crudites\TightModel
   {
     return $this->name;
   }
-  
 }
-
-

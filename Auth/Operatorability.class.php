@@ -45,8 +45,8 @@ trait Operatorability
 
   public static function enhance_query_retrieve($Query, $filters, $options)
   {
-		$joined_alias = $Query->auto_join([ACL::table(),'ACL'], null, 'LEFT OUTER');
-		$joined_alias = $Query->auto_join([Permission::table(), 'permission'], null, 'LEFT OUTER');
+    $joined_alias = $Query->auto_join([ACL::table(),'ACL'], null, 'LEFT OUTER');
+    $joined_alias = $Query->auto_join([Permission::table(), 'permission'], null, 'LEFT OUTER');
 
     $permission_ids_and_names = [];
     $permission_ids_and_names []= sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $joined_alias, 'id', $joined_alias.'_ids');
@@ -67,7 +67,7 @@ trait Operatorability
     return $Query;
   }
 
-	public function is_active() : bool
+  public function is_active() : bool
   {
     return is_null($this->operator()) ? false : $this->operator()->is_active();
   }
@@ -77,12 +77,12 @@ trait Operatorability
     return is_null($this->operator()) ? null : $this->operator()->operator_id();
   }
 
-	public function username()
+  public function username()
   {
     return is_null($this->operator()) ? null : $this->operator()->username();
   }
 
-	public function password()
+  public function password()
   {
     return is_null($this->operator()) ? null : $this->operator()->password();
   }
@@ -97,25 +97,23 @@ trait Operatorability
     return $this->operator()->password_verify($string);
   }
 
-	public function name()
+  public function name()
   {
     return is_null($this->operator()) ? null : $this->operator()->name();
   }
 
-	public function email()
+  public function email()
   {
     return is_null($this->operator()) ? null : $this->operator()->email();
   }
 
-	public function phone()
+  public function phone()
   {
     return is_null($this->operator()) ? null : $this->operator()->phone();
   }
 
-	public function language_code()
+  public function language_code()
   {
     return is_null($this->operator()) ? null : $this->operator()->language_code();
   }
 }
-
-

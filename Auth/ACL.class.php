@@ -9,9 +9,9 @@ class ACL extends \HexMakina\Crudites\TightModel
   const TABLE_ALIAS = 'acl';
 
   public function traceable() : bool
-	{
-		return false;
-	}
+  {
+    return false;
+  }
 
   public static function match(OperatorInterface $op, $permission_name)
   {
@@ -43,6 +43,7 @@ class ACL extends \HexMakina\Crudites\TightModel
     $ret = Permission::filter(['ids'=>$permission_ids]);
     return $ret;
   }
+
   public static function permissions_names_for(OperatorInterface $op)
   {
     $operator_with_perms = get_class($op)::exists($op->operator_id());
@@ -61,5 +62,4 @@ class ACL extends \HexMakina\Crudites\TightModel
     $ret->save($op->get_id());
     return $ret;
   }
-
 }

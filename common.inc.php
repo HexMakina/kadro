@@ -32,8 +32,8 @@ namespace HexMakina\kadro
   //---------------------------------------------------------------     erara raportado
   error_reporting(E_ALL);
 
-  set_error_handler('\HexMakina\kadro\Logger\LogLaddy::error_handler');
-  set_exception_handler('\HexMakina\kadro\Logger\LogLaddy::exception_handler');
+  set_error_handler('\HexMakina\Logger\LogLaddy::error_handler');
+  set_exception_handler('\HexMakina\Logger\LogLaddy::exception_handler');
 
   \HexMakina\Debugger\Debugger::init();
 
@@ -50,7 +50,7 @@ namespace HexMakina\kadro
   ini_set('display_errors', PRODUCTION ? 0 : 1);
 
   //---------------------------------------------------------------       logger
-  $box->register('LoggerInterface', new Logger\LogLaddy());
+  $box->register('LoggerInterface', new \HexMakina\Logger\LogLaddy());
 
   //---------------------------------------------------------------       router
   $box->register('RouterInterface', new Router\hopper($box->get('settings.RouterInterface')));

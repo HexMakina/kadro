@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Models;
 
-use \HexMakina\Crudites\Queries\BaseQuery;
+use \HexMakina\Crudites\Interfaces\SelectInterface;
 use \HexMakina\Crudites\TightModel;
 
 class Lingvo extends TightModel
@@ -52,7 +52,7 @@ class Lingvo extends TightModel
   }
 
 
-  public static function query_retrieve($filter=[], $options=[]) : \HexMakina\Crudites\Queries\BaseQuery
+  public static function query_retrieve($filter=[], $options=[]) : SelectInterface
   {
 
     $searchable_fields = [self::ISO_NAME, self::ISO_3, self::ISO_2B, self::ISO_2T, self::ISO_1];
@@ -130,4 +130,3 @@ class Lingvo extends TightModel
   }
 
 }
-

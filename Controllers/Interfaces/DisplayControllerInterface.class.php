@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-interface DisplayController extends BaseController
+interface DisplayControllerInterface extends BaseController
 {
 
    /*
@@ -41,11 +41,9 @@ interface DisplayController extends BaseController
            coerces null at index $key
            returns null
    */
-   
+
    public function viewport($key=null, $value=null, $coercion=false);
 
    public function display($custom_template = null, $standalone=false);
 
 }
-
-

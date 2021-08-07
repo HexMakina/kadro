@@ -9,7 +9,7 @@ use \HexMakina\kadro\Router\RouterInterface;
 use \HexMakina\Logger\LoggerInterface;
 use \HexMakina\Crudites\Interfaces\TracerInterface;
 
-class KadroController implements Interfaces\DisplayController
+class KadroController implements Interfaces\DisplayControllerInterface
 {
   protected $template_variables = [];
   protected $container = null;

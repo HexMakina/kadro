@@ -52,8 +52,8 @@ class hopper extends \AltoRouter implements RouterInterface
     if($res === false || !isset($res[1]) || isset($ret[2]))
       throw new RouterException('INVALID_TARGET');
 
-    if($this->match['name'] === 'akadok_controller_method')
-      $res = [ucfirst(self::params('controller')).'Controller', ucfirst(self::params('method'))];
+    // if($this->match['name'] === 'akadok_controller_method')
+    //   $res = [ucfirst(self::params('controller')).'Controller', ucfirst(self::params('method'))];
 
 
     $target_controller = $res[0];
@@ -279,4 +279,3 @@ class hopper extends \AltoRouter implements RouterInterface
   }
 
 }
-

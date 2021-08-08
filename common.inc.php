@@ -32,8 +32,8 @@ namespace HexMakina\kadro
   //---------------------------------------------------------------     erara raportado
   error_reporting(E_ALL);
 
-  set_error_handler('\HexMakina\Logger\LogLaddy::error_handler');
-  set_exception_handler('\HexMakina\Logger\LogLaddy::exception_handler');
+  set_error_handler('\HexMakina\LogLaddy\LogLaddy::error_handler');
+  set_exception_handler('\HexMakina\LogLaddy\LogLaddy::exception_handler');
 
   \HexMakina\Debugger\Debugger::init();
 
@@ -50,7 +50,7 @@ namespace HexMakina\kadro
   ini_set('display_errors', PRODUCTION ? 0 : 1);
 
   //---------------------------------------------------------------       logger
-  $box->register('LoggerInterface', new \HexMakina\Logger\LogLaddy());
+  $box->register('LoggerInterface', new \HexMakina\LogLaddy\LogLaddy());
 
   //---------------------------------------------------------------       router
   $box->register('RouterInterface', new Router\hopper($box->get('settings.RouterInterface')));
@@ -106,8 +106,8 @@ namespace HexMakina\kadro
   $smarty->setDebugging($box->get('settings.smarty.debug'));
 
   $smarty->registerClass('Lezer',       '\HexMakina\Lezer\Lezer');
-  $smarty->registerClass('Marker',       '\HexMakina\Format\HTML\Marker');
-  $smarty->registerClass('Form',         '\HexMakina\Format\HTML\Form');
+  $smarty->registerClass('Marker',       '\HexMakina\Marker\Marker');
+  $smarty->registerClass('Form',         '\HexMakina\Marker\Form');
   $smarty->registerClass('TableToForm',  '\HexMakina\kadro\TableToForm');
   $smarty->registerClass('Dato',         '\HexMakina\Format\Tempo\Dato');
 

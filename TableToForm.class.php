@@ -3,7 +3,7 @@
 namespace HexMakina\kadro;
 
 use \HexMakina\Crudites\Interfaces\ModelInterface;
-use \HexMakina\Format\HTML\{Form,Element};
+use \HexMakina\Marker\{Form,Element};
 
 class TableToForm
 {

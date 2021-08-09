@@ -68,7 +68,7 @@ namespace HexMakina\kadro
   }
 
 //---------------------------------------------------------------        Session Management
-  $StateAgent=new StateAgent($box->get('settings.app.session_start_options') ?? []);
+  $StateAgent=new \HexMakina\StateAgent\Smith($box->get('settings.app.session_start_options') ?? []);
   $StateAgent->add_runtime_filters((array)$box->get('settings.filter'));
   $StateAgent->add_runtime_filters((array)($_SESSION['filter'] ?? []));
   $StateAgent->add_runtime_filters((array)($_REQUEST['filter'] ?? []));

@@ -6,17 +6,14 @@ PHP MVC framework for building web applications
 ### Permissions
 ### ACL
 
-## 2. PSR Services
+## 2. Model
 ### Router
 ### PSR-3 Logger
 ### PSR-4 Autoloader
 ### PSR-11 Container
 
-## 3. StateAgent
+## 3. Views
 
-## 4. MVC
-### Models
-### Controllers
-### Views
+## 4. Controllers
 
 ## Installation script

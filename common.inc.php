@@ -39,7 +39,7 @@ namespace HexMakina\kadro
 
   //---------------------------------------------------------------     parametroj
   require_once APP_BASE.'configs/settings.php';
-  $box=new Container\LeMarchand($settings);
+  $box=new HexMakina\LeMarchand\LeMarchand($settings);
 
   foreach($box->get('settings.app.namespaces') as $namespace => $path)
   {

@@ -4,8 +4,8 @@ namespace HexMakina\kadro\Controllers\Interfaces;
 
 use \Psr\Container\ContainerInterface;
 use \HexMakina\kadro\Auth\OperatorInterface;
-use \HexMakina\kadro\Router\RouterInterface;
-use \HexMakina\Logger\LoggerInterface;
+use \HexMakina\Hopper\RouterInterface;
+use \HexMakina\LogLaddy\LoggerInterface;
 
 interface BaseController
 {

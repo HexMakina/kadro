@@ -5,8 +5,8 @@ namespace HexMakina\kadro\Controllers;
 use \Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
 
 use \HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
-use \HexMakina\kadro\Router\RouterInterface;
-use \HexMakina\Logger\LoggerInterface;
+use \HexMakina\Hopper\RouterInterface;
+use \HexMakina\LogLaddy\LoggerInterface;
 use \HexMakina\Crudites\Interfaces\TracerInterface;
 
 class KadroController implements Interfaces\DisplayControllerInterface

@@ -2,7 +2,6 @@
 
 namespace HexMakina\kadro
 {
-  use \HexMakina\LocalFS\FileSystem;
   use \HexMakina\Lezer\Lezer;
 
   define('KADRO_BASE', APP_BASE.'/lib/kadro/'); // this is project dependant, should be in settings
@@ -18,20 +17,11 @@ namespace HexMakina\kadro
   $loader->register(); //Register loader with SPL autoloader stack.
 
   $loader->addNamespace('HexMakina', APP_BASE.'/lib/');
-
-  // $loader->addNamespace('HexMakina\Crudites', APP_BASE.'/lib/Crudites/');
-  // $loader->addNamespace('HexMakina\ORM', APP_BASE.'/lib/ORM/');
-  // $loader->addNamespace('HexMakina\Lezer', APP_BASE.'/lib/Lezer/');
-  // $loader->addNamespace('HexMakina\Format', APP_BASE.'/lib/Format');
-
-  // $loader->addNamespace('HexMakina\kadro', KADRO_BASE);
-  // $loader->addNamespace('HexMakina\qivive', QIVIVE_BASE);
-  // $loader->addNamespace('HexMakina\LocalFS', __DIR__.'/Format/File');
   $loader->addNamespaceTree(KADRO_BASE);
 
   //---------------------------------------------------------------     erara raportado
   error_reporting(E_ALL);
-
+  //TODO has to be made instance method
   set_error_handler('\HexMakina\LogLaddy\LogLaddy::error_handler');
   set_exception_handler('\HexMakina\LogLaddy\LogLaddy::exception_handler');
 
@@ -53,7 +43,7 @@ namespace HexMakina\kadro
   $box->register('LoggerInterface', new \HexMakina\LogLaddy\LogLaddy());
 
   //---------------------------------------------------------------       router
-  $box->register('RouterInterface', new Router\hopper($box->get('settings.RouterInterface')));
+  $box->register('RouterInterface', new \HexMakina\Hopper\hopper($box->get('settings.RouterInterface')));
 
   //---------------------------------------------------------------        kuketoj
   setcookie('cookie_test', 'test_value', time()+(365 * 24 * 60 * 60), "/", "");
@@ -68,7 +58,7 @@ namespace HexMakina\kadro
   }
 
 //---------------------------------------------------------------        Session Management
-  $StateAgent=new \HexMakina\StateAgent\Smith($box->get('settings.app.session_start_options') ?? []);
+  $StateAgent = new \HexMakina\Smith\Smith($box->get('settings.app.session_start_options') ?? []);
   $StateAgent->add_runtime_filters((array)$box->get('settings.filter'));
   $StateAgent->add_runtime_filters((array)($_SESSION['filter'] ?? []));
   $StateAgent->add_runtime_filters((array)($_REQUEST['filter'] ?? []));
@@ -118,7 +108,7 @@ namespace HexMakina\kadro
   $file_name = $box->get('settings.locale.file_name');
   $fallback_lang = $box->get('settings.locale.fallback_lang');
 
-  $lezer = new Lezer($locale_path.'/'.$file_name, $locale_path.'/cache', $fallback_lang);
+  $lezer = new \HexMakina\Lezer\Lezer($locale_path.'/'.$file_name, $locale_path.'/cache', $fallback_lang);
   $language = $lezer->one_language();
 
   $lezer->init();

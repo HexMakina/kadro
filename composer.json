@@ -4,7 +4,6 @@
     "type": "package",
     "require": {
         "php": ">=7.4",
-        "hexmakina/crudites": "0.0.*",
         "hexmakina/debugger": "0.0.*",
         "hexmakina/hopper": "0.0.*",
         "hexmakina/local-fs" : "0.0.*",

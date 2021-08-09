@@ -1,5 +1,5 @@
 # kadro
-PHP framework for building PHP web applications
+PHP MVC framework for building web applications
 
 ## 1. Auth
 ### Operators

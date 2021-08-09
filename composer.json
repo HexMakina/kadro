@@ -1,0 +1,27 @@
+{
+    "name": "hexmakina/kadro",
+    "description": "PHP MVC framework",
+    "type": "package",
+    "require": {
+        "php": ">=7.4",
+        "hexmakina/debugger": "0.0.*",
+        "hexmakina/local-fs": "0.0.*",
+        "hexmakina/log-laddy": "0.0.*",
+        "hexmakina/marker": "0.0.*",
+        "hexmakina/stage-agent": "0.0.*"
+    },
+    "license": "mit",
+    "authors": [
+        {
+            "name": "HexMakina",
+            "email": "touch@hexmakina.be",
+            "homepage": "https://hexmakina.be"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "HexMakina\\kadro\\": "/"
+        }
+    }
+}

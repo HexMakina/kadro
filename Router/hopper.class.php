@@ -27,7 +27,6 @@ class hopper extends \AltoRouter implements RouterInterface
 
     $this->controller_namespaces = $settings['controllers_namespaces'] ?? [];
 
-    list($url, $controller_method, $name) = $settings['route_home'];
     $this->map(self::REQUEST_GET, '', $settings['route_home'], self::ROUTE_HOME_NAME);
   }
 
@@ -47,19 +46,16 @@ class hopper extends \AltoRouter implements RouterInterface
     if($this->match === false)
       throw new RouterException('ROUTE_MATCH_FALSE');
 
-    $res = explode('::', self::target());
+    $res = explode('::', $this->target());
 
-    if($res === false || !isset($res[1]) || isset($ret[2]))
+    if($res === false || !isset($res[1]) || isset($res[2]))
       throw new RouterException('INVALID_TARGET');
-
-    // if($this->match['name'] === 'akadok_controller_method')
-    //   $res = [ucfirst(self::params('controller')).'Controller', ucfirst(self::params('method'))];
-
 
     $target_controller = $res[0];
     $target_method = $res[1];
     $found = false;
 
+    $controller_class_name = null;
     foreach($this->controller_namespaces as $controller_ns)
       if($found = class_exists($controller_class_name = "$controller_ns$target_controller"))
         break;

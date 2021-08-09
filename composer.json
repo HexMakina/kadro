@@ -9,7 +9,7 @@
         "hexmakina/log-laddy": "^0.0.2",
         "hexmakina/marker": "^0.0.1",
         "hexmakina/smith": "^0.0.1",
-        "hexmakina/le-marchand": "^0.0.1",
+        "hexmakina/le-marchand": "^0.0.1"
     },
     "license": "mit",
     "authors": [

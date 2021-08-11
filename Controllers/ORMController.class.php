@@ -295,7 +295,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     }
     fclose($fp);
 
-    $this->router()->send_file($file_path);
+    return $file_path;
   }
 
   public function export()
@@ -306,7 +306,9 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
       case null:
         $filename = $this->model_type;
         $collection = $this->model_class_name::listing();
-        return $this->collection_to_csv($collection, $filename);
+        $file_path = $this->collection_to_csv($collection, $filename);
+        $this->router()->send_file($file_path);
+        break;
 
       case 'xlsx':
         $report_controller = $this->box('HexMakina\koral\Controllers\ReportController');

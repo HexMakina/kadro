@@ -28,7 +28,7 @@ class Lingvo extends TightModel
 
   public function __toString()
   {
-    return $this->iso_name().' ('.$this->Part3.')';
+    return $this->iso_name().' ('.$this->get(self::ISO_3).')';
   }
 
 	public function traceable() : bool
@@ -38,17 +38,17 @@ class Lingvo extends TightModel
 
   public function iso_name()
   {
-    return $this->Ref_Name;
+    return $this->get('Ref_Name');
   }
 
   public function iso_scope()
   {
-    return self::ISO_SCOPES[$this->scope];
+    return self::ISO_SCOPES[$this->get('scope')];
   }
 
   public function iso_type()
   {
-    return self::ISO_TYPES[$this->scope];
+    return self::ISO_TYPES[$this->get('scope')];
   }
 
 
@@ -81,15 +81,14 @@ class Lingvo extends TightModel
 
     if(isset($filter['types']))
     {
-      $wc = sprintf('AND Type IN (\'%s\') ', implode('\', \'', array_keys(self::types())));
+      $wc = sprintf("AND ".self::ISO_TYPE." IN ('%s') ", implode('\', \'', array_keys(self::ISO_TYPES)));
       $Query->and_where($wc);
     }
     if(isset($filter['scopes']))
     {
-      $wc = sprintf('AND Scope IN (\'%s\') ', implode('\', \'', array_keys(self::scopes())));
+      $wc = sprintf("AND ".self::ISO_SCOPE." IN ('%s') ", implode('\', \'', array_keys(self::ISO_SCOPES)));
       $Query->and_where($wc);
     }
-
 
     $Query->order_by([self::TABLE_NAME, self::ISO_1, 'DESC']);
     $Query->order_by([self::TABLE_NAME, self::ISO_2T, 'DESC']);

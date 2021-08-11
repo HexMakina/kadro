@@ -36,7 +36,6 @@ trait Permissionability
     if(property_exists($this, 'permission_names'))
     {
       $permission_unique_keys = explode(',', $this->permission_names);
-      // vd(Permission::table()->select());
       $this->permissions = Permission::retrieve(Permission::table()->select()->aw_string_in('name', $permission_unique_keys));
     }
     elseif(property_exists($this, 'permission_ids'))

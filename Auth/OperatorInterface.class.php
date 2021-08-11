@@ -20,5 +20,5 @@ interface OperatorInterface
   public function email();
   public function name();
 
-  public function has_permission($p) : bool
+  public function has_permission($p) : bool;
 }

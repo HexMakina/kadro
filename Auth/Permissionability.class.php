@@ -10,18 +10,17 @@ trait Permissionability
   {
     if(property_exists($this, 'permission_names'))
     {
-      return explode(',', $this->permission_names);
+      return explode(',', $this->get('permission_names'));
     }
     elseif(property_exists($this, 'permission_ids'))
     {
-      $ids = explode(',', $this->permission_ids);
+      $ids = explode(',', $this->get('permission_ids'));
       $ret = [];
       $permissions = Permission::get_many_by_AIPK($ids);
       foreach($permissions as $id => $p)
         $ret[]="$p";
       return $ret;
     }
-
     else
     {
       return ACL::permissions_names_for($this);

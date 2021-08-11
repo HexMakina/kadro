@@ -18,6 +18,7 @@ interface OperatorInterface
 
   public function language_code();
   public function email();
+  public function phone();
   public function name();
 
   public function has_permission($p) : bool;

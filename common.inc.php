@@ -4,6 +4,9 @@ namespace HexMakina\kadro
 {
   use \HexMakina\Lezer\Lezer;
 
+  if(!defined('APP_BASE'))
+    define('APP_BASE', __DIR__);
+
   define('KADRO_BASE', APP_BASE.'/lib/kadro/'); // this is project dependant, should be in settings
   // define('QIVIVE_BASE', APP_BASE.'/lib/qivive/'); // this is project dependant, should be in settings
 
@@ -39,13 +42,13 @@ namespace HexMakina\kadro
   define('PRODUCTION', $_SERVER['HTTP_HOST'] === $box->get('settings.app.production_host'));
   ini_set('display_errors', PRODUCTION ? 0 : 1);
 
-  //---------------------------------------------------------------       logger
+  //-- logger
   $box->register('LoggerInterface', new \HexMakina\LogLaddy\LogLaddy());
 
-  //---------------------------------------------------------------       router
+  //-- router
   $box->register('RouterInterface', new \HexMakina\Hopper\hopper($box->get('settings.RouterInterface')));
 
-  //---------------------------------------------------------------        kuketoj
+  //--  kuketoj
   setcookie('cookie_test', 'test_value', time()+(365 * 24 * 60 * 60), "/", "");
   $cookies_enabled=isset($_COOKIE['cookie_test']); // houston, do we have cookies ?
 
@@ -57,7 +60,7 @@ namespace HexMakina\kadro
     ini_set('session.cache_limiter', 'nocache');
   }
 
-//---------------------------------------------------------------        Session Management
+//--  Session Management
   $StateAgent = new \HexMakina\Smith\Smith($box->get('settings.app.session_start_options') ?? []);
   $StateAgent->add_runtime_filters((array)$box->get('settings.filter'));
   $StateAgent->add_runtime_filters((array)($_SESSION['filter'] ?? []));
@@ -95,11 +98,11 @@ namespace HexMakina\kadro
   $smarty->setCompileDir(APP_BASE . $box->get('settings.smarty.compiled_path'));
   $smarty->setDebugging($box->get('settings.smarty.debug'));
 
-  $smarty->registerClass('Lezer',       '\HexMakina\Lezer\Lezer');
-  $smarty->registerClass('Marker',       '\HexMakina\Marker\Marker');
-  $smarty->registerClass('Form',         '\HexMakina\Marker\Form');
-  $smarty->registerClass('TableToForm',  '\HexMakina\kadro\TableToForm');
-  $smarty->registerClass('Dato',         '\HexMakina\Format\Tempo\Dato');
+  $smarty->registerClass('Lezer','\HexMakina\Lezer\Lezer');
+  $smarty->registerClass('Marker','\HexMakina\Marker\Marker');
+  $smarty->registerClass('Form','\HexMakina\Marker\Form');
+  $smarty->registerClass('TableToForm','\HexMakina\kadro\TableToForm');
+  $smarty->registerClass('Dato','\HexMakina\Format\Tempo\Dato');
 
   $smarty->assign('APP_NAME', $box->get('settings.app.name'));
 

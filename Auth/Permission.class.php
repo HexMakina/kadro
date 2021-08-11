@@ -9,6 +9,6 @@ class Permission extends \HexMakina\Crudites\TightModel
 
   public function __toString()
   {
-    return $this->name;
+    return $this->get('name');
   }
 }

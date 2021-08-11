@@ -28,7 +28,7 @@ trait Event
 
   public static function date($date=null, $format=Dato::FORMAT) : string
 	{
-		return Dato::format($date);
+		return Dato::format($date, $format);
 	}
   //
   // //------------------------------------------------------------  MySQL DateTime helpers

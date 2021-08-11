@@ -102,7 +102,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     if($row->is_new())
     {
       $row = ACL::table()->produce($row_data);
-      $res = $row->persist();
+      $row->persist();
     }
     else
     {

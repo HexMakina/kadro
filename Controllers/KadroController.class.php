@@ -123,7 +123,7 @@ class KadroController implements Interfaces\DisplayControllerInterface
     	$this->conclude();
 
     if(method_exists($this, 'display'))
-    	$template = $this->display($custom_template);
+    	$this->display($custom_template);
   }
 
   public function conclude(){}

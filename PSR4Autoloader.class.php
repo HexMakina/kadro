@@ -5,7 +5,7 @@ use \HexMakina\LocalFS\FileSystem;
 
 class PSR4Autoloader
 {
-  
+
   /**
   * An associative array where the key is a namespace prefix and the value
   * is an array of base directories for classes in that namespace.
@@ -39,20 +39,20 @@ class PSR4Autoloader
   public function addNamespaceTree($base_dir, $prepend = false)
   {
   	$dir_content = FileSystem::preg_scandir($base_dir, '/^[A-Z]{1}[A-Za-z]+(?!\.class.\.php)$/');
-    
+
   	foreach($dir_content as $res)
   	{
   		if(is_dir($fullpath = $base_dir.'/'.$res))
   		{
-  			$this->addNamespace('HexMakina\kadro\\'.$res, $fullpath);
+  			$this->addNamespace('HexMakina\kadro\\'.$res, $fullpath, $prepend);
         $this->addNamespaceTree($fullpath);
   		}
   	}
   }
-  
+
   public function addNamespace($prefix, $base_dir, $prepend = false)
   {
-    
+
     // normalize namespace prefix
     $prefix = trim($prefix, '\\') . '\\';
 
@@ -87,7 +87,7 @@ class PSR4Autoloader
     $prefix = $class;
     // work backwards through the namespace names of the fully-qualified
     // class name to find a mapped file name
-    while (false !== $pos = strrpos($prefix, '\\')) 
+    while (false !== $pos = strrpos($prefix, '\\'))
     {
       // retain the trailing namespace separator in the prefix
       $prefix = substr($class, 0, $pos + 1);
@@ -95,7 +95,7 @@ class PSR4Autoloader
       // the rest is the relative class name
       $relative_class = substr($class, $pos + 1);
       // try to load a mapped file for the prefix and relative class
-      
+
       $mapped_file = $this->loadMappedFile($prefix, $relative_class);
       if ($mapped_file) {
         return $mapped_file;
@@ -123,9 +123,9 @@ class PSR4Autoloader
     if (isset($this->prefixes[$prefix]) === false) {
       return false;
     }
-    
+
     // look through base directories for this namespace prefix
-    foreach ($this->prefixes[$prefix] as $base_dir) 
+    foreach ($this->prefixes[$prefix] as $base_dir)
     {
       // replace the namespace prefix with the base directory,
       // replace namespace separators with directory separators
@@ -141,7 +141,7 @@ class PSR4Autoloader
         return $file;
       }
     }
-    
+
     // never found it
     return false;
   }
@@ -162,4 +162,3 @@ class PSR4Autoloader
     return false;
   }
 }
-

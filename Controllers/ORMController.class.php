@@ -5,54 +5,11 @@ use \HexMakina\Crudites\Interfaces\ModelInterface;
 
 abstract class ORMController extends KadroController implements Interfaces\ORMController
 {
-  use \HexMakina\Crudites\TraitIntrospector;
-
   protected $model_class_name = null;
   protected $model_type = null;
 
   protected $load_model = null;
   protected $form_model = null;
-
-  protected $errors = [];
-
-  public function errors() : array
-  {
-    return $this->errors;
-  }
-
-  public function execute()
-  {
-    $this->authorize();
-
-    $custom_template = null;
-    $method = $this->router()->target_method();
-
-    foreach(['prepare', "before_$method", $method, "after_$method"] as $step => $chainling)
-    {
-      $this->search_and_execute_trait_methods($chainling);
-    	if(method_exists($this, $chainling) && empty($this->errors()))
-      {
-        $res = $this->$chainling();
-
-        if($this->logger()->has_halting_messages()) // logger handled a critical error during the chailing execution
-        {
-          break; // dont go on with other
-        }
-
-        if($chainling === $method)
-        {
-
-          $custom_template = $res;
-        }
-      }
-    }
-
-    if(method_exists($this, 'conclude')) // conclude always executed, even with has_halting_messages
-    	$this->conclude();
-
-    if(method_exists($this, 'display'))
-    	$this->display($custom_template); // ret value ignored..
-  }
 
   public function prepare()
   {

@@ -6,6 +6,13 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
 {
   protected $template_variables = [];
 
+  // DisplayController is BaseController with a display function
+  public function execute()
+  {
+    $custom_template = parent::execute();
+    return $this->display($custom_template);
+  }
+
   public function viewport($key=null, $value=null, $coercion=false)
   {
     // no key, returns all
@@ -104,10 +111,4 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
     throw new \Exception('KADRO_ERR_NO_TEMPLATE_TO_DISPLAY');
   }
 
-  public function execute()
-  {
-    $custom_template = parent::execute();
-
-    return $this->display($custom_template);
-  }
 }

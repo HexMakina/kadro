@@ -2,11 +2,7 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use \Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
-
-use \HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
-use \HexMakina\Hopper\RouterInterface;
-use \HexMakina\LogLaddy\LoggerInterface;
+use \HexMakina\kadro\Auth\AccessRefusedException;
 use \HexMakina\Crudites\Interfaces\TracerInterface;
 
 class KadroController extends DisplayController
@@ -42,8 +38,8 @@ class KadroController extends DisplayController
 
   public function execute()
   {
+    // kadro controller is a display controller with authentification
     $this->authorize();
-
     return parent::execute();
   }
 

@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Auth;
 
-// use \HexMakina\kadro\Auth\{OperatorInterface};
+use \HexMakina\Crudites\Interfaces\ModelInterface;
 
 trait Operatorability
 {

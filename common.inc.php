@@ -110,15 +110,12 @@ namespace HexMakina\kadro
   $setting = 'settings.smarty.template_path';
   if(is_string($setting))
   {
-    $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get('settings.smarty.template_path').'app');
-    $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get('settings.smarty.template_path'));
+    $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting).'app');
+    $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting));
     $smarty->addTemplateDir(KADRO_BASE . 'Views/');
   }
   else
     throw new UnexpectedValueException($setting);
-
-  if(is_null($box->get('settings.smarty.template_path')) || is_null($box->get('settings.smarty.compiled_path')))
-      throw new \Exception("SMARTY CONFIG ERROR: missing parameters");
 
   $setting = 'settings.smarty.compiled_path';
   if(is_string($box->get($setting)))

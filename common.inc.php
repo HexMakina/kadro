@@ -108,7 +108,7 @@ namespace HexMakina\kadro
   $box->register('template_engine', $smarty);
   // Load smarty template parser
   $setting = 'settings.smarty.template_path';
-  if(is_string($setting))
+  if(is_string($box->get($setting)))
   {
     $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting).'app');
     $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting));

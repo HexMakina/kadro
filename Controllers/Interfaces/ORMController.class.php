@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-interface ORMController extends CRUDController
+interface ORMController extends CRUDControllerInterface
 {
   public function class_name() : string;
 
@@ -10,5 +10,3 @@ interface ORMController extends CRUDController
   // returns array of errors [field => message] on failure
   public function persist_model($model);
 }
-
-

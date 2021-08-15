@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-interface CRUDController
+interface CRUDControllerInterface
 {
    public function dashboard();
    public function edit();
@@ -13,5 +13,3 @@ interface CRUDController
 
    public function errors() : array;
 }
-
-

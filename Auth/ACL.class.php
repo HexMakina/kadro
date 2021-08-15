@@ -60,7 +60,7 @@ class ACL extends \HexMakina\Crudites\TightModel
     $ret = new ACL();
     $ret->set('operator_id', $op->operator_id());
     $ret->set('permission_id', $p->get_id());
-    $ret->save($op->get_id());
+    $ret->save($op->operator_id());
     return $ret;
   }
 }

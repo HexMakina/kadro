@@ -116,4 +116,9 @@ trait Operatorability
   {
     return is_null($this->operator()) ? null : $this->operator()->language_code();
   }
+
+  public function has_permission($p) : bool
+  {
+    return is_null($this->operator()) ? null : $this->operator()->has_permission($p);
+  }
 }

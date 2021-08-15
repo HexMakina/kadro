@@ -1,9 +1,14 @@
 <?php
 
+use \HexMakina\LeMarchand\LeMarchand;
+use \HexMakina\Debugger\Debugger;
+use \HexMakina\Lezer\Lezer;
+use \HexMakina\Smith\Smith;
+use \HexMakina\LogLaddy\LogLaddy;
+use \HexMakina\Hopper\hopper;
+
 namespace HexMakina\kadro
 {
-  use \HexMakina\Lezer\Lezer;
-
   if(!defined('APP_BASE'))
     define('APP_BASE', __DIR__);
 
@@ -28,11 +33,11 @@ namespace HexMakina\kadro
   set_error_handler('\HexMakina\LogLaddy\LogLaddy::error_handler');
   set_exception_handler('\HexMakina\LogLaddy\LogLaddy::exception_handler');
 
-  \HexMakina\Debugger\Debugger::init();
+  Debugger::init();
 
   //---------------------------------------------------------------     parametroj
   require_once APP_BASE.'configs/settings.php';
-  $box=new \HexMakina\LeMarchand\LeMarchand($settings);
+  $box=new LeMarchand($settings);
 
   foreach($box->get('settings.app.namespaces') as $namespace => $path)
   {
@@ -70,33 +75,62 @@ namespace HexMakina\kadro
 
 
   //---------------------------------------------------------------     parametroj:signo
-
-  ini_set('default_charset', $box->get('settings.default.charset'));
-  header('Content-type: text/html; charset='.strtolower($box->get('settings.default.charset')));
+  $setting = 'settings.default.charset';
+  if(is_string($box->get($setting)))
+  {
+    ini_set('default_charset', $box->get($setting));
+    header('Content-type: text/html; charset='.strtolower($box->get($setting)));
+  }
+  else
+    throw new UnexpectedValueException($setting);
 
   //---------------------------------------------------------------     parametroj:linguo
-  putenv('LANG='.$box->get('settings.default.language'));
-  setlocale(LC_ALL, $box->get('settings.default.language'));
+  $setting = 'settings.default.language';
+  if(is_string($box->get($setting)))
+  {
+    putenv('LANG='.$box->get($setting));
+    setlocale(LC_ALL, $box->get($setting));
+  }
+  else
+    throw new UnexpectedValueException($setting);
 
   //---------------------------------------------------------------     parametroj:datoj
-  date_default_timezone_set($box->get('settings.default.timezone'));
-
+  $setting = 'settings.default.timezone';
+  if(is_string($box->get($setting)))
+    date_default_timezone_set($box->get($setting));
+  else
+    throw new UnexpectedValueException($setting);
 
   //---------------------------------------------------------------     ŝablonoj
-  require_once 'smarty/smarty/libs/Smarty.class.php';
-  // Load smarty template parser
-  if(is_null($box->get('settings.smarty.template_path')) || is_null($box->get('settings.smarty.compiled_path')))
-      throw new \Exception("SMARTY CONFIG ERROR: missing parameters");
+  // require_once 'smarty/smarty/libs/Smarty.class.php';
 
   $smarty=new \Smarty();
   $box->register('template_engine', $smarty);
+  // Load smarty template parser
+  $setting = 'settings.smarty.template_path';
+  if(is_string($setting))
+  {
+    $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get('settings.smarty.template_path').'app');
+    $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get('settings.smarty.template_path'));
+    $smarty->addTemplateDir(KADRO_BASE . 'Views/');
+  }
+  else
+    throw new UnexpectedValueException($setting);
 
-  $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get('settings.smarty.template_path').'app');
-  $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get('settings.smarty.template_path'));
-  $smarty->addTemplateDir(KADRO_BASE . 'Views/');
+  if(is_null($box->get('settings.smarty.template_path')) || is_null($box->get('settings.smarty.compiled_path')))
+      throw new \Exception("SMARTY CONFIG ERROR: missing parameters");
 
-  $smarty->setCompileDir(APP_BASE . $box->get('settings.smarty.compiled_path'));
-  $smarty->setDebugging($box->get('settings.smarty.debug'));
+  $setting = 'settings.smarty.compiled_path';
+  if(is_string($box->get($setting)))
+    $smarty->setCompileDir(APP_BASE . $box->get($setting));
+  else
+    throw new UnexpectedValueException($setting);
+
+  $setting = 'settings.smarty.debug';
+  if(is_bool($box->get($setting)))
+    $smarty->setDebugging($box->get($setting));
+  else
+    throw new UnexpectedValueException($setting);
 
   $smarty->registerClass('Lezer','\HexMakina\Lezer\Lezer');
   $smarty->registerClass('Marker','\HexMakina\Marker\Marker');
@@ -111,7 +145,7 @@ namespace HexMakina\kadro
   $file_name = $box->get('settings.locale.file_name');
   $fallback_lang = $box->get('settings.locale.fallback_lang');
 
-  $lezer = new \HexMakina\Lezer\Lezer($locale_path.'/'.$file_name, $locale_path.'/cache', $fallback_lang);
+  $lezer = new Lezer($locale_path.'/'.$file_name, $locale_path.'/cache', $fallback_lang);
   $language = $lezer->one_language();
 
   $lezer->init();

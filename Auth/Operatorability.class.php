@@ -10,6 +10,9 @@ trait Operatorability
 
   // auto build an operator (once) then returns it
   // throws Exception if unable to build due to missing required property
+  abstract public function get($prop_name);
+  abstract public function extract(ModelInterface $extract_model, $ignore_nullable = false);
+
   public function set_operator(OperatorInterface $setter)
   {
     $this->operator = $setter;

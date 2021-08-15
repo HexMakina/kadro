@@ -39,7 +39,7 @@ class Operator extends TightModel implements OperatorInterface
 
   public function password_change($string)
   {
-    $this->password = password_hash($string, PASSWORD_DEFAULT);
+    $this->set('password', password_hash($string, PASSWORD_DEFAULT));
   }
 
   public function password_verify($string) : bool

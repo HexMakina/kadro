@@ -82,7 +82,7 @@ if(is_string($box->get($setting)))
   header('Content-type: text/html; charset='.strtolower($box->get($setting)));
 }
 else
-  throw new UnexpectedValueException($setting);
+  throw new \UnexpectedValueException($setting);
 
 //---------------------------------------------------------------     parametroj:linguo
 $setting = 'settings.default.language';
@@ -92,14 +92,14 @@ if(is_string($box->get($setting)))
   setlocale(LC_ALL, $box->get($setting));
 }
 else
-  throw new UnexpectedValueException($setting);
+  throw new \UnexpectedValueException($setting);
 
 //---------------------------------------------------------------     parametroj:datoj
 $setting = 'settings.default.timezone';
 if(is_string($box->get($setting)))
   date_default_timezone_set($box->get($setting));
 else
-  throw new UnexpectedValueException($setting);
+  throw new \UnexpectedValueException($setting);
 
 //---------------------------------------------------------------     ŝablonoj
 // require_once 'smarty/smarty/libs/Smarty.class.php';
@@ -115,19 +115,19 @@ if(is_string($setting))
   $smarty->addTemplateDir(KADRO_BASE . 'Views/');
 }
 else
-  throw new UnexpectedValueException($setting);
+  throw new \UnexpectedValueException($setting);
 
 $setting = 'settings.smarty.compiled_path';
 if(is_string($box->get($setting)))
   $smarty->setCompileDir(APP_BASE . $box->get($setting));
 else
-  throw new UnexpectedValueException($setting);
+  throw new \UnexpectedValueException($setting);
 
 $setting = 'settings.smarty.debug';
 if(is_bool($box->get($setting)))
   $smarty->setDebugging($box->get($setting));
 else
-  throw new UnexpectedValueException($setting);
+  throw new \UnexpectedValueException($setting);
 
 $smarty->registerClass('Lezer','\HexMakina\Lezer\Lezer');
 $smarty->registerClass('Marker','\HexMakina\Marker\Marker');

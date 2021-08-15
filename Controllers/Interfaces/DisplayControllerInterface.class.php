@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-interface DisplayControllerInterface extends BaseController
+interface DisplayControllerInterface extends BaseControllerInterface
 {
 
    /*

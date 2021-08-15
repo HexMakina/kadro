@@ -7,7 +7,7 @@ use \HexMakina\kadro\Auth\OperatorInterface;
 use \HexMakina\Hopper\RouterInterface;
 use \HexMakina\LogLaddy\LoggerInterface;
 
-interface BaseController
+interface BaseControllerInterface
 {
   public function router() : RouterInterface;
   public function operator() : OperatorInterface;

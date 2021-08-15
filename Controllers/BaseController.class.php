@@ -9,7 +9,7 @@ use \HexMakina\Hopper\RouterInterface;
 use \HexMakina\LogLaddy\LoggerInterface;
 use \HexMakina\Crudites\Interfaces\TracerInterface;
 
-class BaseController implements Interfaces\BaseController
+class BaseController implements Interfaces\BaseControllerInterface
 {
   use \HexMakina\Crudites\TraitIntrospector;
 

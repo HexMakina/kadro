@@ -6,6 +6,10 @@ trait Permissionability
 {
   protected $permissions = null;
 
+  abstract public function get($prop_name);
+  abstract public function is_new() : bool;
+  abstract public function is_active() : bool;
+
   public function permission_names()
   {
     if(property_exists($this, 'permission_names'))

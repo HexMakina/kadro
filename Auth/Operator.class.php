@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Auth;
 
 use \HexMakina\Crudites\Interfaces\SelectInterface;
-use \HexMakina\Crudites\TightModel;
+use \HexMakina\Crudites\{TightModel,RelationManyToMany};
 
 class Operator extends TightModel implements OperatorInterface
 {
@@ -11,6 +11,7 @@ class Operator extends TightModel implements OperatorInterface
   const TABLE_ALIAS = 'operator';
 
   use Permissionability;
+  use RelationManyToMany;
 
   public function __toString()
   {

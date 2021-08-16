@@ -8,5 +8,5 @@ interface ORMController extends CRUDControllerInterface
 
   // returns a ModelInterface on success
   // returns array of errors [field => message] on failure
-  public function persist_model($model);
+  public function persist_model($model) : ?ModelInterface;
 }

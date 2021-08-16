@@ -122,6 +122,6 @@ trait Operatorability
 
   public function has_permission($p) : bool
   {
-    return is_null($this->operator()) ? null : $this->operator()->has_permission($p);
+    return is_null($this->operator()) ? false : $this->operator()->has_permission($p);
   }
 }

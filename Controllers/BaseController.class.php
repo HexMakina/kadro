@@ -22,7 +22,7 @@ class BaseController implements Interfaces\BaseControllerInterface
     return $this->errors;
   }
 
-  public function add_errors($message, $context)
+  public function add_error($message, $context)
   {
     $this->errors[]= [$message, $context];
   }

@@ -12,6 +12,7 @@
         "hexmakina/local-fs" : "0.0.*",
         "hexmakina/log-laddy": "0.0.*",
         "hexmakina/marker": "0.0.*",
+        "hexmakina/tempus": "0.0.*",
         "hexmakina/traitor": "0.0.*",
         "hexmakina/tight-orm": "0.0.*",
         "hexmakina/smith": "0.0.*",

@@ -115,7 +115,7 @@ if(is_string($box->get($setting)))
   $smarty->addTemplateDir(KADRO_BASE . 'Views/');
 }
 else
-  throw new UnexpectedValueException($setting);
+  throw new \UnexpectedValueException($setting);
 
 $setting = 'settings.smarty.compiled_path';
 if(is_string($box->get($setting)))

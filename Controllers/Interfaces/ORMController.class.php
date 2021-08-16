@@ -2,6 +2,8 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
+use \HexMakina\Crudites\Interfaces\ModelInterface;
+
 interface ORMController extends CRUDControllerInterface
 {
   public function class_name() : string;

@@ -1,7 +1,7 @@
 <?php
 namespace HexMakina\kadro\Models\Abilities;
 
-use \HexMakina\Format\Tempo\Dato;
+use \HexMakina\Tempus\Dato;
 
 trait Event
 {

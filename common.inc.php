@@ -133,7 +133,7 @@ $smarty->registerClass('Lezer','\HexMakina\Lezer\Lezer');
 $smarty->registerClass('Marker','\HexMakina\Marker\Marker');
 $smarty->registerClass('Form','\HexMakina\Marker\Form');
 $smarty->registerClass('TableToForm','\HexMakina\kadro\TableToForm');
-$smarty->registerClass('Dato','\HexMakina\Format\Tempo\Dato');
+$smarty->registerClass('Dato','\HexMakina\Tempus\Dato');
 
 $smarty->assign('APP_NAME', $box->get('settings.app.name'));
 

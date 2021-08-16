@@ -11,7 +11,7 @@ use \HexMakina\Crudites\Interfaces\TracerInterface;
 
 class BaseController implements Interfaces\BaseControllerInterface
 {
-  use \HexMakina\Crudites\TraitIntrospector;
+  use \HexMakina\Traitor\Traitor;
 
   protected $container = null;
   protected $route_back = null;

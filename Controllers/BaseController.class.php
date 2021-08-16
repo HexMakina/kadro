@@ -22,6 +22,11 @@ class BaseController implements Interfaces\BaseControllerInterface
     return $this->errors;
   }
 
+  public function add_errors($message, $context)
+  {
+    $this->errors[]= [$message, $context];
+  }
+
   // -------- Controller Container
   public function set_container(ContainerInterface $container)
   {
@@ -76,6 +81,7 @@ class BaseController implements Interfaces\BaseControllerInterface
     foreach(['prepare', "before_$method", $method, "after_$method"] as $step => $chainling)
     {
       $this->search_and_execute_trait_methods($chainling);
+
       if(method_exists($this, $chainling) && empty($this->errors()))
       {
         $res = $this->$chainling();

@@ -25,7 +25,6 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     // do we create? or do we edit someone else ? must be admin
     if(is_null($this->load_model) || $this->operator()->operator_id() !== $this->load_model->operator_id())
       $this->authorize('group_admin');
-
   }
 
   public function class_name() : string
@@ -46,8 +45,9 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     //------------------------------------------------------------- PASSWORDS
     if($this->form_model->get('password') != $this->form_model->get('password_verification'))
     {
+      $this->add_error('KADRO_operator_ERR_PASSWORDS_MISMATCH');
       $this->logger()->warning(L('KADRO_operator_ERR_PASSWORDS_MISMATCH'));
-      return $this->edit();
+      $this->edit();
     }
     // else unset($this->form_model->password_verification);
 

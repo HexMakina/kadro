@@ -19,7 +19,9 @@ interface BaseControllerInterface
   public function prepare();
   public function execute();
   public function conclude();
+
   public function errors() : array;
+  public function add_error($message, $context);
 
   public function has_route_back() : bool;
   public function route_back($route_name=null, $route_params=[]) : string;

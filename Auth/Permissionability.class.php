@@ -39,12 +39,12 @@ trait Permissionability
     $permission_unique_keys = null;
     if(property_exists($this, 'permission_names'))
     {
-      $permission_unique_keys = explode(',', $this->permission_names);
+      $permission_unique_keys = explode(',', $this->get('permission_names'));
       $this->permissions = Permission::retrieve(Permission::table()->select()->aw_string_in('name', $permission_unique_keys));
     }
     elseif(property_exists($this, 'permission_ids'))
     {
-      $permission_unique_keys = explode(',', $this->permission_ids);
+      $permission_unique_keys = explode(',', $this->get('permission_ids'));
       $this->permissions = Permission::retrieve(Permission::table()->select()->aw_numeric_in('id', $permission_unique_keys));
     }
     else
@@ -86,7 +86,7 @@ trait Permissionability
       {
         return true;
       }
-      elseif(property_exists($this, $permission_name) && $this->$permission_name == true)
+      elseif(property_exists($this, $permission_name) && $this->get('$permission_name') == true)
       {
         return true;
       }

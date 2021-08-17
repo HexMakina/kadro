@@ -2,10 +2,10 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use \HexMakina\kadro\Auth\AccessRefusedException;
+use \HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface};
 use \HexMakina\Crudites\Interfaces\TracerInterface;
 
-class KadroController extends DisplayController
+class KadroController extends DisplayController implements AuthControllerInterface
 {
   public function __toString(){ return get_called_class();}
 

@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-use \HexMakina\Crudites\Interfaces\ModelInterface;
+use \HexMakina\TightORM\Interfaces\ModelInterface;
 
 interface ORMController extends CRUDControllerInterface
 {

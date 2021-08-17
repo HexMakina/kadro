@@ -1,7 +1,7 @@
 <?php
 
 namespace HexMakina\kadro\Controllers;
-use \HexMakina\Crudites\Interfaces\ModelInterface;
+use \HexMakina\TightORM\Interfaces\ModelInterface;
 
 abstract class ORMController extends KadroController implements Interfaces\ORMController
 {

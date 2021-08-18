@@ -7,7 +7,7 @@ use HexMakina\kadro\Auth\{OperatorInterface,AccessRefusedException};
 
 class ReceptionController extends KadroController
 {
-  public function requires_operator()
+  public function requires_operator() : bool
   {
     return false;
   }

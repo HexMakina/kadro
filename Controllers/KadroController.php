@@ -15,12 +15,12 @@ class KadroController extends DisplayController implements AuthControllerInterfa
     return $this->box('TracerInterface');
   }
 
-  public function requires_operator()
+  public function requires_operator() : bool
   {
     return true; // security by default
   }
 
-  public function authorize($permission=null)
+  public function authorize($permission=null) : bool
   {
     // if(!$this->requires_operator() || is_null($permission))
     if(!$this->requires_operator())

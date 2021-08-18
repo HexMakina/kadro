@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Models;
 
 use \HexMakina\Crudites\Interfaces\SelectInterface;
-use \HexMakina\Crudites\TightModel;
+use \HexMakina\TightORM\TightModel;
 
 class Traduko extends TightModel
 {

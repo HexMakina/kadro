@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Auth;
 use \HexMakina\Crudites\Interfaces\SelectInterface;
 
-class ACL extends \HexMakina\Crudites\TightModel
+class ACL extends \HexMakina\TightORM\TightModel
 {
   const TABLE_NAME = 'kadro_acl';
   const TABLE_ALIAS = 'acl';

@@ -2,116 +2,112 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use \Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
-
-use \HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
-use \HexMakina\Hopper\RouterInterface;
-use \HexMakina\LogLaddy\LoggerInterface;
-use \HexMakina\Crudites\Interfaces\TracerInterface;
+use Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
+use HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
+use HexMakina\Hopper\RouterInterface;
+use HexMakina\LogLaddy\LoggerInterface;
+use HexMakina\Crudites\Interfaces\TracerInterface;
 
 class BaseController implements Interfaces\BaseControllerInterface
 {
-  use \HexMakina\Traitor\Traitor;
+    use \HexMakina\Traitor\Traitor;
 
-  protected $container = null;
-  protected $route_back = null;
-  protected $errors = [];
+    protected $container = null;
+    protected $route_back = null;
+    protected $errors = [];
 
-  public function errors() : array
-  {
-    return $this->errors;
-  }
+    public function errors(): array
+    {
+        return $this->errors;
+    }
 
-  public function add_error($message, $context=[])
-  {
-    $this->errors[]= [$message, $context];
-  }
+    public function add_error($message, $context = [])
+    {
+        $this->errors[] = [$message, $context];
+    }
 
   // -------- Controller Container
-  public function set_container(ContainerInterface $container)
-  {
-    $this->container = $container;
-  }
+    public function set_container(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
-  public function container() : ContainerInterface
-  {
-    return $this->container;
-  }
+    public function container(): ContainerInterface
+    {
+        return $this->container;
+    }
 
   // shortcut for (un)boxing
-  public function box($key, $instance=null)
-  {
-    if(!is_null($instance))
-      $this->container->register($key, $instance);
+    public function box($key, $instance = null)
+    {
+        if (!is_null($instance)) {
+            $this->container->register($key, $instance);
+        }
 
-    // dd($this->container->get($key));
-    return $this->container->get($key);
-  }
+      // dd($this->container->get($key));
+        return $this->container->get($key);
+    }
 
-  public function logger() : LoggerInterface
-  {
-    return $this->box('LoggerInterface');
-  }
+    public function logger(): LoggerInterface
+    {
+        return $this->box('LoggerInterface');
+    }
 
   // -------- Controller Router
 
-  public function router() : RouterInterface
-  {
-    return $this->box('RouterInterface');
-  }
-
-  public function operator() : OperatorInterface
-  {
-    return $this->box('OperatorInterface');
-  }
-
-  public function prepare()
-  {
-    return true;
-  }
-
-  public function execute()
-  {
-    $ret = null;
-
-    $method = $this->router()->target_method();
-
-    // before and after hooks, should they be in basecontroller ?
-    // i think so, but pascal just proposed me pastis.. tomorrow
-    foreach(['prepare', "before_$method", $method, "after_$method"] as $step => $chainling)
+    public function router(): RouterInterface
     {
-      $this->search_and_execute_trait_methods($chainling);
-
-      if(method_exists($this, $chainling) && empty($this->errors()))
-      {
-        $res = $this->$chainling();
-
-        if($this->logger()->has_halting_messages()) // logger handled a critical error during the chailing execution
-        {
-          break; // dont go on with other
-        }
-
-        if($chainling === $method)
-        {
-          $ret = $res;
-        }
-      }
+        return $this->box('RouterInterface');
     }
 
-    $this->conclude();
+    public function operator(): OperatorInterface
+    {
+        return $this->box('OperatorInterface');
+    }
 
-    return $ret;
-  }
+    public function prepare()
+    {
+        return true;
+    }
 
-  public function conclude()
-  {
-    return true;
-  }
+    public function execute()
+    {
+        $ret = null;
 
-  public function has_route_back() : bool
-  {
-    return is_null($this->route_back);
-  }
+        $method = $this->router()->target_method();
+
+      // before and after hooks, should they be in basecontroller ?
+      // i think so, but pascal just proposed me pastis.. tomorrow
+        foreach (['prepare', "before_$method", $method, "after_$method"] as $step => $chainling) {
+            $this->search_and_execute_trait_methods($chainling);
+
+            if (method_exists($this, $chainling) && empty($this->errors())) {
+                $res = $this->$chainling();
+
+                if ($this->logger()->has_halting_messages()) { // logger handled a critical error during the chailing execution
+                    break; // dont go on with other
+                }
+
+                if ($chainling === $method) {
+                    $ret = $res;
+                }
+            }
+        }
+
+        $this->conclude();
+
+        return $ret;
+    }
+
+    public function conclude()
+    {
+        return true;
+    }
+
+    public function has_route_back(): bool
+    {
+        return is_null($this->route_back);
+    }
 
   /*
    * returns string, a URL formatted by RouterInterface::pre_hop()
@@ -121,28 +117,29 @@ class BaseController implements Interfaces\BaseControllerInterface
    * route_back($route_name [,$route_params]), sets $route_back using route_factory()
    *
    */
-  public function route_back($route_name=null, $route_params=[]) : string
-	{
-    if(is_null($route_name))
-		  return $this->route_back ?? $this->router()->prehop(RouterInterface::ROUTE_HOME_NAME);
-
-    return $this->route_back = $this->route_factory($route_name, $route_params);
-	}
-
-  public function route_factory($route_name=null, $route_params=[]) : string
-  {
-    $route = null;
-
-    if(is_string($route_name) && !empty($route_name))
+    public function route_back($route_name = null, $route_params = []): string
     {
-      if($this->router()->route_exists($route_name))
-        $route = $this->router()->prehop($route_name, $route_params);
-      else
-        $route = $route_name;
+        if (is_null($route_name)) {
+            return $this->route_back ?? $this->router()->prehop(RouterInterface::ROUTE_HOME_NAME);
+        }
 
-      return $route;
+        return $this->route_back = $this->route_factory($route_name, $route_params);
     }
 
-    throw new \Exception('ROUTE_FACTORY_PARAM_TYPE_ERROR');
-  }
+    public function route_factory($route_name = null, $route_params = []): string
+    {
+        $route = null;
+
+        if (is_string($route_name) && !empty($route_name)) {
+            if ($this->router()->route_exists($route_name)) {
+                $route = $this->router()->prehop($route_name, $route_params);
+            } else {
+                $route = $route_name;
+            }
+
+            return $route;
+        }
+
+        throw new \Exception('ROUTE_FACTORY_PARAM_TYPE_ERROR');
+    }
 }

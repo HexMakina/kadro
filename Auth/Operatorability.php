@@ -2,126 +2,130 @@
 
 namespace HexMakina\kadro\Auth;
 
-use \HexMakina\TightORM\Interfaces\ModelInterface;
+use HexMakina\TightORM\Interfaces\ModelInterface;
 
 trait Operatorability
 {
-  private $operator = null;
+    private $operator = null;
 
   // auto build an operator (once) then returns it
   // throws Exception if unable to build due to missing required property
-  abstract public function get($prop_name);
-  abstract public function extract(ModelInterface $extract_model, $ignore_nullable = false);
+    abstract public function get($prop_name);
+    abstract public function extract(ModelInterface $extract_model, $ignore_nullable = false);
 
-  public function set_operator(OperatorInterface $setter)
-  {
-    $this->operator = $setter;
-  }
-
-  public function load_operator($id = null)
-  {
-    if(!is_null($operator_id = $id ?? $this->get('operator_id'))) // extraction failed but we have an fk
-      $this->operator = Operator::exists($operator_id);
-  }
-
-  public function operator() : ?OperatorInterface
-  {
-    if(is_null($this->operator))
+    public function set_operator(OperatorInterface $setter)
     {
-      $extract_attempt = $this->extract(new Operator(), true);
-      if(!is_null($extract_attempt))
-      {
-        foreach(['permission_names', 'permission_ids'] as $permission_marker)
-          if(property_exists($this, $permission_marker))
-            $extract_attempt->set($permission_marker, $this->$permission_marker);
-
-        $this->operator = $extract_attempt;
-      }
-      // elseif(!is_null($this->get('operator_id'))) // extraction failed but we have an fk
-      // {
-      //   $this->operator = Operator::exists($this->get('operator_id'));
-      // }
+        $this->operator = $setter;
     }
 
-    return $this->operator;
-  }
+    public function load_operator($id = null)
+    {
+        if (!is_null($operator_id = $id ?? $this->get('operator_id'))) { // extraction failed but we have an fk
+            $this->operator = Operator::exists($operator_id);
+        }
+    }
 
-  public static function enhance_query_retrieve($Query, $filters)
-  {
-    $Query->auto_join([ACL::table(),'ACL'], null, 'LEFT OUTER');
-    $permission_alias = $Query->auto_join([Permission::table(), 'permission'], null, 'LEFT OUTER');
+    public function operator(): ?OperatorInterface
+    {
+        if (is_null($this->operator)) {
+            $extract_attempt = $this->extract(new Operator(), true);
+            if (!is_null($extract_attempt)) {
+                foreach (['permission_names', 'permission_ids'] as $permission_marker) {
+                    if (property_exists($this, $permission_marker)) {
+                        $extract_attempt->set($permission_marker, $this->$permission_marker);
+                    }
+                }
 
-    $permission_ids_and_names = [];
-    $permission_ids_and_names []= sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'id', $permission_alias.'_ids');
-    $permission_ids_and_names []= sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'name', $permission_alias.'_names');
-    $Query->select_also($permission_ids_and_names);
+                $this->operator = $extract_attempt;
+            }
+          // elseif(!is_null($this->get('operator_id'))) // extraction failed but we have an fk
+          // {
+          //   $this->operator = Operator::exists($this->get('operator_id'));
+          // }
+        }
 
-    $Query->select_also(['operator.name as operator_name', 'operator.active as operator_active']);
+        return $this->operator;
+    }
 
-    if(isset($filters['username']))
-      $Query->aw_eq('username', $filters['username'], 'operator');
+    public static function enhance_query_retrieve($Query, $filters)
+    {
+        $Query->auto_join([ACL::table(),'ACL'], null, 'LEFT OUTER');
+        $permission_alias = $Query->auto_join([Permission::table(), 'permission'], null, 'LEFT OUTER');
 
-    if(isset($filters['email']))
-      $Query->aw_eq('email', $filters['email'], 'operator');
+        $permission_ids_and_names = [];
+        $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'id', $permission_alias . '_ids');
+        $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'name', $permission_alias . '_names');
+        $Query->select_also($permission_ids_and_names);
 
-    if(isset($filters['active']))
-      $Query->aw_eq('active', $filters['active'], 'operator');
+        $Query->select_also(['operator.name as operator_name', 'operator.active as operator_active']);
 
-    return $Query;
-  }
+        if (isset($filters['username'])) {
+            $Query->aw_eq('username', $filters['username'], 'operator');
+        }
 
-  public function is_active() : bool
-  {
-    return is_null($this->operator()) ? false : $this->operator()->is_active();
-  }
+        if (isset($filters['email'])) {
+            $Query->aw_eq('email', $filters['email'], 'operator');
+        }
 
-  public function operator_id()
-  {
-    return is_null($this->operator()) ? null : $this->operator()->operator_id();
-  }
+        if (isset($filters['active'])) {
+            $Query->aw_eq('active', $filters['active'], 'operator');
+        }
 
-  public function username()
-  {
-    return is_null($this->operator()) ? null : $this->operator()->username();
-  }
+        return $Query;
+    }
 
-  public function password()
-  {
-    return is_null($this->operator()) ? null : $this->operator()->password();
-  }
+    public function is_active(): bool
+    {
+        return is_null($this->operator()) ? false : $this->operator()->is_active();
+    }
 
-  public function password_change($string)
-  {
-    $this->operator()->password_change($string);
-  }
+    public function operator_id()
+    {
+        return is_null($this->operator()) ? null : $this->operator()->operator_id();
+    }
 
-  public function password_verify($string) : bool
-  {
-    return $this->operator()->password_verify($string);
-  }
+    public function username()
+    {
+        return is_null($this->operator()) ? null : $this->operator()->username();
+    }
 
-  public function name()
-  {
-    return is_null($this->operator()) ? null : $this->operator()->name();
-  }
+    public function password()
+    {
+        return is_null($this->operator()) ? null : $this->operator()->password();
+    }
 
-  public function email()
-  {
-    return is_null($this->operator()) ? null : $this->operator()->email();
-  }
+    public function password_change($string)
+    {
+        $this->operator()->password_change($string);
+    }
 
-  public function phone()
-  {
-    return is_null($this->operator()) ? null : $this->operator()->phone();
-  }
+    public function password_verify($string): bool
+    {
+        return $this->operator()->password_verify($string);
+    }
 
-  public function language_code()
-  {
-    return is_null($this->operator()) ? null : $this->operator()->language_code();
-  }
+    public function name()
+    {
+        return is_null($this->operator()) ? null : $this->operator()->name();
+    }
 
-  public function has_permission($p) : bool
-  {
-    return is_null($this->operator()) ? false : $this->operator()->has_permission($p);
-  }
+    public function email()
+    {
+        return is_null($this->operator()) ? null : $this->operator()->email();
+    }
+
+    public function phone()
+    {
+        return is_null($this->operator()) ? null : $this->operator()->phone();
+    }
+
+    public function language_code()
+    {
+        return is_null($this->operator()) ? null : $this->operator()->language_code();
+    }
+
+    public function has_permission($p): bool
+    {
+        return is_null($this->operator()) ? false : $this->operator()->has_permission($p);
+    }
 }

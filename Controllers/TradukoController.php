@@ -3,63 +3,63 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Models\Traduko;
-use \HexMakina\LocalFS\Text\JSON;
+use HexMakina\LocalFS\Text\JSON;
 
 class TradukoController extends \HexMakina\kadro\Controllers\ORMController
 {
-  const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
+    const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
 
-  public function authorize($permission = null)
-  {
-    return parent::authorize('group_admin');
-  }
-
-  public function route_back($route_name = NULL, $route_params = []) : string
-  {
-    return $this->router()->prehop('traduko');
-  }
-
-  public function update_file($lang='fra')
-  {
-    try{
-      $locale_path = $this->box('settings.locale.directory_path').'/'.$this->box('settings.locale.file_name');
-      self::create_file($locale_path, $lang);
-
-      $this->logger()->nice(L('KADRO_SYSTEM_FILE_UPDATED'));
-    }
-    catch(\Exception $e)
+    public function authorize($permission = null)
     {
-      $this->logger()->notice(L('KADRO_SYSTEM_FILE_UPDATED'));
+        return parent::authorize('group_admin');
     }
-    $this->router()->hop('traduko');
-  }
 
-  public static function create_file($locale_path, $lang)
-  {
-    $res = Traduko::filter(['lang' => $lang]);
-    $assoc = [];
-    foreach($res as $id => $trad)
+    public function route_back($route_name = null, $route_params = []): string
     {
-      if(!isset($assoc[$trad->kategorio]))
-        $assoc[$trad->kategorio] = [];
-      if(!isset($assoc[$trad->kategorio][$trad->sekcio]))
-        $assoc[$trad->kategorio][$trad->sekcio] = [];
-
-      $assoc[$trad->kategorio][$trad->sekcio][$trad->referenco] = $trad->$lang;
+        return $this->router()->prehop('traduko');
     }
 
-    $file_path = str_replace('{LANGUAGE}', $lang, $locale_path);
+    public function update_file($lang = 'fra')
+    {
+        try {
+            $locale_path = $this->box('settings.locale.directory_path') . '/' . $this->box('settings.locale.file_name');
+            self::create_file($locale_path, $lang);
 
-    $file = new JSON($file_path, 'w+');
-    $file->set_content(JSON::from_php($assoc));
-  }
+            $this->logger()->nice(L('KADRO_SYSTEM_FILE_UPDATED'));
+        } catch (\Exception $e) {
+            $this->logger()->notice(L('KADRO_SYSTEM_FILE_UPDATED'));
+        }
+        $this->router()->hop('traduko');
+    }
 
-  public static function init($locale_path)
-  {
-    $languages = array_keys(array_slice(Traduko::inspect(Traduko::table_name())->columns(), 4));
-    foreach($languages as $l)
-      self::create_file($locale_path,$l);
+    public static function create_file($locale_path, $lang)
+    {
+        $res = Traduko::filter(['lang' => $lang]);
+        $assoc = [];
+        foreach ($res as $id => $trad) {
+            if (!isset($assoc[$trad->kategorio])) {
+                $assoc[$trad->kategorio] = [];
+            }
+            if (!isset($assoc[$trad->kategorio][$trad->sekcio])) {
+                $assoc[$trad->kategorio][$trad->sekcio] = [];
+            }
 
-    return $languages;
-  }
+            $assoc[$trad->kategorio][$trad->sekcio][$trad->referenco] = $trad->$lang;
+        }
+
+        $file_path = str_replace('{LANGUAGE}', $lang, $locale_path);
+
+        $file = new JSON($file_path, 'w+');
+        $file->set_content(JSON::from_php($assoc));
+    }
+
+    public static function init($locale_path)
+    {
+        $languages = array_keys(array_slice(Traduko::inspect(Traduko::table_name())->columns(), 4));
+        foreach ($languages as $l) {
+            self::create_file($locale_path, $l);
+        }
+
+        return $languages;
+    }
 }

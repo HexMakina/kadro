@@ -2,61 +2,73 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use \HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface};
-use \HexMakina\Crudites\Interfaces\TracerInterface;
+use HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface};
+use HexMakina\Crudites\Interfaces\TracerInterface;
 
 class KadroController extends DisplayController implements AuthControllerInterface
 {
-  public function __toString(){ return get_called_class();}
+    public function __toString()
+    {
+        return get_called_class();
+    }
 
 
-  public function tracer() : TracerInterface
-  {
-    return $this->box('TracerInterface');
-  }
+    public function tracer(): TracerInterface
+    {
+        return $this->box('TracerInterface');
+    }
 
-  public function requires_operator() : bool
-  {
-    return true; // security by default
-  }
+    public function requires_operator(): bool
+    {
+        return true; // security by default
+    }
 
-  public function authorize($permission=null) : bool
-  {
-    // if(!$this->requires_operator() || is_null($permission))
-    if(!$this->requires_operator())
-      return true;
+    public function authorize($permission = null): bool
+    {
+      // if(!$this->requires_operator() || is_null($permission))
+        if (!$this->requires_operator()) {
+            return true;
+        }
 
-    $operator = $this->operator();
-    if(is_null($operator) || $operator->is_new() || !$operator->is_active())
-      throw new AccessRefusedException();
+        $operator = $this->operator();
+        if (is_null($operator) || $operator->is_new() || !$operator->is_active()) {
+            throw new AccessRefusedException();
+        }
 
-    if(!is_null($permission) && !$operator->has_permission($permission))
-      throw new AccessRefusedException();
+        if (!is_null($permission) && !$operator->has_permission($permission)) {
+            throw new AccessRefusedException();
+        }
 
-    return true;
-  }
+        return true;
+    }
 
-  public function execute()
-  {
-    // kadro controller is a display controller with authentification and intl
-    $this->authorize();
-    return parent::execute();
-  }
+    public function execute()
+    {
+      // kadro controller is a display controller with authentification and intl
+        $this->authorize();
+        return parent::execute();
+    }
 
-  public function prepare()
-  {
-    parent::prepare();
-    $this->trim_request_data();
-  }
+    public function prepare()
+    {
+        parent::prepare();
+        $this->trim_request_data();
+    }
 
 
-  private function trim_request_data()
-  {
-    array_walk_recursive($_GET, function(&$value){$value = trim($value);});
-    array_walk_recursive($_REQUEST, function(&$value){$value = trim($value);});
+    private function trim_request_data()
+    {
+        array_walk_recursive($_GET, function (&$value) {
+            $value = trim($value);
+        });
+        array_walk_recursive($_REQUEST, function (&$value) {
+            $value = trim($value);
+        });
 
-    if($this->router()->submits())
-      array_walk_recursive($_POST, function(&$value){$value = trim($value);});
-  }
-
+        if ($this->router()->submits()) {
+            array_walk_recursive($_POST, function (&$value) {
+                $value = trim($value);
+            });
+        }
+    }
 }

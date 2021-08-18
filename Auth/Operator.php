@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Auth;
 
 use \HexMakina\Crudites\Interfaces\SelectInterface;
-use \HexMakina\Crudites\{TightModel,RelationManyToMany};
+use \HexMakina\TightORM\{TightModel,RelationManyToMany};
 
 class Operator extends TightModel implements OperatorInterface
 {

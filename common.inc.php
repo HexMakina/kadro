@@ -18,7 +18,7 @@ use \HexMakina\Hopper\hopper;
 // set_include_path(implode(PATH_SEPARATOR, [get_include_path(), APP_BASE, APP_BASE.'/lib/', APP_BASE.'/vendor/', KADRO_BASE]));
 
 //---------------------------------------------------------------     autoloader
-require APP_BASE.'vendor/autoload.php';
+// require APP_BASE.'vendor/autoload.php';
 
 // require 'PSR4Autoloader.class.php';
 // $loader=new PSR4Autoloader;
@@ -36,7 +36,7 @@ set_exception_handler('\HexMakina\LogLaddy\LogLaddy::exception_handler');
 Debugger::init();
 
 //---------------------------------------------------------------     parametroj
-require_once APP_BASE.'configs/settings.php';
+// require_once APP_BASE.'configs/settings.php';
 $box=new LeMarchand($settings);
 
 // foreach($box->get('settings.app.namespaces') as $namespace => $path)
@@ -106,16 +106,28 @@ else
 
 $smarty=new \Smarty();
 $box->register('template_engine', $smarty);
+
 // Load smarty template parser
-$setting = 'settings.smarty.template_path';
-if(is_string($box->get($setting)))
+$setting = 'settings.smarty.template_directories';
+foreach($box->get($setting) as $i =>$template_dir)
 {
-  $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting).'app');
-  $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting));
-  $smarty->addTemplateDir(__DIR__ . '/Views/');
+  if($i==0)
+    $smarty->setTemplateDir($template_dir);
+  else
+    $smarty->addTemplateDir($template_dir);
 }
-else
-  throw new \UnexpectedValueException($setting);
+$smarty->addTemplateDir(__DIR__ . '/Views/');
+
+
+// $setting = 'settings.smarty.template_path';
+// if(is_string($box->get($setting)))
+// {
+//   $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting).'app');
+//   $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting));
+//   $smarty->addTemplateDir(__DIR__ . '/Views/');
+// }
+// else
+//   throw new \UnexpectedValueException($setting);
 
 $setting = 'settings.smarty.compiled_path';
 if(is_string($box->get($setting)))

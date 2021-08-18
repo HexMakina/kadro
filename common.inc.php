@@ -131,7 +131,7 @@ $smarty->addTemplateDir(__DIR__ . '/Views/');
 
 $setting = 'settings.smarty.compiled_path';
 if(is_string($box->get($setting)))
-  $smarty->setCompileDir(APP_BASE . $box->get($setting));
+  $smarty->setCompileDir($box->get($setting));
 else
   throw new \UnexpectedValueException($setting);
 

@@ -39,10 +39,10 @@ Debugger::init();
 require_once APP_BASE.'configs/settings.php';
 $box=new LeMarchand($settings);
 
-foreach($box->get('settings.app.namespaces') as $namespace => $path)
-{
-  $loader->addNamespace($namespace, $path);
-}
+// foreach($box->get('settings.app.namespaces') as $namespace => $path)
+// {
+//   $loader->addNamespace($namespace, $path);
+// }
 
 define('PRODUCTION', $_SERVER['HTTP_HOST'] === $box->get('settings.app.production_host'));
 ini_set('display_errors', PRODUCTION ? 0 : 1);

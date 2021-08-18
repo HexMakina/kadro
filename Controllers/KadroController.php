@@ -49,10 +49,6 @@ class KadroController extends DisplayController implements AuthControllerInterfa
     $this->trim_request_data();
   }
 
-  public function le()
-  {
-
-  }
 
   private function trim_request_data()
   {

@@ -20,12 +20,12 @@ set_include_path(implode(PATH_SEPARATOR, [get_include_path(), APP_BASE, APP_BASE
 //---------------------------------------------------------------     autoloader
 require APP_BASE.'vendor/autoload.php';
 
-require 'PSR4Autoloader.class.php';
-$loader=new PSR4Autoloader;
-$loader->register(); //Register loader with SPL autoloader stack.
-
-$loader->addNamespace('HexMakina', APP_BASE.'/lib/');
-$loader->addNamespaceTree(KADRO_BASE);
+// require 'PSR4Autoloader.class.php';
+// $loader=new PSR4Autoloader;
+// $loader->register(); //Register loader with SPL autoloader stack.
+//
+// $loader->addNamespace('HexMakina', APP_BASE.'/lib/');
+// $loader->addNamespaceTree(KADRO_BASE);
 
 //---------------------------------------------------------------     erara raportado
 error_reporting(E_ALL);

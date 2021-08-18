@@ -8,14 +8,14 @@ use \HexMakina\Lezer\Lezer;
 use \HexMakina\Smith\Smith;
 use \HexMakina\LogLaddy\LogLaddy;
 use \HexMakina\Hopper\hopper;
-
-if(!defined('APP_BASE'))
-  define('APP_BASE', __DIR__);
-
-define('KADRO_BASE', APP_BASE.'/lib/kadro/'); // this is project dependant, should be in settings
-// define('QIVIVE_BASE', APP_BASE.'/lib/qivive/'); // this is project dependant, should be in settings
-
-set_include_path(implode(PATH_SEPARATOR, [get_include_path(), APP_BASE, APP_BASE.'/lib/', APP_BASE.'/vendor/', KADRO_BASE]));
+//
+// if(!defined('APP_BASE'))
+//   define('APP_BASE', __DIR__);
+//
+// define('KADRO_BASE', APP_BASE.'/lib/kadro/'); // this is project dependant, should be in settings
+// // define('QIVIVE_BASE', APP_BASE.'/lib/qivive/'); // this is project dependant, should be in settings
+//
+// set_include_path(implode(PATH_SEPARATOR, [get_include_path(), APP_BASE, APP_BASE.'/lib/', APP_BASE.'/vendor/', KADRO_BASE]));
 
 //---------------------------------------------------------------     autoloader
 require APP_BASE.'vendor/autoload.php';
@@ -112,7 +112,7 @@ if(is_string($box->get($setting)))
 {
   $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting).'app');
   $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting));
-  $smarty->addTemplateDir(KADRO_BASE . 'Views/');
+  $smarty->addTemplateDir(__DIR__ . '/Views/');
 }
 else
   throw new \UnexpectedValueException($setting);

@@ -38,7 +38,7 @@ class KadroController extends DisplayController implements AuthControllerInterfa
 
   public function execute()
   {
-    // kadro controller is a display controller with authentification
+    // kadro controller is a display controller with authentification and intl
     $this->authorize();
     return parent::execute();
   }
@@ -47,6 +47,11 @@ class KadroController extends DisplayController implements AuthControllerInterfa
   {
     parent::prepare();
     $this->trim_request_data();
+  }
+
+  public function le()
+  {
+
   }
 
   private function trim_request_data()

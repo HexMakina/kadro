@@ -299,7 +299,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
             $route = $this->form_model;
         }
 
-        if (!is_null($route) && is_subclass_of($route, '\HexMakina\Crudites\Interfaces\ModelInterface')) {
+        if (!is_null($route) && is_subclass_of($route, '\HexMakina\TightORM\Interfaces\ModelInterface')) {
             $route = $this->route_model($route);
         }
 

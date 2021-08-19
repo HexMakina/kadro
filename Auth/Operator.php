@@ -98,9 +98,9 @@ class Operator extends TightModel implements OperatorInterface
 
     public function permission_names()
     {
-        if (property_exists($this, 'permission_names')) {
+        if (property_exists($this, 'permission_names') && !is_null($this->get('permission_names'))) {
             return explode(',', $this->get('permission_names'));
-        } elseif (property_exists($this, 'permission_ids')) {
+        } elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
             $ids = explode(',', $this->get('permission_ids'));
             $ret = [];
             $permissions = Permission::get_many_by_AIPK($ids);
@@ -120,10 +120,10 @@ class Operator extends TightModel implements OperatorInterface
             return $this->permissions;
         }
         $permission_unique_keys = null;
-        if (property_exists($this, 'permission_names')) {
+        if (property_exists($this, 'permission_names') && !is_null($this->get('permission_names'))) {
             $permission_unique_keys = explode(',', $this->get('permission_names'));
             $this->permissions = Permission::retrieve(Permission::table()->select()->aw_string_in('name', $permission_unique_keys));
-        } elseif (property_exists($this, 'permission_ids')) {
+        } elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
             $permission_unique_keys = explode(',', $this->get('permission_ids'));
             $this->permissions = Permission::retrieve(Permission::table()->select()->aw_numeric_in('id', $permission_unique_keys));
         } else {

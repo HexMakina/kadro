@@ -68,10 +68,10 @@ class ReceptionController extends KadroController
             }
 
             $this->box('StateAgent')->operator_id($operator->get_id());
-            $this->logger()->nice(L('PAGE_CHECKIN_WELCOME', [$operator->name()]));
+            $this->logger()->nice($this->l('PAGE_CHECKIN_WELCOME', [$operator->name()]));
             $this->router()->hop();
         } catch (\Exception $e) {
-            $this->logger()->warning(L('KADRO_operator_' . $e->getMessage()));
+            $this->logger()->warning($this->l('KADRO_operator_' . $e->getMessage()));
             $this->router()->hop('checkin');
         }
     }

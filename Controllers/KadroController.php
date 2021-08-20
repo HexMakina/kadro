@@ -3,7 +3,7 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface};
-use HexMakina\kadro\Interfaces\IntlControllerInterface;
+use HexMakina\kadro\Controllers\Interfaces\IntlControllerInterface;
 use HexMakina\Crudites\Interfaces\TracerInterface;
 
 class KadroController extends DisplayController implements AuthControllerInterface, IntlControllerInterface
@@ -60,8 +60,6 @@ class KadroController extends DisplayController implements AuthControllerInterfa
     // intl function, calls to lezer
     public function l($message, $context) : string
     {
-        if(is_null($this->translation_function_name))
-            return $message;
         return call_user_func($this->translation_function_name, $message, $context);
     }
 

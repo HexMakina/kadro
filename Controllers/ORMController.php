@@ -80,7 +80,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function dashboard()
     {
-        return $this->listing(); //default dashboard is a listing
+        $this->listing(); //default dashboard is a listing
     }
 
     public function listing($model = null, $filters = [], $options = [])

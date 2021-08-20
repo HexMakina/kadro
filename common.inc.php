@@ -103,51 +103,7 @@ else
 
 //---------------------------------------------------------------     ŝablonoj
 // require_once 'smarty/smarty/libs/Smarty.class.php';
-
-$smarty=new \Smarty();
-$box->register('template_engine', $smarty);
-
-// Load smarty template parser
-$setting = 'settings.smarty.template_directories';
-foreach($box->get($setting) as $i =>$template_dir)
-{
-  if($i==0)
-    $smarty->setTemplateDir($template_dir);
-  else
-    $smarty->addTemplateDir($template_dir);
-}
-$smarty->addTemplateDir(__DIR__ . '/Views/');
-
-
-// $setting = 'settings.smarty.template_path';
-// if(is_string($box->get($setting)))
-// {
-//   $smarty->setTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting).'app');
-//   $smarty->addTemplateDir($box->get('RouterInterface')->file_root() . $box->get($setting));
-//   $smarty->addTemplateDir(__DIR__ . '/Views/');
-// }
-// else
-//   throw new \UnexpectedValueException($setting);
-
-$setting = 'settings.smarty.compiled_path';
-if(is_string($box->get($setting)))
-  $smarty->setCompileDir($box->get($setting));
-else
-  throw new \UnexpectedValueException($setting);
-
-$setting = 'settings.smarty.debug';
-if(is_bool($box->get($setting)))
-  $smarty->setDebugging($box->get($setting));
-else
-  throw new \UnexpectedValueException($setting);
-
-$smarty->registerClass('Lezer','\HexMakina\Lezer\Lezer');
-$smarty->registerClass('Marker','\HexMakina\Marker\Marker');
-$smarty->registerClass('Form','\HexMakina\Marker\Form');
-$smarty->registerClass('TableToForm','\HexMakina\kadro\TableToForm');
-$smarty->registerClass('Dato','\HexMakina\Tempus\Dato');
-
-$smarty->assign('APP_NAME', $box->get('settings.app.name'));
+$smarty = smarty_configurator($box);
 
 //---------------------------------------------------------------     lingva
 $locale_path = $box->get('settings.locale.directory_path');
@@ -162,3 +118,46 @@ $lezer->init();
 $smarty->assign('language', $language);
 if($cookies_enabled === true)
   setcookie('lang', $language, time()+(365 * 24 * 60 * 60), "/", "");
+
+
+
+function smarty_configurator($box)
+{
+  $smarty=new \Smarty();
+  $box->register('template_engine', $smarty);
+
+  // Load smarty template parser
+  $setting = 'settings.smarty.template_app_directory';
+  $smarty->setTemplateDir($box->get($setting));
+
+  $setting = 'settings.smarty.template_extra_directories';
+  foreach($box->get($setting) as $i => $template_dir)
+  {
+      $smarty->addTemplateDir($template_dir);
+  }
+  $setting = 'settings.smarty.template_kadro_directory';
+  $smarty->addTemplateDir($box->get($setting));
+
+
+  $setting = 'settings.smarty.compiled_path';
+  if(is_string($box->get($setting)))
+    $smarty->setCompileDir($box->get($setting));
+  else
+    throw new \UnexpectedValueException($setting);
+
+  $setting = 'settings.smarty.debug';
+  if(is_bool($box->get($setting)))
+    $smarty->setDebugging($box->get($setting));
+  else
+    throw new \UnexpectedValueException($setting);
+
+  $smarty->registerClass('Lezer','\HexMakina\Lezer\Lezer');
+  $smarty->registerClass('Marker','\HexMakina\Marker\Marker');
+  $smarty->registerClass('Form','\HexMakina\Marker\Form');
+  $smarty->registerClass('TableToForm','\HexMakina\kadro\TableToForm');
+  $smarty->registerClass('Dato','\HexMakina\Tempus\Dato');
+
+  $smarty->assign('APP_NAME', $box->get('settings.app.name'));
+
+  return $smarty;
+}

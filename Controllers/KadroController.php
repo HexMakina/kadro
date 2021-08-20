@@ -63,7 +63,6 @@ class KadroController extends DisplayController implements AuthControllerInterfa
         if(is_null($this->translation_function_name))
             return $message;
         return call_user_func($this->translation_function_name, $message, $context);
-      }
     }
 
     private function trim_request_data()

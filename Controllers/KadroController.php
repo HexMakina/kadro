@@ -3,15 +3,17 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface};
+use HexMakina\kadro\Interfaces\IntlControllerInterface;
 use HexMakina\Crudites\Interfaces\TracerInterface;
 
-class KadroController extends DisplayController implements AuthControllerInterface
+class KadroController extends DisplayController implements AuthControllerInterface, IntlControllerInterface
 {
+    private $translation_function_name = 'L';
+
     public function __toString()
     {
         return get_called_class();
     }
-
 
     public function tracer(): TracerInterface
     {
@@ -55,6 +57,14 @@ class KadroController extends DisplayController implements AuthControllerInterfa
         $this->trim_request_data();
     }
 
+    // intl function, calls to lezer
+    public function l($message, $context) : string
+    {
+        if(is_null($this->translation_function_name))
+            return $message;
+        return call_user_func($this->translation_function_name, $message, $context);
+      }
+    }
 
     private function trim_request_data()
     {

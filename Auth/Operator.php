@@ -10,6 +10,7 @@ class Operator extends TightModel implements OperatorInterface
     const TABLE_NAME = 'kadro_operator';
     const TABLE_ALIAS = 'operator';
 
+
     protected $permissions = null;
 
     // use Permissionability;
@@ -42,12 +43,12 @@ class Operator extends TightModel implements OperatorInterface
 
     public function password_change($string)
     {
-        $this->set('password', password_hash($string, PASSWORD_DEFAULT));
+      $this->set('password', password_hash($this->validate_password($string), PASSWORD_DEFAULT));
     }
 
     public function password_verify($string): bool
     {
-        return password_verify($string, $this->password());
+      return password_verify($this->validate_password($string), $this->password());
     }
 
     public function name()
@@ -166,4 +167,13 @@ class Operator extends TightModel implements OperatorInterface
 
         return false;
     }
+
+    private validate_password($string) : string
+    {
+      if(empty($string))
+        throw new \InvalidArgumentException('PASSWORD_CANT_BE_EMPTY');
+
+      return $string;
+    }
+
 }

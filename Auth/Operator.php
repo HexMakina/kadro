@@ -168,7 +168,7 @@ class Operator extends TightModel implements OperatorInterface
         return false;
     }
 
-    private validate_password($string) : string
+    private function validate_password($string) : string
     {
       if(empty($string))
         throw new \InvalidArgumentException('PASSWORD_CANT_BE_EMPTY');

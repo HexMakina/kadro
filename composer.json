@@ -16,6 +16,7 @@
         "hexmakina/smith": "0.0.*",
         "hexmakina/tempus": "0.0.*",
         "hexmakina/tight-orm": "0.0.*",
+        "hexmakina/tracer": "0.0.*",
         "hexmakina/traitor": "0.0.*"
     },
     "license": "mit",

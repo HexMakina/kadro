@@ -4,7 +4,6 @@ namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface};
 use HexMakina\kadro\Controllers\Interfaces\IntlControllerInterface;
-use HexMakina\Crudites\Interfaces\TracerInterface;
 
 class KadroController extends DisplayController implements AuthControllerInterface, IntlControllerInterface
 {
@@ -13,11 +12,6 @@ class KadroController extends DisplayController implements AuthControllerInterfa
     public function __toString()
     {
         return get_called_class();
-    }
-
-    public function tracer(): TracerInterface
-    {
-        return $this->box('TracerInterface');
     }
 
     public function requires_operator(): bool

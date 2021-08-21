@@ -6,7 +6,6 @@ use Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExcept
 use HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
 use HexMakina\Hopper\RouterInterface;
 use HexMakina\LogLaddy\LoggerInterface;
-use HexMakina\Crudites\Interfaces\TracerInterface;
 
 class BaseController implements Interfaces\BaseControllerInterface
 {

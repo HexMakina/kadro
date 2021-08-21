@@ -12,6 +12,19 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     protected $load_model = null;
     protected $form_model = null;
 
+
+    public function add_errors($errors)
+    {
+      foreach($errors as $err)
+      {
+        if(is_array($err))
+          $this->add_error(array_unshift($err), array_unshift($err));
+        else
+          $this->add_error($err);
+      }
+    }
+
+
     public function prepare()
     {
         parent::prepare();
@@ -53,6 +66,12 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         return !empty($this->load_model);
     }
   // ----------- META -----------
+
+    // CoC class name by
+    // 1. replacing namespace Controllers by Models
+    // 2. removing the Controller from classname
+    // overwrite this behavior by setting the model_class_name at controller construction
+
     public function class_name(): string
     {
         if (is_null($this->model_class_name)) {
@@ -64,19 +83,6 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         return $this->model_class_name;
     }
 
-    public function persist_model($model): ?ModelInterface
-    {
-        $this->errors = $model->save($this->operator()->operator_id()); // returns [errors]
-        if (empty($this->errors())) {
-            $this->logger()->nice($this->l('CRUDITES_INSTANCE_ALTERED', [$this->l('MODEL_' . get_class($model)::model_type() . '_INSTANCE')]));
-            return $model;
-        }
-        foreach ($this->errors() as $field => $error_msg) {
-            $this->logger()->warning($this->l($error_msg, [$field]));
-        }
-
-        return null;
-    }
 
     public function dashboard()
     {
@@ -151,6 +157,20 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
             $this->edit();
             return 'edit';
         }
+    }
+
+    public function persist_model($model): ?ModelInterface
+    {
+        $this->errors = $model->save($this->operator()->operator_id()); // returns [errors]
+        if (empty($this->errors())) {
+            $this->logger()->nice($this->l('CRUDITES_INSTANCE_ALTERED', [$this->l('MODEL_' . get_class($model)::model_type() . '_INSTANCE')]));
+            return $model;
+        }
+        foreach ($this->errors() as $field => $error_msg) {
+            $this->logger()->warning($this->l($error_msg, [$field]));
+        }
+
+        return null;
     }
 
     public function before_edit()

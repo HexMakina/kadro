@@ -2,13 +2,26 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-use HexMakina\TightORM\Interfaces\ModelInterface;
-
 interface ORMController extends CRUDControllerInterface
 {
-    public function class_name(): string;
+    // ORM class tranlator
+    public function class_name(): string
 
-  // returns a ModelInterface on success
-  // returns array of errors [field => message] on failure
-    public function persist_model($model): ?ModelInterface;
+    // creation & edition form (GET)
+    public function edit();
+    // creation & edition persistence (POST)
+    public function save();
+    // listings (GET)
+    public function listing();
+
+    // deletion confirmation form (GET)
+    public function destroy_confirm();
+    // deletion persistence (POST)
+    public function destroy();
+
+    public function dashboard();
+    public function export();
+    public function copy();
+
+    public function add_errors($errors);
 }

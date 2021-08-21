@@ -4,7 +4,7 @@ namespace HexMakina\kadro\Controllers;
 
 use HexMakina\TightORM\Interfaces\ModelInterface;
 
-abstract class ORMController extends KadroController implements Interfaces\ORMController
+abstract class ORMController extends KadroController implements Interfaces\ORMControllerInterface
 {
     protected $model_class_name = null;
     protected $model_type = null;

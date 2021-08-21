@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-interface ORMController extends CRUDControllerInterface
+interface ORMControllerInterface extends CRUDControllerInterface
 {
     // ORM class tranlator
     public function class_name(): string

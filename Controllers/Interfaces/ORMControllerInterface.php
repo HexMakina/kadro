@@ -5,7 +5,7 @@ namespace HexMakina\kadro\Controllers\Interfaces;
 interface ORMControllerInterface extends CRUDControllerInterface
 {
     // ORM class tranlator
-    public function class_name(): string
+    public function class_name(): string;
 
     // creation & edition form (GET)
     public function edit();

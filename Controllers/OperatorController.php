@@ -42,7 +42,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
         parent::save();
     }
 
-    public function before_save(): array
+    public function before_save()
     {
       //------------------------------------------------------------- PASSWORDS
         if ($this->form_model->get('password') != $this->form_model->get('password_verification')) {

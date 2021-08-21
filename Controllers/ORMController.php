@@ -161,7 +161,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         }
     }
 
-    public function before_save(): array
+    public function before_save()
     {
         return [];
     }

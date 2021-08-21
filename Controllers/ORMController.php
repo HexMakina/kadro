@@ -40,12 +40,12 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
             }
         }
 
-        if (!is_null($this->load_model) && is_subclass_of($this->load_model, '\HexMakina\Tracer\TraceableInterface') && $this->load_model->traceable()) {
-          // $traces = $this->tracer()->traces_by_model($this->load_model);
-            $traces = $this->load_model->traces();
-            //$this->tracer()->history_by_model($this->load_model);
-            $this->viewport('load_model_history', $traces);
-        }
+        // if (!is_null($this->load_model) && is_subclass_of($this->load_model, '\HexMakina\Tracer\TraceableInterface') && $this->load_model->traceable()) {
+        //   // $traces = $this->tracer()->traces_by_model($this->load_model);
+        //     $traces = $this->load_model->traces();
+        //     //$this->tracer()->history_by_model($this->load_model);
+        //     $this->viewport('load_model_history', $traces ?? []);
+        // }
     }
 
     public function has_load_model()
@@ -66,7 +66,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function persist_model($model): ?ModelInterface
     {
-        $this->errors = $model->save($this->operator()->operator_id(), $this->tracer()); // returns [errors]
+        $this->errors = $model->save($this->operator()->operator_id()); // returns [errors]
         if (empty($this->errors())) {
             $this->logger()->nice($this->l('CRUDITES_INSTANCE_ALTERED', [$this->l('MODEL_' . get_class($model)::model_type() . '_INSTANCE')]));
             return $model;
@@ -201,7 +201,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
             throw new \Exception('KADRO_ROUTER_MUST_SUBMIT');
         }
 
-        if ($this->load_model->destroy($this->operator()->operator_id(), $this->tracer()) === false) {
+        if ($this->load_model->destroy($this->operator()->operator_id()) === false) {
             $this->logger()->info($this->l('CRUDITES_ERR_INSTANCE_IS_UNDELETABLE', ['' . $this->load_model]));
             $this->route_back($this->load_model);
         } else {

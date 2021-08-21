@@ -27,7 +27,7 @@ trait Event
         return Dato::today($format);
     }
 
-    public static function date($date = null, $format = Dato::FORMAT): string
+    public static function date($date = null, $format = Dato::FORMAT)
     {
         return Dato::format($date, $format);
     }

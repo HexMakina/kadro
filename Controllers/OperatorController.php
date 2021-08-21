@@ -50,10 +50,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
             $this->logger()->warning($this->l('KADRO_operator_ERR_PASSWORDS_MISMATCH'));
             $this->edit();
         }
-      // else unset($this->form_model->password_verification);
-
-      // if(empty($this->form_model->password))
-      //   unset($this->form_model->password);
+        return $this->errors(); // useless call, errors are managed globally but interface expects it.. refactor needed
     }
 
     public function dashboard()

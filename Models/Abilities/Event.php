@@ -31,15 +31,5 @@ trait Event
     {
         return Dato::format($date, $format);
     }
-  //
-  // //------------------------------------------------------------  MySQL DateTime helpers
-  // public static function year($date=null) : string
-    // {
-    //  return Dato::format($date, Dato::FORMAT_YEAR);
-    // }
-  //
-    // public static function datetime($date=null) : string
-    // {
-    //  return DatoTempo::format($date);
-    // }
+
 }

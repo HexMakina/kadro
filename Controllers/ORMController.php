@@ -3,7 +3,6 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\TightORM\Interfaces\ModelInterface;
-use HexMakina\Tracer\TracerInterface;
 
 abstract class ORMController extends KadroController implements Interfaces\ORMController
 {
@@ -43,15 +42,10 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
         if (!is_null($this->load_model) && is_subclass_of($this->load_model, '\HexMakina\Tracer\TraceableInterface') && $this->load_model->traceable()) {
           // $traces = $this->tracer()->traces_by_model($this->load_model);
-            $traces = $this->tracer()->history_by_model($this->load_model);
-
+            $traces = $this->load_model->traces();
+            //$this->tracer()->history_by_model($this->load_model);
             $this->viewport('load_model_history', $traces);
         }
-    }
-
-    public function tracer(): TracerInterface
-    {
-        return $this->box('TracerInterface');
     }
 
     public function has_load_model()

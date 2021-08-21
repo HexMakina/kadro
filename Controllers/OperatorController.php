@@ -61,7 +61,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
 
     public function destroy()
     {
-        return $this->change_active();
+        $this->change_active();
     }
 
     public function change_active()

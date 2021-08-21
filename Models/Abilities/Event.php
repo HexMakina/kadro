@@ -19,7 +19,7 @@ trait Event
 
     public function event_label()
     {
-        return $this->__toString();
+        return ''.$this;
     }
 
     public static function today($format = Dato::FORMAT)

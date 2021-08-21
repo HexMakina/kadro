@@ -1,6 +1,6 @@
 <?php
 
-namespace HexMakina\TightORM\Abilities;
+namespace HexMakina\kadro\Controllers\Abilities;
 
 use HexMakina\Tracer\TracerInterface;
 use HexMakina\TightORM\Interfaces\ModelInterface;

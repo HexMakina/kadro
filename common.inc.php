@@ -17,7 +17,7 @@ use \HexMakina\Hopper\hopper;
 //
 // set_include_path(implode(PATH_SEPARATOR, [get_include_path(), APP_BASE, APP_BASE.'/lib/', APP_BASE.'/vendor/', KADRO_BASE]));
 
-//---------------------------------------------------------------     autoloader
+// ----     autoloader
 // require APP_BASE.'vendor/autoload.php';
 
 // require 'PSR4Autoloader.class.php';
@@ -27,7 +27,7 @@ use \HexMakina\Hopper\hopper;
 // $loader->addNamespace('HexMakina', APP_BASE.'/lib/');
 // $loader->addNamespaceTree(KADRO_BASE);
 
-//---------------------------------------------------------------     erara raportado
+// ----     erara raportado
 error_reporting(E_ALL);
 //TODO has to be made instance method
 set_error_handler('\HexMakina\LogLaddy\LogLaddy::error_handler');
@@ -35,7 +35,7 @@ set_exception_handler('\HexMakina\LogLaddy\LogLaddy::exception_handler');
 
 Debugger::init();
 
-//---------------------------------------------------------------     parametroj
+// ----     parametroj
 // require_once APP_BASE.'configs/settings.php';
 $box=new LeMarchand($settings);
 
@@ -74,7 +74,7 @@ $StateAgent->add_runtime_filters((array)($_REQUEST['filter'] ?? []));
 $box->register('StateAgent', $StateAgent);
 
 
-//---------------------------------------------------------------     parametroj:signo
+// ----     parametroj:signo
 $setting = 'settings.default.charset';
 if(is_string($box->get($setting)))
 {
@@ -84,7 +84,7 @@ if(is_string($box->get($setting)))
 else
   throw new \UnexpectedValueException($setting);
 
-//---------------------------------------------------------------     parametroj:linguo
+// ----     parametroj:linguo
 $setting = 'settings.default.language';
 if(is_string($box->get($setting)))
 {
@@ -94,18 +94,18 @@ if(is_string($box->get($setting)))
 else
   throw new \UnexpectedValueException($setting);
 
-//---------------------------------------------------------------     parametroj:datoj
+// ----     parametroj:datoj
 $setting = 'settings.default.timezone';
 if(is_string($box->get($setting)))
   date_default_timezone_set($box->get($setting));
 else
   throw new \UnexpectedValueException($setting);
 
-//---------------------------------------------------------------     ŝablonoj
+// ----     ŝablonoj
 // require_once 'smarty/smarty/libs/Smarty.class.php';
 $smarty = smarty_configurator($box);
 
-//---------------------------------------------------------------     lingva
+// ----     lingva
 $locale_path = $box->get('settings.locale.directory_path');
 $file_name = $box->get('settings.locale.file_name');
 $fallback_lang = $box->get('settings.locale.fallback_lang');

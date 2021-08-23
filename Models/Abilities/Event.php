@@ -7,7 +7,7 @@ use HexMakina\Tempus\Dato;
 trait Event
 {
 
-    abstract public function get();
+    abstract public function get($prop_name);
     abstract public function __toString();
 
     public function event_field()

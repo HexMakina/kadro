@@ -7,8 +7,9 @@ use HexMakina\Tempus\Dato;
 trait Event
 {
 
+    abstract public function get();
     abstract public function __toString();
-    
+
     public function event_field()
     {
         return 'occured_on';

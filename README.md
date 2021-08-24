@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/HexMakina/kadro/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/HexMakina/kadro/?branch=main)
+<img src="https://img.shields.io/badge/PHP-7.3-brightgreen" alt="PHP 7.3 Required" />
 # kadro
 PHP MVC framework for building web applications
 

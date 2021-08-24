@@ -83,6 +83,16 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         return $this->model_class_name;
     }
 
+    public function model_type_to_label($model=null)
+    {
+        $model = $model ?? $this->load_model ?? $this->form_model;
+        return $this->l(sprintf('MODEL_%s_INSTANCE', get_class($model)::model_type()));
+    }
+    public function field_name_to_label($model, $field_name)
+    {
+        $model = $model ?? $this->load_model ?? $this->form_model;
+        return $this->l(sprintf('MODEL_%s_FIELD_%s', (get_class($model))::model_type(), $field_name));
+    }
 
     public function dashboard()
     {

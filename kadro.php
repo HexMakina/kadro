@@ -93,7 +93,7 @@ class kadro
     $fallback_lang = $box->get('settings.locale.fallback_lang');
 
     $lezer = new Lezer($locale_path.'/'.$file_name, $locale_path.'/cache', $fallback_lang);
-    $language = $lezer->one_language();
+    $language = $lezer->availableLanguage();
 
     $lezer->init();
 

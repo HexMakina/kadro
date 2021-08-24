@@ -110,17 +110,13 @@ class kadro
       $box->register('template_engine', $smarty);
 
       // Load smarty template parser
-      $setting = 'settings.smarty.template_app_directory';
-      $smarty->setTemplateDir($box->get($setting));
+      $smarty->setTemplateDir($box->get('settings.smarty.template_app_directory'));
 
-      $setting = 'settings.smarty.template_extra_directories';
-      foreach($box->get($setting) as $i => $template_dir)
+      foreach($box->get('settings.smarty.template_extra_directories') as $i => $template_dir)
       {
           $smarty->addTemplateDir($template_dir);
       }
-      $setting = 'settings.smarty.template_kadro_directory';
-      $smarty->addTemplateDir($box->get($setting));
-
+      $smarty->addTemplateDir(__DIR__.'/Views/'); //kadro templates
 
       $setting = 'settings.smarty.compiled_path';
       if(is_string($box->get($setting)))

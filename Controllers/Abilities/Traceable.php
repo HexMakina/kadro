@@ -17,7 +17,7 @@ trait Traceable
     ;
   }
 
-  public function traces() : array
+  public function traces($options = []) : array
   {
     $q = $this->get_tracer()->tracing_table()->select();
     $q->aw_fields_eq(['query_table' => get_class($this)::table_name(), 'query_id' => $this->get_id()]);

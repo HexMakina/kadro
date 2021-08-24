@@ -19,13 +19,17 @@ trait Traceable
 
   public function traces($options = []) : array
   {
-    $q = $this->get_tracer()->tracing_table()->select();
-    $q->aw_fields_eq(['query_table' => get_class($this)::table_name(), 'query_id' => $this->get_id()]);
-    $q->order_by(['query_on', 'DESC']);
-    $q->run();
-    $res = $q->ret_ass();
+    $options['query_table'] = get_class($this)::table_name();
+    $options['query_id'] = $this->get_id();
+    return $this->get_tracer()->traces($options);
 
-    return $res;
+    // $q = $this->get_tracer()->tracing_table()->select();
+    // $q->aw_fields_eq(['query_table' => get_class($this)::table_name(), 'query_id' => $this->get_id()]);
+    // $q->order_by(['query_on', 'DESC']);
+    // $q->run();
+    // $res = $q->ret_ass();
+    //
+    // return $res;
   }
 
   // don't really know the purpose of this anymore.. came from Tracer

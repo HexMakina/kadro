@@ -97,7 +97,9 @@ class kadro
 
     $lezer->init();
 
+    $smarty->assign('lezer', $lezer);
     $smarty->assign('language', $language);
+    
     if($cookies_enabled === true)
       setcookie('lang', $language, time()+(365 * 24 * 60 * 60), "/", "");
 

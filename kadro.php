@@ -13,8 +13,10 @@ class kadro
 {
   public static function init($settings)
   {
+    new Debugger();
+
     $box=new LeMarchand($settings);
-    
+
     //-- logger
     error_reporting(E_ALL);
     define('PRODUCTION', $_SERVER['HTTP_HOST'] === $box->get('settings.app.production_host'));
@@ -29,8 +31,6 @@ class kadro
     //TODO has to be made instance method
     // set_error_handler('\HexMakina\LogLaddy\LogLaddy::error_handler');
     // set_exception_handler('\HexMakina\LogLaddy\LogLaddy::exception_handler');
-
-    Debugger::init();
 
     //-- router
     $box->register('RouterInterface', new \HexMakina\Hopper\hopper($box->get('settings.RouterInterface')));

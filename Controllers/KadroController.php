@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface};
+use HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface, OperatorInterface};
 use HexMakina\kadro\Controllers\Interfaces\IntlControllerInterface;
 
 class KadroController extends DisplayController implements AuthControllerInterface, IntlControllerInterface
@@ -17,6 +17,11 @@ class KadroController extends DisplayController implements AuthControllerInterfa
     public function requires_operator(): bool
     {
         return true; // security by default
+    }
+
+    public function operator(): OperatorInterface
+    {
+        return $this->box('OperatorInterface');
     }
 
     public function authorize($permission = null): bool

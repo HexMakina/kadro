@@ -10,7 +10,6 @@ use HexMakina\LogLaddy\LoggerInterface;
 interface BaseControllerInterface
 {
     public function router(): RouterInterface;
-    public function operator(): OperatorInterface;
     public function logger(): LoggerInterface;
 
     public function container(): ContainerInterface;

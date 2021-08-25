@@ -59,11 +59,6 @@ class BaseController implements Interfaces\BaseControllerInterface
         return $this->box('RouterInterface');
     }
 
-    public function operator(): OperatorInterface
-    {
-        return $this->box('OperatorInterface');
-    }
-
     public function prepare()
     {
         return true;

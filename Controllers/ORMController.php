@@ -24,6 +24,16 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
       }
     }
 
+    public function load_model(): ?ModelInterface
+    {
+      return $this->load_model;
+    }
+
+    public function form_model(): ModelInterface
+    {
+      return $this->form_model;
+    }
+
 
     public function prepare()
     {
@@ -81,6 +91,11 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         }
 
         return $this->model_class_name;
+    }
+
+    public function table_name(): string
+    {
+        return $this->model_class_name::table_name();
     }
 
     public function model_type_to_label($model=null)

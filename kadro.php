@@ -115,9 +115,9 @@ class kadro
 
       //--  Session Management
       $StateAgent = new \HexMakina\Smith\Smith(self::$box->get('settings.app.session_start_options') ?? []);
-      $StateAgent->add_runtime_filters((array)self::$box->get('settings.filter'));
-      $StateAgent->add_runtime_filters((array)($_SESSION['filter'] ?? []));
-      $StateAgent->add_runtime_filters((array)($_REQUEST['filter'] ?? []));
+      $StateAgent->addRuntimeFilters((array)self::$box->get('settings.filter'));
+      $StateAgent->addRuntimeFilters((array)($_SESSION['filter'] ?? []));
+      $StateAgent->addRuntimeFilters((array)($_REQUEST['filter'] ?? []));
 
       return $StateAgent;
     }

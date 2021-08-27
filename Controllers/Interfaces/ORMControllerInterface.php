@@ -2,6 +2,8 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
+use HexMakina\TightORM\Interfaces\ModelInterface;
+
 interface ORMControllerInterface extends CRUDControllerInterface
 {
     // ORM class tranlator
@@ -10,7 +12,7 @@ interface ORMControllerInterface extends CRUDControllerInterface
 
     public function load_model(): ?ModelInterface;
     public function form_model(): ModelInterface;
-    
+
     public function export();
     public function copy();
 

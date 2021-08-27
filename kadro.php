@@ -99,7 +99,7 @@ class kadro
       return $Hup;
     }
 
-    private function state()
+    private static function state()
     {
       //--  kuketoj
       setcookie('cookie_test', 'test_value', time()+(365 * 24 * 60 * 60), "/", "");

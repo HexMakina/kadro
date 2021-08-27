@@ -102,16 +102,16 @@ class kadro
     private static function state()
     {
       //--  kuketoj
-      setcookie('cookie_test', 'test_value', time()+(365 * 24 * 60 * 60), "/", "");
-      $cookies_enabled=isset($_COOKIE['cookie_test']); // houston, do we have cookies ?
+      // setcookie('cookie_test', 'test_value', time()+(365 * 24 * 60 * 60), "/", "");
+      // $cookies_enabled=isset($_COOKIE['cookie_test']); // houston, do we have cookies ?
 
-      if($cookies_enabled === false)
-      {
-        ini_set('session.use_cookies', 0);
-        ini_set('session.use_only_cookies', 0);
-        ini_set('session.use_trans_sid', 1);
-        ini_set('session.cache_limiter', 'nocache');
-      }
+      // if($cookies_enabled === false)
+      // {
+      //   ini_set('session.use_cookies', 0);
+      //   ini_set('session.use_only_cookies', 0);
+      //   ini_set('session.use_trans_sid', 1);
+      //   ini_set('session.cache_limiter', 'nocache');
+      // }
 
       //--  Session Management
       $StateAgent = new \HexMakina\Smith\Smith(self::$box->get('settings.app.session_start_options') ?? []);
@@ -124,7 +124,6 @@ class kadro
 
     private static function internationalisation()
     {
-
         // ----     parametroj:signo
         $setting = 'settings.default.charset';
         if(is_string(self::$box->get($setting)))

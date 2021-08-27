@@ -22,13 +22,12 @@ trait Traceable
     {
       return $this->container()->get('TracerInterface');
     }
-    
+
     public function TraceableTraitor_after_save()
     {
         $trace = new Trace();
         $trace->tableName($this->table_name());
 
-        $query_code = null;
         if(is_null($this->load_model())){
           $trace->isInsert(true);
         }

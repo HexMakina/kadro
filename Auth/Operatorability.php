@@ -47,7 +47,7 @@ trait Operatorability
         return $this->operator;
     }
 
-    public static function enhance_query_retrieve($Query, $filters)
+    public static function enhance_query_retrieve($Query, $filters, $options)
     {
         $Query->auto_join([ACL::table(),'ACL'], null, 'LEFT OUTER');
         $permission_alias = $Query->auto_join([Permission::table(), 'permission'], null, 'LEFT OUTER');

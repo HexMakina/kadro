@@ -17,6 +17,7 @@ trait Traceable
     abstract public function load_model(): ?ModelInterface;
     abstract public function operator(): OperatorInterface;
     abstract public function container(): ContainerInterface;
+    abstract public function table_name(): ContainerInterface;
 
     public function getTracer() : TracerInterface
     {

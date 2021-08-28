@@ -24,7 +24,7 @@ class ReceptionController extends KadroController
 
 
         if ($Controller->requires_operator()) {
-            if (is_null($operator = get_class($operator)::exists($this->box('StateAgent')->operator_id()))) {
+            if (is_null($operator = get_class($operator)::exists($this->box('StateAgent')->operatorId()))) {
                 $this->router()->hop('checkin');
             }
 
@@ -66,7 +66,7 @@ class ReceptionController extends KadroController
                 throw new \Exception('ERR_WRONG_LOGIN_OR_PASSWORD');
             }
 
-            $this->box('StateAgent')->operator_id($operator->get_id());
+            $this->box('StateAgent')->operatorId($operator->get_id());
             $this->logger()->nice($this->l('PAGE_CHECKIN_WELCOME', [$operator->name()]));
             $this->router()->hop();
         } catch (\Exception $e) {

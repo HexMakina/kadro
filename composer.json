@@ -5,6 +5,7 @@
     "require": {
         "php": ">=7.3",
         "smarty/smarty": "3.1.34",
+        
         "hexmakina/crudites": "0.0.*",
         "hexmakina/debugger": "0.0.*",
         "hexmakina/hopper": "0.0.*",
@@ -13,11 +14,12 @@
         "hexmakina/local-fs" : "0.0.*",
         "hexmakina/log-laddy": "0.0.*",
         "hexmakina/marker": "0.0.*",
-        "hexmakina/smith": "0.0.*",
         "hexmakina/tempus": "0.0.*",
         "hexmakina/tight-orm": "0.0.*",
-        "hexmakina/tracer": "0.0.*",
-        "hexmakina/traitor": "0.0.*"
+        "hexmakina/traitor": "0.0.*",
+
+        "hexmakina/smith": "0.1.*",
+        "hexmakina/tracer": "0.1.*"
     },
     "license": "mit",
     "authors": [

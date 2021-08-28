@@ -57,7 +57,7 @@ class KadroController extends DisplayController implements AuthControllerInterfa
     }
 
     // intl function, calls to lezer
-    public function l($message, $context=[]) : string
+    public function l($message, $context = []): string
     {
         return call_user_func($this->translation_function_name, $message, $context);
     }

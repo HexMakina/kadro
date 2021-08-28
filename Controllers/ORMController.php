@@ -15,23 +15,23 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function add_errors($errors)
     {
-      foreach($errors as $err)
-      {
-        if(is_array($err))
-          $this->add_error(array_unshift($err), array_unshift($err));
-        else
-          $this->add_error($err);
-      }
+        foreach ($errors as $err) {
+            if (is_array($err)) {
+                $this->add_error(array_unshift($err), array_unshift($err));
+            } else {
+                $this->add_error($err);
+            }
+        }
     }
 
     public function load_model(): ?ModelInterface
     {
-      return $this->load_model;
+        return $this->load_model;
     }
 
     public function form_model(): ModelInterface
     {
-      return $this->form_model;
+        return $this->form_model;
     }
 
 
@@ -98,7 +98,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         return $this->model_class_name::table_name();
     }
 
-    public function model_type_to_label($model=null)
+    public function model_type_to_label($model = null)
     {
         $model = $model ?? $this->load_model ?? $this->form_model;
         return $this->l(sprintf('MODEL_%s_INSTANCE', get_class($model)::model_type()));

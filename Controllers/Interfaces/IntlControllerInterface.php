@@ -4,5 +4,5 @@ namespace HexMakina\kadro\Controllers\Interfaces;
 
 interface IntlControllerInterface
 {
-  public function l($message, $context=[]) : string;
+    public function l($message, $context = []): string;
 }

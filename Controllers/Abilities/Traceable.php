@@ -19,9 +19,9 @@ trait Traceable
     abstract public function container(): ContainerInterface;
     abstract public function table_name(): ContainerInterface;
 
-    public function getTracer() : TracerInterface
+    public function getTracer(): TracerInterface
     {
-      return $this->container()->get('TracerInterface');
+        return $this->container()->get('TracerInterface');
     }
 
     public function TraceableTraitor_after_save()
@@ -29,11 +29,10 @@ trait Traceable
         $trace = new Trace();
         $trace->tableName($this->table_name());
 
-        if(is_null($this->load_model())){
-          $trace->isInsert(true);
-        }
-        else {
-          $trace->isUpdate(true);
+        if (is_null($this->load_model())) {
+            $trace->isInsert(true);
+        } else {
+            $trace->isUpdate(true);
         }
         $trace->tablePk($this->form_model()->get_id());
         $trace->operatorId($this->operator()->operator_id());
@@ -74,5 +73,4 @@ trait Traceable
   // {
   //     return $this->get_tracer()->traces(['id' => $m->get_id(), 'table' => get_class($m)::table_name()]);
   // }
-
 }

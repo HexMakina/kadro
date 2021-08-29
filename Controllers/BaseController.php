@@ -72,8 +72,10 @@ class BaseController implements Interfaces\BaseControllerInterface
 
       // before and after hooks, should they be in basecontroller ?
       // i think so, but pascal just proposed me pastis.. tomorrow
+
         foreach (['prepare', "before_$method", $method, "after_$method"] as $step => $chainling) {
-            $this->search_and_execute_trait_methods($chainling);
+
+            $this->traitor($chainling);
 
             if (method_exists($this, $chainling) && empty($this->errors())) {
                 $res = $this->$chainling();

@@ -35,7 +35,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
 
     public function save()
     {
-        if ($this->operator()->operator_id() !== $this->form_model->operator_id()) {
+        if ($this->operator()->operator_id() !== $this->formModel()->get_id()) {
             $this->authorize('group_admin');
         }
 
@@ -45,7 +45,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     public function before_save()
     {
       //------------------------------------------------------------- PASSWORDS
-        if ($this->form_model->get('password') != $this->form_model->get('password_verification')) {
+        if ($this->formModel()->get('password') != $this->formModel()->get('password_verification')) {
             $this->add_error('KADRO_operator_ERR_PASSWORDS_MISMATCH');
             $this->logger()->warning($this->l('KADRO_operator_ERR_PASSWORDS_MISMATCH'));
             $this->edit();

@@ -74,7 +74,6 @@ class BaseController implements Interfaces\BaseControllerInterface
       // i think so, but pascal just proposed me pastis.. tomorrow
 
         foreach (['prepare', "before_$method", $method, "after_$method"] as $step => $chainling) {
-
             $this->traitor($chainling);
 
             if (method_exists($this, $chainling) && empty($this->errors())) {

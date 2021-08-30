@@ -102,7 +102,6 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
 
         while (!is_null($tpl_path = array_shift($templates))) {
             if ($smarty->templateExists($tpl_path)) {
-
                 return $tpl_path;
             }
         }

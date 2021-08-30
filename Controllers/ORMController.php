@@ -32,34 +32,35 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function formModel(ModelInterface $setter = null): ModelInterface
     {
-      if(!is_null($setter)){
-        $this->form_model = $setter;
-      }
-      elseif(is_null($this->form_model)){
-        $reflection = new \ReflectionClass($this->modelClassName());
-        $this->form_model = $reflection->newInstanceWithoutConstructor(); //That's it!
-      }
-      return $this->form_model;
+        if (!is_null($setter)) {
+            $this->form_model = $setter;
+        } elseif (is_null($this->form_model)) {
+            $reflection = new \ReflectionClass($this->modelClassName());
+            $this->form_model = $reflection->newInstanceWithoutConstructor(); //That's it!
+        }
+        return $this->form_model;
     }
 
     // shortcut to model_type
     public function modelType(): string
     {
       // have to go through the model to garantee model_type existence via interface
-      if(is_null($this->model_type))
-        $this->model_type = get_class($this->formModel())::model_type();
+        if (is_null($this->model_type)) {
+            $this->model_type = get_class($this->formModel())::model_type();
+        }
 
-      return $this->model_type;
+        return $this->model_type;
     }
 
-    public function modelPrefix($suffix=null): string
+    public function modelPrefix($suffix = null): string
     {
-      $ret = $this->modelType();
+        $ret = $this->modelType();
 
-      if(!is_null($suffix))
-        $ret .= '_'.$suffix;
+        if (!is_null($suffix)) {
+            $ret .= '_' . $suffix;
+        }
 
-      return $ret;
+        return $ret;
     }
 
     public function prepare()
@@ -106,7 +107,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     {
         if (is_null($this->model_class_name)) {
             preg_match(LeMarchand::RX_CLASS_NAME, get_called_class(), $m);
-            $this->model_class_name = $this->box($m[1].'Class');
+            $this->model_class_name = $this->box($m[1] . 'Class');
         }
 
         return $this->model_class_name;
@@ -287,8 +288,6 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         if (isset($this->load_model)) {
             $this->viewport('load_model', $this->load_model);
         }
-
-
     }
 
     public function collection_to_csv($collection, $filename)

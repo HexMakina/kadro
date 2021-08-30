@@ -42,17 +42,24 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
       return $this->form_model;
     }
 
+    // shortcut to model_type
     public function modelType(): string
     {
+      // have to go through the model to garantee model_type existence via interface
       if(is_null($this->model_type))
         $this->model_type = get_class($this->formModel())::model_type();
 
       return $this->model_type;
     }
 
-    public function modelPrefix($suffix): string
+    public function modelPrefix($suffix=null): string
     {
-      return $this->modelType().'_'.$suffix;
+      $ret = $this->modelType();
+
+      if(!is_null($suffix))
+        $ret .= '_'.$suffix;
+
+      return $ret;
     }
 
     public function prepare()

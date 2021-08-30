@@ -103,9 +103,9 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
             $row->wipe();
         }
       // force reload for permission purposes
-        $operator = get_class($operator)::one($operator->operator_id());
+        // $operator = get_class($operator)::one($operator->operator_id());
 
-        $this->box('OperatorInterface', $operator);
+        // $this->box('OperatorInterface', $operator);
         $this->router()->hop_back();
     }
 }

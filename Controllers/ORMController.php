@@ -30,7 +30,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         return $this->load_model;
     }
 
-    public function formModel($setter = null): ModelInterface
+    public function formModel(ModelInterface $setter = null): ModelInterface
     {
       if(!is_null($setter)){
         $this->form_model = $setter;
@@ -42,6 +42,18 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
       return $this->form_model;
     }
 
+    public function modelType(): string
+    {
+      if(is_null($this->model_type))
+        $this->model_type = get_class($this->formModel())::model_type();
+
+      return $this->model_type;
+    }
+
+    public function modelPrefix($suffix): string
+    {
+      return $this->modelType().'_'.$suffix;
+    }
 
     public function prepare()
     {
@@ -76,7 +88,8 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     {
         return !empty($this->load_model);
     }
-  // ----------- META -----------
+
+    // ----------- META -----------
 
     // CoC class name by
     // 1. replacing namespace Controllers by Models
@@ -90,10 +103,6 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         }
 
         return $this->model_class_name;
-    }
-    public function modelType() : string
-    {
-      return $this->modelClassName()::modelType();
     }
 
     public function table_name(): string

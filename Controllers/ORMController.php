@@ -3,6 +3,7 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\TightORM\Interfaces\ModelInterface;
+use HexMakina\LeMarchand\LeMarchand;
 
 abstract class ORMController extends KadroController implements Interfaces\ORMControllerInterface
 {
@@ -85,9 +86,8 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     public function class_name(): string
     {
         if (is_null($this->model_class_name)) {
-            $this->model_class_name = get_called_class();
-            $this->model_class_name = str_replace('\Controllers\\', '\Models\\', $this->model_class_name);
-            $this->model_class_name = str_replace('Controller', '', $this->model_class_name);
+            preg_match(LeMarchand::RX_CONTROLLER_NAME, get_called_class(), $m);
+            $this->model_class_name = $this->box($m[1].'Class');
         }
 
         return $this->model_class_name;

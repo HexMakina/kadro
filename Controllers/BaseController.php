@@ -24,12 +24,12 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
 
     public function has($key)
     {
-      return LeMarchand::getInstance()->has($key);
+      return LeMarchand::box()->has($key);
     }
 
     public function get($key)
     {
-      return LeMarchand::getInstance()->get($key);
+      return LeMarchand::box()->get($key);
     }
 
     public function add_error($message, $context = [])

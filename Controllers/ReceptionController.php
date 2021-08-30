@@ -4,6 +4,7 @@ namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Auth\{Operator,Permission,ACL};
 use HexMakina\kadro\Auth\{OperatorInterface,AccessRefusedException};
+use HexMakina\LeMarchand\LeMarchand;
 
 class ReceptionController extends KadroController
 {
@@ -32,7 +33,7 @@ class ReceptionController extends KadroController
                 $this->checkout();
                 throw new AccessRefusedException();
             }
-            $this->get('OperatorInterface', $operator);
+            LeMarchand::box()->put('OperatorInterface', $operator);
         }
 
         return $operator;

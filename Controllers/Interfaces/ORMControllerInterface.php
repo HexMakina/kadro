@@ -7,7 +7,7 @@ use HexMakina\TightORM\Interfaces\ModelInterface;
 interface ORMControllerInterface
 {
     // ORM class tranlator
-    public function class_name(): string;
+    public function modelClassName(): string;
     public function table_name(): string;
 
     public function load_model(): ?ModelInterface;

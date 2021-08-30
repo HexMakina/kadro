@@ -28,7 +28,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
         }
     }
 
-    public function class_name(): string
+    public function modelClassName(): string
     {
         return "\HexMakina\kadro\Auth\Operator";
     }

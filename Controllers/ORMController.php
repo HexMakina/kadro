@@ -40,7 +40,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     {
         parent::prepare();
 
-        if (!class_exists($this->model_class_name = $this->class_name())) {
+        if (!class_exists($this->model_class_name = $this->modelClassName())) {
             throw new \Exception("!class_exists($this->model_class_name)");
         }
 
@@ -82,8 +82,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     // 1. replacing namespace Controllers by Models
     // 2. removing the Controller from classname
     // overwrite this behavior by setting the model_class_name at controller construction
-
-    public function class_name(): string
+    public function modelClassName(): string
     {
         if (is_null($this->model_class_name)) {
             preg_match(LeMarchand::RX_CLASS_NAME, get_called_class(), $m);

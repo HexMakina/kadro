@@ -18,7 +18,7 @@ class kadro
     {
         new Debugger();
 
-        self::$box = new LeMarchand($settings);
+        self::$box = LeMarchand::box($settings);
 
       //-- logger
         self::$box->register('LoggerInterface', self::reporting());

@@ -61,14 +61,14 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
 
     public function logger(): LoggerInterface
     {
-        return $this->box('LoggerInterface');
+        return $this->get('LoggerInterface');
     }
 
   // -------- Controller Router
 
     public function router(): RouterInterface
     {
-        return $this->box('RouterInterface');
+        return $this->get('RouterInterface');
     }
 
     public function prepare()

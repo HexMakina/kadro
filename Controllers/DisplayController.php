@@ -40,7 +40,7 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
 
     public function display($custom_template = null, $standalone = false)
     {
-        $smarty = $this->box('template_engine');
+        $smarty = $this->get('template_engine');
 
         $template = $this->find_template($smarty, $custom_template); // throws Exception if nothing found
 
@@ -50,17 +50,17 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
 
 
         $this->viewport('file_root', $this->router()->file_root());
-        $this->viewport('view_path', $this->router()->file_root() . $this->box('settings.smarty.template_path') . 'app/');
+        $this->viewport('view_path', $this->router()->file_root() . $this->get('settings.smarty.template_path') . 'app/');
         $this->viewport('web_root', $this->router()->web_root());
-        $this->viewport('view_url', $this->router()->web_root() . $this->box('settings.smarty.template_path'));
-        $this->viewport('images_url', $this->router()->web_root() . $this->box('settings.smarty.template_path') . 'images/');
+        $this->viewport('view_url', $this->router()->web_root() . $this->get('settings.smarty.template_path'));
+        $this->viewport('images_url', $this->router()->web_root() . $this->get('settings.smarty.template_path') . 'images/');
 
         foreach ($this->viewport() as $template_var_name => $value) {
             $smarty->assign($template_var_name, $value);
         }
 
         if ($standalone === false) {
-            $smarty->display(sprintf('%s|%s', $this->box('settings.smarty.template_inclusion_path'), $template));
+            $smarty->display(sprintf('%s|%s', $this->get('settings.smarty.template_inclusion_path'), $template));
         } else {
             $smarty->display($template);
         }

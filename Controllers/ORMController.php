@@ -107,7 +107,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     {
         if (is_null($this->model_class_name)) {
             preg_match(LeMarchand::RX_CLASS_NAME, get_called_class(), $m);
-            $this->model_class_name = $this->box($m[1] . 'Class');
+            $this->model_class_name = $this->get($m[1] . 'Class');
         }
 
         return $this->model_class_name;
@@ -139,15 +139,15 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         $class_name = is_null($model) ? $this->modelClassName() : get_class($model);
 
         if (!isset($filters['date_start'])) {
-            $filters['date_start'] = $this->box('StateAgent')->filters('date_start');
+            $filters['date_start'] = $this->get('StateAgent')->filters('date_start');
         }
         if (!isset($filters['date_stop'])) {
-            $filters['date_stop'] = $this->box('StateAgent')->filters('date_stop');
+            $filters['date_stop'] = $this->get('StateAgent')->filters('date_stop');
         }
 
         $listing = $this->modelClassName()::filter($filters);
 
-        $this->viewport_listing($class_name, $listing, $this->find_template($this->box('template_engine'), __FUNCTION__));
+        $this->viewport_listing($class_name, $listing, $this->find_template($this->get('template_engine'), __FUNCTION__));
     }
 
     public function viewport_listing($class_name, $listing, $listing_template)
@@ -293,7 +293,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     public function collection_to_csv($collection, $filename)
     {
       // TODO use Format/File/CSV class to generate file
-        $file_path = $this->box('settings.export.directory') . $filename . '.csv';
+        $file_path = $this->get('settings.export.directory') . $filename . '.csv';
         $fp = fopen($file_path, 'w');
 
         $header = false;
@@ -323,7 +323,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
                 break;
 
             case 'xlsx':
-                $report_controller = $this->box('HexMakina\koral\Controllers\ReportController');
+                $report_controller = $this->get('HexMakina\koral\Controllers\ReportController');
                 return $report_controller->collection($this->modelClassName());
         }
     }

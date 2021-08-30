@@ -20,11 +20,11 @@ class ReceptionController extends KadroController
         }
 
         $Controller = $this->router()->target_controller();
-        $Controller = $this->box($Controller);
+        $Controller = $this->get($Controller);
 
 
         if ($Controller->requires_operator()) {
-            if (is_null($operator = get_class($operator)::exists($this->box('StateAgent')->operatorId()))) {
+            if (is_null($operator = get_class($operator)::exists($this->get('StateAgent')->operatorId()))) {
                 $this->router()->hop('checkin');
             }
 
@@ -32,7 +32,7 @@ class ReceptionController extends KadroController
                 $this->checkout();
                 throw new AccessRefusedException();
             }
-            $this->box('OperatorInterface', $operator);
+            $this->get('OperatorInterface', $operator);
         }
 
         return $operator;
@@ -46,7 +46,7 @@ class ReceptionController extends KadroController
 
     public function checkout()
     {
-        $this->box('StateAgent')->destroy();
+        $this->get('StateAgent')->destroy();
         $this->router()->hop('checkin');
     }
 
@@ -66,7 +66,7 @@ class ReceptionController extends KadroController
                 throw new \Exception('ERR_WRONG_LOGIN_OR_PASSWORD');
             }
 
-            $this->box('StateAgent')->operatorId($operator->get_id());
+            $this->get('StateAgent')->operatorId($operator->get_id());
             $this->logger()->nice($this->l('PAGE_CHECKIN_WELCOME', [$operator->name()]));
             $this->router()->hop();
         } catch (\Exception $e) {

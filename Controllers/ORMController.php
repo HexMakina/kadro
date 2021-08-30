@@ -30,9 +30,16 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         return $this->load_model;
     }
 
-    public function form_model(): ModelInterface
+    public function formModel($setter = null): ModelInterface
     {
-        return $this->form_model;
+      if(!is_null($setter)){
+        $this->form_model = $setter;
+      }
+      elseif(is_null($this->form_model)){
+        $reflection = new \ReflectionClass($this->modelClassName());
+        $this->form_model = $reflection->newInstanceWithoutConstructor(); //That's it!
+      }
+      return $this->form_model;
     }
 
 
@@ -42,13 +49,10 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
         $this->model_type = $this->modelClassName()::model_type();
 
-        $reflection = new \ReflectionClass($this->modelClassName());
-        $this->form_model = $reflection->newInstanceWithoutConstructor(); //That's it!
-
         $pk_values = [];
 
         if ($this->router()->submits()) {
-            $this->form_model->import($this->sanitize_post_data($this->router()->submitted()));
+            $this->formModel()->import($this->sanitize_post_data($this->router()->submitted()));
             $pk_values = $this->modelClassName()::table()->primary_keys_match($this->router()->submitted());
 
             $this->load_model = $this->modelClassName()::exists($pk_values);
@@ -56,7 +60,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
             $pk_values = $this->modelClassName()::table()->primary_keys_match($this->router()->params());
 
             if (!is_null($this->load_model = $this->modelClassName()::exists($pk_values))) {
-                $this->form_model = clone $this->load_model;
+                $this->formModel(clone $this->load_model);
             }
         }
 
@@ -87,6 +91,10 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
         return $this->model_class_name;
     }
+    public function modelType() : string
+    {
+      return $this->modelClassName()::modelType();
+    }
 
     public function table_name(): string
     {
@@ -95,12 +103,12 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function model_type_to_label($model = null)
     {
-        $model = $model ?? $this->load_model ?? $this->form_model;
+        $model = $model ?? $this->load_model ?? $this->formModel();
         return $this->l(sprintf('MODEL_%s_INSTANCE', get_class($model)::model_type()));
     }
     public function field_name_to_label($model, $field_name)
     {
-        $model = $model ?? $this->load_model ?? $this->form_model;
+        $model = $model ?? $this->load_model ?? $this->formModel();
         return $this->l(sprintf('MODEL_%s_FIELD_%s', (get_class($model))::model_type(), $field_name));
     }
 
@@ -156,7 +164,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function copy()
     {
-        $this->form_model = $this->load_model->copy();
+        $this->formModel($this->load_model->copy());
 
         $this->route_back($this->load_model);
         $this->edit();
@@ -168,7 +176,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function save()
     {
-        $model = $this->persist_model($this->form_model);
+        $model = $this->persist_model($this->formModel());
 
         if (empty($this->errors())) {
             $this->route_back($model);
@@ -257,16 +265,14 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     public function conclude()
     {
         $this->viewport('errors', $this->errors());
-
         $this->viewport('form_model_type', $this->model_type);
+        $this->viewport('form_model', $this->formModel());
 
         if (isset($this->load_model)) {
             $this->viewport('load_model', $this->load_model);
         }
 
-        if (isset($this->form_model)) {
-            $this->viewport('form_model', $this->form_model);
-        }
+
     }
 
     public function collection_to_csv($collection, $filename)
@@ -335,7 +341,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     public function route_factory($route = null, $route_params = []): string
     {
         if (is_null($route) && $this->router()->submits()) {
-            $route = $this->form_model;
+            $route = $this->formModel();
         }
 
         if (!is_null($route) && is_subclass_of($route, '\HexMakina\TightORM\Interfaces\ModelInterface')) {

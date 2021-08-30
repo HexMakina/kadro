@@ -11,7 +11,7 @@ interface ORMControllerInterface
     public function table_name(): string;
 
     public function load_model(): ?ModelInterface;
-    public function form_model(): ModelInterface;
+    public function formModel(): ModelInterface;
 
     public function dashboard();
 

@@ -13,7 +13,7 @@ trait Traceable
   // abstract public function container(): ContainerInterface;
   // abstract public function get_tracer() : TracerInterface;
   //
-    abstract public function form_model(): ModelInterface;
+    abstract public function formModel(): ModelInterface;
     abstract public function load_model(): ?ModelInterface;
     abstract public function operator(): OperatorInterface;
     abstract public function container(): ContainerInterface;
@@ -34,7 +34,7 @@ trait Traceable
         } else {
             $trace->isUpdate(true);
         }
-        $trace->tablePk($this->form_model()->get_id());
+        $trace->tablePk($this->formModel()->get_id());
         $trace->operatorId($this->operator()->operator_id());
 
         $this->getTracer()->trace($trace);

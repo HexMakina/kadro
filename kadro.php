@@ -21,19 +21,19 @@ class kadro
         self::$box = LeMarchand::box($settings);
 
       //-- logger
-        self::$box->register('LoggerInterface', self::reporting());
+        self::$box->put('LoggerInterface', self::reporting());
 
       //-- router
-        self::$box->register('RouterInterface', self::routing());
+        self::$box->put('RouterInterface', self::routing());
 
       //-- sessions, ans soon cookies
-        self::$box->register('StateAgent', self::state());
+        self::$box->put('StateAgent', self::state());
 
 
         self::internationalisation();
 
       // ----     ŝablonoj
-        self::$box->register('template_engine', self::templating());
+        self::$box->put('template_engine', self::templating());
 
       // ----     lingva
         $locale_path = self::$box->get('settings.locale.directory_path');
@@ -154,7 +154,7 @@ class kadro
     private static function templating()
     {
         $smarty = new \Smarty();
-        self::$box->register('template_engine', $smarty);
+        self::$box->put('template_engine', $smarty);
 
       // Load smarty template parser
         $smarty->setTemplateDir(self::$box->get('settings.smarty.template_app_directory'));

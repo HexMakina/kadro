@@ -6,8 +6,9 @@ use Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExcept
 use HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
 use HexMakina\Hopper\RouterInterface;
 use HexMakina\LogLaddy\LoggerInterface;
+use HexMakina\LeMarchand\LeMarchand;
 
-class BaseController implements Interfaces\BaseControllerInterface
+class BaseController implements Interfaces\BaseControllerInterface, \Psr\Container\ContainerInterface
 {
     use \HexMakina\Traitor\Traitor;
 
@@ -18,6 +19,17 @@ class BaseController implements Interfaces\BaseControllerInterface
     public function errors(): array
     {
         return $this->errors;
+    }
+
+
+    public function has($key)
+    {
+      return LeMarchand::getInstance()->has($key);
+    }
+
+    public function get($key)
+    {
+      return LeMarchand::getInstance()->get($key);
     }
 
     public function add_error($message, $context = [])
@@ -40,7 +52,7 @@ class BaseController implements Interfaces\BaseControllerInterface
     public function box($key, $instance = null)
     {
         if (!is_null($instance)) {
-            $this->container->register($key, $instance);
+            $this->container->put($key, $instance);
         }
 
       // dd($this->container->get($key));

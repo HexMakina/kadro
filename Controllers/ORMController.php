@@ -40,26 +40,22 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     {
         parent::prepare();
 
-        if (!class_exists($this->model_class_name = $this->modelClassName())) {
-            throw new \Exception("!class_exists($this->model_class_name)");
-        }
+        $this->model_type = $this->modelClassName()::model_type();
 
-        $this->model_type = $this->model_class_name::model_type();
-
-        $reflection = new \ReflectionClass($this->model_class_name);
+        $reflection = new \ReflectionClass($this->modelClassName());
         $this->form_model = $reflection->newInstanceWithoutConstructor(); //That's it!
 
         $pk_values = [];
 
         if ($this->router()->submits()) {
             $this->form_model->import($this->sanitize_post_data($this->router()->submitted()));
-            $pk_values = $this->model_class_name::table()->primary_keys_match($this->router()->submitted());
+            $pk_values = $this->modelClassName()::table()->primary_keys_match($this->router()->submitted());
 
-            $this->load_model = $this->model_class_name::exists($pk_values);
+            $this->load_model = $this->modelClassName()::exists($pk_values);
         } elseif ($this->router()->requests()) {
-            $pk_values = $this->model_class_name::table()->primary_keys_match($this->router()->params());
+            $pk_values = $this->modelClassName()::table()->primary_keys_match($this->router()->params());
 
-            if (!is_null($this->load_model = $this->model_class_name::exists($pk_values))) {
+            if (!is_null($this->load_model = $this->modelClassName()::exists($pk_values))) {
                 $this->form_model = clone $this->load_model;
             }
         }
@@ -94,7 +90,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function table_name(): string
     {
-        return $this->model_class_name::table_name();
+        return $this->modelClassName()::table_name();
     }
 
     public function model_type_to_label($model = null)
@@ -115,7 +111,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function listing($model = null, $filters = [], $options = [])
     {
-        $class_name = is_null($model) ? $this->model_class_name : get_class($model);
+        $class_name = is_null($model) ? $this->modelClassName() : get_class($model);
 
         if (!isset($filters['date_start'])) {
             $filters['date_start'] = $this->box('StateAgent')->filters('date_start');
@@ -124,9 +120,8 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
             $filters['date_stop'] = $this->box('StateAgent')->filters('date_stop');
         }
 
-      // dd($filters);
-        $listing = $class_name::filter($filters);
-      // dd($listing);
+        $listing = $this->modelClassName()::filter($filters);
+
         $this->viewport_listing($class_name, $listing, $this->find_template($this->box('template_engine'), __FUNCTION__));
     }
 
@@ -200,8 +195,8 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     public function before_edit()
     {
         if (!is_null($this->router()->params('id')) && is_null($this->load_model)) {
-            $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->model_class_name::model_type() . '_INSTANCE')]));
-            $this->router()->hop($this->model_class_name::model_type());
+            $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->modelClassName()::model_type() . '_INSTANCE')]));
+            $this->router()->hop($this->modelClassName()::model_type());
         }
     }
 
@@ -301,14 +296,14 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         switch ($format) {
             case null:
                 $filename = $this->model_type;
-                $collection = $this->model_class_name::listing();
+                $collection = $this->modelClassName()::listing();
                 $file_path = $this->collection_to_csv($collection, $filename);
                 $this->router()->send_file($file_path);
                 break;
 
             case 'xlsx':
                 $report_controller = $this->box('HexMakina\koral\Controllers\ReportController');
-                return $report_controller->collection($this->model_class_name);
+                return $report_controller->collection($this->modelClassName());
         }
     }
 
@@ -352,12 +347,18 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     private function sanitize_post_data($post_data = [])
     {
-        foreach ($this->model_class_name::table()->columns() as $col) {
+        foreach ($this->modelClassName()::table()->columns() as $col) {
             if ($col->type()->is_boolean()) {
                 $post_data[$col->name()] = !empty($post_data[$col->name()]);
             }
         }
 
         return $post_data;
+    }
+
+    // overriding displaycontroller
+    protected function template_base()
+    {
+        return $this->modelClassName()::model_type();
     }
 }

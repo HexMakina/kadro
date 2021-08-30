@@ -69,7 +69,7 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
         return true;
     }
 
-    private function template_base()
+    protected function template_base()
     {
         return strtolower(str_replace('Controller', '', (new \ReflectionClass(get_called_class()))->getShortName()));
     }
@@ -102,6 +102,7 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
 
         while (!is_null($tpl_path = array_shift($templates))) {
             if ($smarty->templateExists($tpl_path)) {
+
                 return $tpl_path;
             }
         }

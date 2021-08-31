@@ -91,30 +91,30 @@ class TableToForm
     private static function fieldByType($field, $field_value, $attributes = [], $errors = []): string
     {
       if ($field->is_auto_incremented()) {
-        return  Form::hidden($field->name(), $field_value);
+        return Form::hidden($field->name(), $field_value);
       }
       if ($field->type()->is_boolean()) {
         $option_list = $attributes['values'] ?? [0 => 0, 1 => 1];
-        return  Form::select($field->name(), $option_list, $field_value, $attributes); //
+        return Form::select($field->name(), $option_list, $field_value, $attributes); //
       }
       if ($field->type()->is_integer()) {
-        return  Form::input($field->name(), $field_value, $attributes, $errors);
+        return Form::input($field->name(), $field_value, $attributes, $errors);
       }
       if ($field->type()->is_year()) {
         $attributes['size'] = $attributes['maxlength'] = 4;
-        return  Form::input($field->name(), $field_value, $attributes, $errors);
+        return Form::input($field->name(), $field_value, $attributes, $errors);
       }
       if ($field->type()->is_date()) {
-        return  Form::date($field->name(), $field_value, $attributes, $errors);
+        return Form::date($field->name(), $field_value, $attributes, $errors);
       }
       if ($field->type()->is_time()) {
-        return  Form::time($field->name(), $field_value, $attributes, $errors);
+        return Form::time($field->name(), $field_value, $attributes, $errors);
       }
       if ($field->type()->is_datetime()) {
-        return  Form::datetime($field->name(), $field_value, $attributes, $errors);
+        return Form::datetime($field->name(), $field_value, $attributes, $errors);
       }
       if ($field->type()->is_text()) {
-        return  Form::textarea($field->name(), $field_value, $attributes, $errors);
+        return Form::textarea($field->name(), $field_value, $attributes, $errors);
       }
       if ($field->type()->is_enum()) {
         $enum_values = [];
@@ -124,17 +124,17 @@ class TableToForm
 
         $selected = $attributes['value'] ?? $field_value ?? '';
         // foreach($field->)
-        return  Form::select($field->name(), $enum_values, $selected, $attributes); //
+        return Form::select($field->name(), $enum_values, $selected, $attributes); //
 
         // throw new \Exception('ENUM IS NOT HANDLED BY TableToFom');
       }
       if ($field->type()->is_string()) {
         $max_length = $field->type()->length();
         $attributes['size'] = $attributes['maxlength'] = $max_length;
-        return  Form::input($field->name(), $field_value, $attributes, $errors);
+        return Form::input($field->name(), $field_value, $attributes, $errors);
       }
 
-      return  Form::input($field->name(), $field_value, $attributes, $errors);
+      return Form::input($field->name(), $field_value, $attributes, $errors);
     }
 
     private static function computeFieldValue($model, $field_name)

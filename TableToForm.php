@@ -7,7 +7,7 @@ use \HexMakina\Marker\{Form,Element};
 
 class TableToForm
 {
-    private static function compute_field_value($model, $field_name)
+    private static function computeFieldValue($model, $field_name)
     {
         if (method_exists($model, $field_name)) {
             return $model->$field_name();
@@ -47,7 +47,7 @@ class TableToForm
 
     public static function field(ModelInterface $model, $field_name, $attributes = [], $errors = []): string
     {
-        $field_value = $attributes['value'] ?? self::compute_field_value($model, $field_name);
+        $field_value = $attributes['value'] ?? self::computeFieldValue($model, $field_name);
         $attributes['name'] = $attributes['name'] ?? $field_name;
 
         $table = get_class($model)::table();
@@ -116,8 +116,8 @@ class TableToForm
       return  Form::input($field->name(), $field_value, $attributes, $errors);
     }
 
-    
-    public static function field_with_label($model, $field_name, $attributes = [], $errors = []): string
+
+    public static function fieldWithLabel($model, $field_name, $attributes = [], $errors = []): string
     {
         $field_attributes = $attributes;
         if (isset($attributes['label'])) {
@@ -141,7 +141,7 @@ class TableToForm
                     $form_field = self::field($model, $column_name);
                 }
             } else {
-                $form_field = self::field_with_label($model, $column_name);
+                $form_field = self::fieldWithLabel($model, $column_name);
                 if (!is_null($group_class)) {
                     $form_field = new Element('div', $form_field, ['class' => $group_class]);
                 }

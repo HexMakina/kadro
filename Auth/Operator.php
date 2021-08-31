@@ -14,7 +14,7 @@ class Operator extends TightModel implements OperatorInterface
     protected $permissions = null;
 
     // use Permissionability;
-    use RelationManyToMany;
+    use HexMakina\TightORM\RelationManyToMany;
 
     public function __toString()
     {

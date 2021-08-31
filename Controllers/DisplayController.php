@@ -46,7 +46,7 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
 
         $this->viewport('controller', $this);
 
-        $this->viewport('user_messages', $this->logger()->get_user_report());
+        $this->viewport('user_messages', $this->logger()->getUserReport());
 
 
         $this->viewport('file_root', $this->router()->file_root());

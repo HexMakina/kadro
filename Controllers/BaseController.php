@@ -91,7 +91,7 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
             if (method_exists($this, $chainling) && empty($this->errors())) {
                 $res = $this->$chainling();
 
-                if ($this->logger()->has_halting_messages()) { // logger handled a critical error during the chailing execution
+                if ($this->logger()->hasHaltingMessages()) { // logger handled a critical error during the chailing execution
                     break; // dont go on with other
                 }
 

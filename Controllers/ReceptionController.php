@@ -42,7 +42,7 @@ class ReceptionController extends KadroController
     public function checkin()
     {
         $this->display('checkin', 'standalone');
-        $this->logger()->clean_user_report();
+        $this->logger()->cleanUserReport();
     }
 
     public function checkout()

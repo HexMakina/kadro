@@ -61,7 +61,7 @@ class kadro
         ini_set('display_errors', PRODUCTION ? 0 : 1);
 
         $log_laddy = new \HexMakina\LogLaddy\LogLaddy();
-        $log_laddy->set_handlers();
+        $log_laddy->setHandlers();
         return $log_laddy;
     }
 

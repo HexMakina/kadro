@@ -9,7 +9,7 @@ class TradukoController extends \HexMakina\kadro\Controllers\ORMController
 {
     const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
 
-    public function authorize($permission = null)
+    public function authorize($permission = null): bool
     {
         return parent::authorize('group_admin');
     }

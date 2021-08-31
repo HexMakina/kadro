@@ -24,9 +24,9 @@ class KadroController extends DisplayController implements AuthControllerInterfa
         return $this->get('OperatorInterface');
     }
 
+    // returns true or throws AccessRefusedException
     public function authorize($permission = null): bool
     {
-      // if(!$this->requires_operator() || is_null($permission))
         if (!$this->requires_operator()) {
             return true;
         }

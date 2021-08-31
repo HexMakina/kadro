@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro;
 
-use HexMakina\TightORM\Interfaces\ModelInterface;
-use HexMakina\Marker\{Form,Element};
+use \HexMakina\TightORM\Interfaces\ModelInterface;
+use \HexMakina\Marker\{Form,Element};
 
 class TableToForm
 {

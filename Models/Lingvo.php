@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro\Models;
 
-use HexMakina\Crudites\Interfaces\SelectInterface;
-use HexMakina\TightORM\TightModel;
+use \HexMakina\Crudites\Interfaces\SelectInterface;
+use \HexMakina\TightORM\TightModel;
 
 class Lingvo extends TightModel
 {

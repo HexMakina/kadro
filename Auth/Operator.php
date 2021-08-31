@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro\Auth;
 
-use HexMakina\Crudites\Interfaces\SelectInterface;
-use HexMakina\TightORM\{TightModel,RelationManyToMany};
+use \HexMakina\Crudites\Interfaces\SelectInterface;
+use \HexMakina\TightORM\{TightModel,RelationManyToMany};
 
 class Operator extends TightModel implements OperatorInterface
 {
@@ -14,7 +14,7 @@ class Operator extends TightModel implements OperatorInterface
     protected $permissions = null;
 
     // use Permissionability;
-    use HexMakina\TightORM\RelationManyToMany;
+    use \HexMakina\TightORM\RelationManyToMany;
 
     public function __toString()
     {

@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface, OperatorInterface};
-use HexMakina\kadro\Controllers\Interfaces\IntlControllerInterface;
+use \HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface, OperatorInterface};
+use \HexMakina\kadro\Controllers\Interfaces\IntlControllerInterface;
 
 class KadroController extends DisplayController implements AuthControllerInterface, IntlControllerInterface
 {

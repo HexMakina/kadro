@@ -2,9 +2,9 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\kadro\Auth\{Operator,Permission,ACL};
-use HexMakina\kadro\Auth\{OperatorInterface,AccessRefusedException};
-use HexMakina\LeMarchand\LeMarchand;
+use \HexMakina\kadro\Auth\{Operator,Permission,ACL};
+use \HexMakina\kadro\Auth\{OperatorInterface,AccessRefusedException};
+use \HexMakina\LeMarchand\LeMarchand;
 
 class ReceptionController extends KadroController
 {

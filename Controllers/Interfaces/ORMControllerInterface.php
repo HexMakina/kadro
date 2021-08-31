@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-use HexMakina\TightORM\Interfaces\ModelInterface;
+use \HexMakina\TightORM\Interfaces\ModelInterface;
 
 interface ORMControllerInterface
 {

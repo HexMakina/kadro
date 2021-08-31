@@ -3,10 +3,10 @@
 namespace HexMakina\kadro\Controllers;
 
 use Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
-use HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
-use HexMakina\Hopper\RouterInterface;
-use HexMakina\LogLaddy\LoggerInterface;
-use HexMakina\LeMarchand\LeMarchand;
+use \HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
+use \HexMakina\Hopper\RouterInterface;
+use \HexMakina\LogLaddy\LoggerInterface;
+use \HexMakina\LeMarchand\LeMarchand;
 
 class BaseController implements Interfaces\BaseControllerInterface, \Psr\Container\ContainerInterface
 {

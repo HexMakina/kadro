@@ -48,10 +48,8 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
 
         $this->viewport('user_messages', $this->logger()->getUserReport());
 
-
-        $this->viewport('file_root', $this->router()->file_root());
-        $this->viewport('view_path', $this->router()->file_root() . $this->get('settings.smarty.template_path') . 'app/');
         $this->viewport('web_root', $this->router()->web_root());
+        $this->viewport('view_path', $this->router()->filePath() . $this->get('settings.smarty.template_path') . 'app/');
         $this->viewport('view_url', $this->router()->web_root() . $this->get('settings.smarty.template_path'));
         $this->viewport('images_url', $this->router()->web_root() . $this->get('settings.smarty.template_path') . 'images/');
 

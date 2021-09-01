@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use \HexMakina\kadro\Models\Traduko;
-use \HexMakina\LocalFS\Text\JSON;
+use HexMakina\kadro\Models\Traduko;
+use HexMakina\LocalFS\Text\JSON;
 
 class TradukoController extends \HexMakina\kadro\Controllers\ORMController
 {

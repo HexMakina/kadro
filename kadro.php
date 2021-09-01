@@ -2,12 +2,12 @@
 
 namespace HexMakina\kadro;
 
-use \HexMakina\LeMarchand\LeMarchand;
-use \HexMakina\Debugger\Debugger;
-use \HexMakina\Lezer\Lezer;
-use \HexMakina\Smith\Smith;
-use \HexMakina\LogLaddy\LogLaddy;
-use \HexMakina\Hopper\hopper;
+use HexMakina\LeMarchand\LeMarchand;
+use HexMakina\Debugger\Debugger;
+use HexMakina\Lezer\Lezer;
+use HexMakina\Smith\Smith;
+use HexMakina\LogLaddy\LogLaddy;
+use HexMakina\Hopper\hopper;
 
 class kadro
 {

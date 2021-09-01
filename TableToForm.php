@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro;
 
-use \HexMakina\TightORM\Interfaces\ModelInterface;
-use \HexMakina\Marker\{Form,Element};
+use HexMakina\TightORM\Interfaces\ModelInterface;
+use HexMakina\Marker\{Form,Element};
 
 class TableToForm
 {
@@ -90,64 +90,63 @@ class TableToForm
 
     private static function fieldByType($field, $field_value, $attributes = [], $errors = []): string
     {
-      if ($field->is_auto_incremented()) {
-        return Form::hidden($field->name(), $field_value);
-      }
-      if ($field->type()->is_boolean()) {
-        $option_list = $attributes['values'] ?? [0 => 0, 1 => 1];
-        return Form::select($field->name(), $option_list, $field_value, $attributes); //
-      }
-      if ($field->type()->is_integer()) {
-        return Form::input($field->name(), $field_value, $attributes, $errors);
-      }
-      if ($field->type()->is_year()) {
-        $attributes['size'] = $attributes['maxlength'] = 4;
-        return Form::input($field->name(), $field_value, $attributes, $errors);
-      }
-      if ($field->type()->is_date()) {
-        return Form::date($field->name(), $field_value, $attributes, $errors);
-      }
-      if ($field->type()->is_time()) {
-        return Form::time($field->name(), $field_value, $attributes, $errors);
-      }
-      if ($field->type()->is_datetime()) {
-        return Form::datetime($field->name(), $field_value, $attributes, $errors);
-      }
-      if ($field->type()->is_text()) {
-        return Form::textarea($field->name(), $field_value, $attributes, $errors);
-      }
-      if ($field->type()->is_enum()) {
-        $enum_values = [];
-        foreach ($field->type()->enum_values() as $e_val) {
-          $enum_values[$e_val] = $e_val;
+        if ($field->is_auto_incremented()) {
+            return Form::hidden($field->name(), $field_value);
+        }
+        if ($field->type()->is_boolean()) {
+            $option_list = $attributes['values'] ?? [0 => 0, 1 => 1];
+            return Form::select($field->name(), $option_list, $field_value, $attributes); //
+        }
+        if ($field->type()->is_integer()) {
+            return Form::input($field->name(), $field_value, $attributes, $errors);
+        }
+        if ($field->type()->is_year()) {
+            $attributes['size'] = $attributes['maxlength'] = 4;
+            return Form::input($field->name(), $field_value, $attributes, $errors);
+        }
+        if ($field->type()->is_date()) {
+            return Form::date($field->name(), $field_value, $attributes, $errors);
+        }
+        if ($field->type()->is_time()) {
+            return Form::time($field->name(), $field_value, $attributes, $errors);
+        }
+        if ($field->type()->is_datetime()) {
+            return Form::datetime($field->name(), $field_value, $attributes, $errors);
+        }
+        if ($field->type()->is_text()) {
+            return Form::textarea($field->name(), $field_value, $attributes, $errors);
+        }
+        if ($field->type()->is_enum()) {
+            $enum_values = [];
+            foreach ($field->type()->enum_values() as $e_val) {
+                $enum_values[$e_val] = $e_val;
+            }
+
+            $selected = $attributes['value'] ?? $field_value ?? '';
+          // foreach($field->)
+            return Form::select($field->name(), $enum_values, $selected, $attributes); //
+
+          // throw new \Exception('ENUM IS NOT HANDLED BY TableToFom');
+        }
+        if ($field->type()->is_string()) {
+            $max_length = $field->type()->length();
+            $attributes['size'] = $attributes['maxlength'] = $max_length;
+            return Form::input($field->name(), $field_value, $attributes, $errors);
         }
 
-        $selected = $attributes['value'] ?? $field_value ?? '';
-        // foreach($field->)
-        return Form::select($field->name(), $enum_values, $selected, $attributes); //
-
-        // throw new \Exception('ENUM IS NOT HANDLED BY TableToFom');
-      }
-      if ($field->type()->is_string()) {
-        $max_length = $field->type()->length();
-        $attributes['size'] = $attributes['maxlength'] = $max_length;
         return Form::input($field->name(), $field_value, $attributes, $errors);
-      }
-
-      return Form::input($field->name(), $field_value, $attributes, $errors);
     }
 
     private static function computeFieldValue($model, $field_name)
     {
-      if (method_exists($model, $field_name)) {
-        return $model->$field_name();
-      }
+        if (method_exists($model, $field_name)) {
+            return $model->$field_name();
+        }
 
-      if (property_exists($model, $field_name)) {
-        return $model->$field_name;
-      }
+        if (property_exists($model, $field_name)) {
+            return $model->$field_name;
+        }
 
-      return '';
+        return '';
     }
-
 }

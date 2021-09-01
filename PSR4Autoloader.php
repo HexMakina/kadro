@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro;
 
-use \HexMakina\LocalFS\FileSystem;
+use HexMakina\LocalFS\FileSystem;
 
 class PSR4Autoloader
 {

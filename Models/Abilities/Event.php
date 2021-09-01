@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Models\Abilities;
 
-use \HexMakina\Tempus\Dato;
+use HexMakina\Tempus\Dato;
 
 trait Event
 {

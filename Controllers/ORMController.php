@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use \HexMakina\TightORM\Interfaces\ModelInterface;
-use \HexMakina\LeMarchand\LeMarchand;
+use HexMakina\TightORM\Interfaces\ModelInterface;
+use HexMakina\LeMarchand\LeMarchand;
 
 abstract class ORMController extends KadroController implements Interfaces\ORMControllerInterface
 {

@@ -3,10 +3,10 @@
 namespace HexMakina\kadro\Controllers;
 
 use Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
-use \HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
-use \HexMakina\Hopper\RouterInterface;
-use \HexMakina\LogLaddy\LoggerInterface;
-use \HexMakina\LeMarchand\LeMarchand;
+use HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
+use HexMakina\Hopper\RouterInterface;
+use HexMakina\LogLaddy\LoggerInterface;
+use HexMakina\LeMarchand\LeMarchand;
 
 class BaseController implements Interfaces\BaseControllerInterface, \Psr\Container\ContainerInterface
 {
@@ -24,12 +24,12 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
 
     public function has($key)
     {
-      return LeMarchand::box()->has($key);
+        return LeMarchand::box()->has($key);
     }
 
     public function get($key)
     {
-      return LeMarchand::box()->get($key);
+        return LeMarchand::box()->get($key);
     }
 
     public function add_error($message, $context = [])

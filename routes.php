@@ -1,10 +1,12 @@
 <?php
 return [
+  // --- auth
   ['GET', 'checkin', 'ReceptionController::checkin', 'checkin'],
   ['GET', 'checkout', 'ReceptionController::checkout', 'checkout'],
   ['POST', 'identify', 'ReceptionController::identify', 'identify'],
   ['GET', 'operator/[*:username]/toggle/active', 'OperatorController::change_active', 'operator_change_active'],
   ['GET', 'operator/[*:username]/change-acl/[i:permission_id]', 'OperatorController::change_acl', 'acl_toggle'],
+
   // --- SEARCH
   ['POST|GET', 'search', 'SearchController::results', 'search'],
 

@@ -20,7 +20,7 @@ class ReceptionController extends KadroController
             $this->identify($operator);
         }
 
-        $Controller = $this->router()->target_controller();
+        $Controller = $this->router()->targetController();
         $Controller = $this->get($Controller);
 
 

@@ -29,7 +29,7 @@
     {/block}
   </header>
   
-  <form action="{block name=form_action}{$controller->router()->prehop('identify')}{/block}" method="POST">
+  <form action="{block name=form_action}{$controller->router()->hyp('identify')}{/block}" method="POST">
     {Form::input('username', '', ['required', 'autofocus'])}
     <label for="username">{block name=label_username}{L('USERNAME')}{/block}</label>
 

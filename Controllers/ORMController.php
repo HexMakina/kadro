@@ -175,8 +175,8 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
         $this->viewport('listing_fields', $listing_fields);
         $this->viewport('listing_template', $listing_template);
 
-        $this->viewport('route_new', $this->router()->prehop($class_name::model_type() . '_new'));
-        $this->viewport('route_export', $this->router()->prehop($class_name::model_type() . '_export'));
+        $this->viewport('route_new', $this->router()->hyp($class_name::model_type() . '_new'));
+        $this->viewport('route_export', $this->router()->hyp($class_name::model_type() . '_export'));
     }
 
     public function copy()
@@ -319,7 +319,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
                 $filename = $this->model_type;
                 $collection = $this->modelClassName()::listing();
                 $file_path = $this->collection_to_csv($collection, $filename);
-                $this->router()->send_file($file_path);
+                $this->router()->sendFile($file_path);
                 break;
 
             case 'xlsx':
@@ -330,12 +330,12 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     public function route_new(ModelInterface $model): string
     {
-        return $this->router()->prehop(get_class($model)::model_type() . '_new');
+        return $this->router()->hyp(get_class($model)::model_type() . '_new');
     }
 
     public function route_list(ModelInterface $model): string
     {
-        return $this->router()->prehop(get_class($model)::model_type());
+        return $this->router()->hyp(get_class($model)::model_type());
     }
 
     public function route_model(ModelInterface $model): string
@@ -349,7 +349,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
             $route_name .= 'default';
             $route_params = ['id' => $model->get_id()];
         }
-        $res = $this->router()->prehop($route_name, $route_params);
+        $res = $this->router()->hyp($route_name, $route_params);
         return $res;
     }
 

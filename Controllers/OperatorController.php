@@ -80,7 +80,7 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
             $this->logger()->warning($this->l('CRUDITES_ERR_QUERY_FAILED'));
         }
 
-        $this->router()->hop_back();
+        $this->router()->hopBack();
     }
 
     public function change_acl()
@@ -103,6 +103,6 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
             $row->wipe();
         }
         // force reload for permission purposes
-        $this->router()->hop_back();
+        $this->router()->hopBack();
     }
 }

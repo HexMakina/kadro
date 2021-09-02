@@ -1,4 +1,4 @@
-<a href="{$controller->router()->prehop('operator_change_active', ['username' => $operator->get('username')])}"  
+<a href="{$controller->router()->hyp('operator_change_active', ['username' => $operator->get('username')])}"  
    class="w3-button w3-primary w3-block">
   {if $operator->is_active()}{L('KADRO_operator_DISABLE')}{else}{L('KADRO_operator_ENABLE')}{/if}
 </a>

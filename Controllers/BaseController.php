@@ -80,7 +80,7 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
     {
         $ret = null;
 
-        $method = $this->router()->target_method();
+        $method = $this->router()->targetMethod();
 
       // before and after hooks, should they be in basecontroller ?
       // i think so, but pascal just proposed me pastis.. tomorrow
@@ -127,7 +127,7 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
     public function route_back($route_name = null, $route_params = []): string
     {
         if (is_null($route_name)) {
-            return $this->route_back ?? $this->router()->prehop(RouterInterface::ROUTE_HOME_NAME);
+            return $this->route_back ?? $this->router()->hyp(RouterInterface::ROUTE_HOME_NAME);
         }
 
         return $this->route_back = $this->route_factory($route_name, $route_params);
@@ -138,8 +138,8 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
         $route = null;
 
         if (is_string($route_name) && !empty($route_name)) {
-            if ($this->router()->route_exists($route_name)) {
-                $route = $this->router()->prehop($route_name, $route_params);
+            if ($this->router()->routeExists($route_name)) {
+                $route = $this->router()->hyp($route_name, $route_params);
             } else {
                 $route = $route_name;
             }

@@ -16,7 +16,7 @@ class TradukoController extends \HexMakina\kadro\Controllers\ORMController
 
     public function route_back($route_name = null, $route_params = []): string
     {
-        return $this->router()->prehop('traduko');
+        return $this->router()->hyp('traduko');
     }
 
     public function update_file($lang = 'fra')

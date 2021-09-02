@@ -3,7 +3,7 @@
 namespace HexMakina\kadro;
 
 use HexMakina\Debugger\Debugger;
-use HexMakina\Hopper\hopper;
+use HexMakina\Hopper\Hopper;
 use HexMakina\LeMarchand\LeMarchand;
 use HexMakina\Lezer\Lezer;
 use HexMakina\LogLaddy\LogLaddy;
@@ -66,10 +66,10 @@ class kadro
 
     private static function routing()
     {
-        $Hup = new \HexMakina\Hopper\hopper(require(__DIR__.'/routes.php'));
-        $Hup->setBasePath(self::$box->get('settings.hopper.web_base'));
-        $Hup->setFilePath(self::$box->get('settings.hopper.file_root'));
-        $Hup->mapHomeRoute(self::$box->get('settings.hopper.route_home'));
+        $Hup = new \HexMakina\Hopper\Hopper(require(__DIR__.'/routes.php'));
+        $Hup->basePath(self::$box->get('settings.Hopper.web_base'));
+        $Hup->filePath(self::$box->get('settings.Hopper.file_root'));
+        $Hup->mapHomeRoute(self::$box->get('settings.Hopper.route_home'));
         return $Hup;
     }
 

@@ -8,7 +8,7 @@
 
         "hexmakina/crudites": "0.0.*",
         "hexmakina/hopper": "0.0.*",
-        "hexmakina/le-marchand": "^0.0.5",
+        "hexmakina/le-marchand": "0.0.*",
         "hexmakina/lezer" : "0.0.*",
         "hexmakina/local-fs" : "0.0.*",
         "hexmakina/log-laddy": "0.0.*",
@@ -16,10 +16,10 @@
         "hexmakina/tempus": "0.0.*",
         "hexmakina/tight-orm": "0.0.*",
 
-        "hexmakina/debugger": "^0.1.0",
-        "hexmakina/smith": "^0.1.0",
-        "hexmakina/traitor": "^0.1.0",
-        "hexmakina/tracer": "^0.1.0"
+        "hexmakina/debugger": "0.1.*",
+        "hexmakina/smith": "0.1.*",
+        "hexmakina/traitor": "0.1.*",
+        "hexmakina/tracer": "0.1.*"
     },
     "license": "mit",
     "authors": [

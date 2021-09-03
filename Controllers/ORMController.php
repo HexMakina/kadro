@@ -154,8 +154,9 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     {
         $listing_fields = [];
         if (empty($listing)) {
+            $hidden_columns = ['created_by', 'created_on', 'password'];
             foreach ($class_name::table()->columns() as $column) {
-                if (!$column->is_auto_incremented() && !$column->is_hidden()) {
+                if (!$column->isAutoIncremented() && !in_array($column->name(), $hidden_columns)) {
                     $listing_fields[$column->name()] = $this->l(sprintf('MODEL_%s_FIELD_%s', $class_name::model_type(), $column->name()));
                 }
             }
@@ -369,7 +370,7 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
     private function sanitize_post_data($post_data = [])
     {
         foreach ($this->modelClassName()::table()->columns() as $col) {
-            if ($col->type()->is_boolean()) {
+            if ($col->type()->isBoolean()) {
                 $post_data[$col->name()] = !empty($post_data[$col->name()]);
             }
         }

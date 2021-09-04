@@ -37,27 +37,27 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
         $this->errors[] = [$message, $context];
     }
 
-  // -------- Controller Container
-    public function set_container(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
-    public function container(): ContainerInterface
-    {
-        return $this->container;
-    }
+  // // -------- Controller Container
+  //   public function set_container(ContainerInterface $container)
+  //   {
+  //       $this->container = $container;
+  //   }
+  //
+  //   public function container(): ContainerInterface
+  //   {
+  //       return $this->container;
+  //   }
 
   // shortcut for (un)boxing
-    public function box($key, $instance = null)
-    {
-        if (!is_null($instance)) {
-            $this->container->put($key, $instance);
-        }
-
-      // dd($this->container->get($key));
-        return $this->container->get($key);
-    }
+    // public function box($key, $instance = null)
+    // {
+    //     if (!is_null($instance)) {
+    //         $this->container->put($key, $instance);
+    //     }
+    //
+    //   // dd($this->container->get($key));
+    //     return $this->container->get($key);
+    // }
 
     public function logger(): LoggerInterface
     {

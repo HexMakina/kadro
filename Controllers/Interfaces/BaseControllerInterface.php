@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers\Interfaces;
 
-use Psr\Container\ContainerInterface;
+// use Psr\Container\ContainerInterface;
 use HexMakina\kadro\Auth\OperatorInterface;
 use HexMakina\Hopper\RouterInterface;
 use HexMakina\LogLaddy\LoggerInterface;
@@ -12,8 +12,8 @@ interface BaseControllerInterface
     public function router(): RouterInterface;
     public function logger(): LoggerInterface;
 
-    public function container(): ContainerInterface;
-    public function set_container(ContainerInterface $container);
+    // public function container(): ContainerInterface;
+    // public function set_container(ContainerInterface $container);
 
     public function prepare();
     public function execute();

@@ -128,7 +128,7 @@ class TableToForm
 
           // throw new \Exception('ENUM IS NOT HANDLED BY TableToFom');
         }
-        if ($field->type()->is_string()) {
+        if ($field->type()->isString()) {
             $max_length = $field->type()->getLength();
             $attributes['size'] = $attributes['maxlength'] = $max_length;
             return Form::input($field->name(), $field_value, $attributes, $errors);

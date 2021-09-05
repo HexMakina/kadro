@@ -13,7 +13,7 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\Crudites\Crudites;
-use HexMakina\kadro\Auth\{Operator,OperatorInterface,ACL,AccessRefusedException};
+use HexMakina\kadro\Auth\{ACL,AccessRefusedException};
 
 class Operator extends \HexMakina\kadro\Controllers\ORM
 {
@@ -68,12 +68,12 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
     {
         parent::authorize('group_admin');
 
-        $operator = Operator::one($this->router()->params());
+        $operator = $this->modelClassName()::one($this->router()->params());
         if ($operator->username() == $this->operator()->username()) {
             throw new AccessRefusedException();
         }
 
-        if (Operator::toggle_boolean(Operator::table_name(), 'active', $operator->operator_id()) === true) {
+        if ($this->modelClassName()::toggle_boolean($this->modelClassName()::table_name(), 'active', $operator->operator_id()) === true) {
             $confirmation_message = $operator->is_active() ? 'KADRO_operator_DISABLED' : 'KADRO_operator_ENABLED';
             $this->logger()->nice($this->l($confirmation_message, [$operator->name()]));
         } else {
@@ -87,7 +87,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
     {
         parent::authorize('group_admin');
 
-        $operator = Operator::one(['username' => $this->router()->params('username')]);
+        $operator = $this->modelClassName()::one(['username' => $this->router()->params('username')]);
         if ($operator->username() == $this->operator()->username()) {
             throw new AccessRefusedException();
         }

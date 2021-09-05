@@ -5,7 +5,7 @@ namespace HexMakina\kadro\Controllers;
 use HexMakina\TightORM\Interfaces\ModelInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
-abstract class ORMController extends KadroController implements Interfaces\ORMControllerInterface
+abstract class ORM extends Kadro implements Interfaces\ORMInterface
 {
     protected $model_class_name = null;
     protected $model_type = null;
@@ -101,13 +101,13 @@ abstract class ORMController extends KadroController implements Interfaces\ORMCo
 
     // CoC class name by
     // 1. replacing namespace Controllers by Models
-    // 2. removing the Controller from classname
+    // 2. removing the  from classname
     // overwrite this behavior by setting the model_class_name at controller construction
     public function modelClassName(): string
     {
         if (is_null($this->model_class_name)) {
-            preg_match(LeMarchand::RX_CLASS_NAME, get_called_class(), $m);
-            $this->model_class_name = $this->get($m[1] . 'Class');
+            preg_match(LeMarchand::RX_MVC, get_called_class(), $m);
+            $this->model_class_name = $this->get('Models\\'.$m[2].'::class');
         }
 
         return $this->model_class_name;

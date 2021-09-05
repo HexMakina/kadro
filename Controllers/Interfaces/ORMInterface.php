@@ -4,7 +4,7 @@ namespace HexMakina\kadro\Controllers\Interfaces;
 
 use HexMakina\TightORM\Interfaces\ModelInterface;
 
-interface ORMControllerInterface
+interface ORMInterface
 {
     // ORM class tranlator
     public function modelClassName(): string;

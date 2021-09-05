@@ -15,7 +15,7 @@ namespace HexMakina\kadro\Controllers;
 use HexMakina\Crudites\Crudites;
 use HexMakina\kadro\Auth\{Operator,OperatorInterface,ACL,AccessRefusedException};
 
-class OperatorController extends \HexMakina\kadro\Controllers\ORMController
+class Operator extends \HexMakina\kadro\Controllers\ORM
 {
 
     public function edit()

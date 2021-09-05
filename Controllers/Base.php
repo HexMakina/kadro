@@ -8,11 +8,10 @@ use HexMakina\Hopper\RouterInterface;
 use HexMakina\LogLaddy\LoggerInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
-class BaseController implements Interfaces\BaseControllerInterface, \Psr\Container\ContainerInterface
+class Base implements Interfaces\BaseControllerInterface, \Psr\Container\ContainerInterface
 {
     use \HexMakina\Traitor\Traitor;
 
-    protected $container = null;
     protected $route_back = null;
     protected $errors = [];
 
@@ -21,15 +20,18 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
         return $this->errors;
     }
 
-
+    public function container(): ContainerInterface
+    {
+      return LeMarchand::box();
+    }
     public function has($key)
     {
-        return LeMarchand::box()->has($key);
+        return $this->container()->has($key);
     }
 
     public function get($key)
     {
-        return LeMarchand::box()->get($key);
+        return $this->container()->get($key);
     }
 
     public function add_error($message, $context = [])
@@ -37,34 +39,12 @@ class BaseController implements Interfaces\BaseControllerInterface, \Psr\Contain
         $this->errors[] = [$message, $context];
     }
 
-  // // -------- Controller Container
-  //   public function set_container(ContainerInterface $container)
-  //   {
-  //       $this->container = $container;
-  //   }
-  //
-  //   public function container(): ContainerInterface
-  //   {
-  //       return $this->container;
-  //   }
-
-  // shortcut for (un)boxing
-    // public function box($key, $instance = null)
-    // {
-    //     if (!is_null($instance)) {
-    //         $this->container->put($key, $instance);
-    //     }
-    //
-    //   // dd($this->container->get($key));
-    //     return $this->container->get($key);
-    // }
-
     public function logger(): LoggerInterface
     {
         return $this->get('LoggerInterface');
     }
 
-  // -------- Controller Router
+  // --------  Router
 
     public function router(): RouterInterface
     {

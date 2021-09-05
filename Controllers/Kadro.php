@@ -5,7 +5,7 @@ namespace HexMakina\kadro\Controllers;
 use HexMakina\kadro\Auth\{AccessRefusedException, AuthControllerInterface, OperatorInterface};
 use HexMakina\kadro\Controllers\Interfaces\IntlControllerInterface;
 
-class KadroController extends DisplayController implements AuthControllerInterface, IntlControllerInterface
+class Kadro extends Display implements AuthControllerInterface, IntlControllerInterface
 {
     private $translation_function_name = 'L';
 

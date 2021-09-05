@@ -2,11 +2,11 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\kadro\Models\Traduko;
 use HexMakina\LocalFS\Text\JSON;
 
-class TradukoController extends \HexMakina\kadro\Controllers\ORMController
+class Traduko extends \HexMakina\kadro\Controllers\ORM
 {
+
     const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
 
     public function authorize($permission = null): bool

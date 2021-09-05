@@ -6,7 +6,7 @@ use HexMakina\kadro\Auth\{Operator,Permission,ACL};
 use HexMakina\kadro\Auth\{OperatorInterface,AccessRefusedException};
 use HexMakina\LeMarchand\LeMarchand;
 
-class ReceptionController extends KadroController
+class Reception extends Kadro
 {
     public function requires_operator(): bool
     {
@@ -20,11 +20,11 @@ class ReceptionController extends KadroController
             $this->identify($operator);
         }
 
-        $Controller = $this->router()->targetController();
-        $Controller = $this->get($Controller);
+        $target_controller = $this->router()->targetController();
+        $target_controller = $this->get('Controllers\\'.$target_controller);
 
 
-        if ($Controller->requires_operator()) {
+        if ($target_controller->requires_operator()) {
             if (is_null($operator = get_class($operator)::exists($this->get('StateAgent')->operatorId()))) {
                 $this->router()->hop('checkin');
             }

@@ -2,11 +2,11 @@
 
 namespace HexMakina\kadro\Controllers;
 
-class DisplayController extends BaseController implements Interfaces\DisplayControllerInterface
+class Display extends Base implements Interfaces\DisplayControllerInterface
 {
     protected $template_variables = [];
 
-  // DisplayController is BaseController with a display function
+  // Display is Base with a display function
     public function execute()
     {
         $custom_template = parent::execute();

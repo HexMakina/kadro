@@ -3,12 +3,14 @@
 namespace HexMakina\kadro\Controllers;
 
 use Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
-use HexMakina\kadro\Auth\{OperatorInterface, AccessRefusedException};
-use HexMakina\Hopper\RouterInterface;
+use HexMakina\kadro\Auth\AccessRefusedException;
+use HexMakina\Interfaces\Auth\OperatorInterface;
+use HexMakina\Interfaces\RouterInterface;
+use HexMakina\Interfaces\Controllers\BaseControllerInterface;
 use HexMakina\LogLaddy\LoggerInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
-class Base implements Interfaces\BaseControllerInterface, \Psr\Container\ContainerInterface
+class Base implements BaseControllerInterface, ContainerInterface
 {
     use \HexMakina\Traitor\Traitor;
 
@@ -24,6 +26,7 @@ class Base implements Interfaces\BaseControllerInterface, \Psr\Container\Contain
     {
       return LeMarchand::box();
     }
+
     public function has($key)
     {
         return $this->container()->has($key);

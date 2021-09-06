@@ -2,10 +2,11 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\TightORM\Interfaces\ModelInterface;
+use HexMakina\Interfaces\ORM\ModelInterface;
+use HexMakina\Interfaces\Controllers\ORMInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
-abstract class ORM extends Kadro implements Interfaces\ORMInterface
+abstract class ORM extends Kadro implements ORMInterface
 {
     protected $model_class_name = null;
     protected $model_type = null;
@@ -360,7 +361,7 @@ abstract class ORM extends Kadro implements Interfaces\ORMInterface
             $route = $this->formModel();
         }
 
-        if (!is_null($route) && is_subclass_of($route, '\HexMakina\TightORM\Interfaces\ModelInterface')) {
+        if (!is_null($route) && is_subclass_of($route, '\HexMakina\Interfaces\ORM\ModelInterface')) {
             $route = $this->route_model($route);
         }
 

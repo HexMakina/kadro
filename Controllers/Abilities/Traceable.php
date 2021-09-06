@@ -2,10 +2,10 @@
 
 namespace HexMakina\kadro\Controllers\Abilities;
 
-use HexMakina\Tracer\TracerInterface;
+use HexMakina\Interfaces\Database\TracerInterface;
 use HexMakina\Tracer\Trace;
-use HexMakina\TightORM\Interfaces\ModelInterface;
-use HexMakina\kadro\Auth\OperatorInterface;
+use HexMakina\Interfaces\ORM\ModelInterface;
+use HexMakina\Interfaces\Auth\OperatorInterface;
 use Psr\Container\ContainerInterface;
 
 trait Traceable

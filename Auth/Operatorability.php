@@ -2,7 +2,8 @@
 
 namespace HexMakina\kadro\Auth;
 
-use HexMakina\TightORM\Interfaces\ModelInterface;
+use HexMakina\Interfaces\Auth\OperatorInterface;
+use HexMakina\Interfaces\ORM\ModelInterface;
 
 trait Operatorability
 {

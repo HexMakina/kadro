@@ -2,7 +2,9 @@
 
 namespace HexMakina\kadro\Controllers;
 
-class Display extends Base implements Interfaces\DisplayControllerInterface
+use HexMakina\Interfaces\Controllers\DisplayControllerInterface;
+
+class Display extends Base implements DisplayControllerInterface
 {
     protected $template_variables = [];
 

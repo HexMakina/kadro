@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Models;
 
-use HexMakina\Crudites\Interfaces\SelectInterface;
+use HexMakina\Interfaces\Database\SelectInterface;
 use HexMakina\TightORM\TightModel;
 
 class Traduko extends TightModel

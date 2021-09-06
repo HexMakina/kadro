@@ -2,7 +2,8 @@
 
 namespace HexMakina\kadro\Auth;
 
-use HexMakina\Crudites\Interfaces\SelectInterface;
+use HexMakina\Interfaces\Database\SelectInterface;
+use HexMakina\Interfaces\Auth\OperatorInterface;
 use HexMakina\TightORM\{TightModel,RelationManyToMany};
 
 class Operator extends TightModel implements OperatorInterface

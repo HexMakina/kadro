@@ -10,18 +10,15 @@ use Psr\Container\ContainerInterface;
 
 trait Traceable
 {
-  // abstract public function container(): ContainerInterface;
-  // abstract public function get_tracer() : TracerInterface;
-  //
+
     abstract public function formModel(): ModelInterface;
     abstract public function load_model(): ?ModelInterface;
     abstract public function operator(): OperatorInterface;
-    abstract public function container(): ContainerInterface;
     abstract public function table_name(): string;
 
     public function getTracer(): TracerInterface
     {
-        return $this->container()->get('TracerInterface');
+        return $this->get('TracerInterface');
     }
 
     public function TraceableTraitor_after_save()

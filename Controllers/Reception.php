@@ -43,7 +43,7 @@ class Reception extends Kadro
     public function checkin()
     {
         $this->display('checkin', 'standalone');
-        $this->logger()->cleanUserReport();
+        $this->get('HexMakina\Interfaces\StateAgentInterface')->resetMessages();
     }
 
     public function checkout()

@@ -48,7 +48,7 @@ class Display extends Base implements DisplayControllerInterface
 
         $this->viewport('controller', $this);
 
-        $this->viewport('user_messages', $this->logger()->getUserReport());
+        $this->viewport('user_messages', $this->get('HexMakina\Interfaces\StateAgentInterface')->messages());
 
         $this->viewport('web_root', $this->router()->webRoot());
         $this->viewport('view_path', $this->router()->filePath() . $this->get('settings.smarty.template_path') . 'app/');

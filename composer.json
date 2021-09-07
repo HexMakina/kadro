@@ -13,7 +13,7 @@
         "hexmakina/log-laddy": "0.0.*",
         "hexmakina/tempus": "0.0.*",
         "hexmakina/tight-orm": "0.0.*",
-
+        "hexmakina/interfaces": "0.0.*",
         "hexmakina/debugger": "0.1.*",
         "hexmakina/hopper": "0.1.*",
         "hexmakina/marker": "0.1.*",

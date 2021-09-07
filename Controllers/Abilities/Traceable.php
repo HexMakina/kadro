@@ -14,7 +14,7 @@ trait Traceable
     abstract public function formModel(): ModelInterface;
     abstract public function load_model(): ?ModelInterface;
     abstract public function operator(): OperatorInterface;
-    abstract public function table_name(): string;
+
 
     public function getTracer(): TracerInterface
     {
@@ -24,7 +24,7 @@ trait Traceable
     public function TraceableTraitor_after_save()
     {
         $trace = new Trace();
-        $trace->tableName($this->table_name());
+        $trace->tableName(get_class($this->formModel())::table_name());
 
         if (is_null($this->load_model())) {
             $trace->isInsert(true);

@@ -17,7 +17,7 @@
         "hexmakina/debugger": "0.1.*",
         "hexmakina/hopper": "0.1.*",
         "hexmakina/marker": "0.1.*",
-        "hexmakina/smith": "0.1.*",
+        "hexmakina/state-agent": "0.1.*",
         "hexmakina/traitor": "0.1.*",
         "hexmakina/tracer": "0.1.*"
     },

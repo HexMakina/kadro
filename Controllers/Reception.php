@@ -34,7 +34,7 @@ class Reception extends Kadro
                 $this->checkout();
                 throw new AccessRefusedException();
             }
-            LeMarchand::box()->put('OperatorInterface', $operator);
+            LeMarchand::box()->put('HexMakina\Interfaces\Auth\OperatorInterface', $operator);
         }
 
         return $operator;

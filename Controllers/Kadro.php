@@ -23,7 +23,7 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
 
     public function operator(): OperatorInterface
     {
-        return $this->get('OperatorInterface');
+        return $this->get('HexMakina\Interfaces\Auth\OperatorInterface');
     }
 
     // returns true or throws AccessRefusedException

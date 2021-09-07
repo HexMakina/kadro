@@ -44,14 +44,14 @@ class Base implements BaseControllerInterface, ContainerInterface
 
     public function logger(): LoggerInterface
     {
-        return $this->get('LoggerInterface');
+        return $this->get('Psr\Log\LoggerInterface');
     }
 
   // --------  Router
 
     public function router(): RouterInterface
     {
-        return $this->get('RouterInterface');
+        return $this->get('HexMakina\Interfaces\RouterInterface');
     }
 
     public function prepare()

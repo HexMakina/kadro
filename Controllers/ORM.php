@@ -114,10 +114,10 @@ abstract class ORM extends Kadro implements ORMInterface
         return $this->model_class_name;
     }
 
-    public function table_name(): string
-    {
-        return $this->modelClassName()::table_name();
-    }
+    // public function table_name(): string
+    // {
+    //     return $this->modelClassName()::table_name();
+    // }
 
     public function model_type_to_label($model = null)
     {

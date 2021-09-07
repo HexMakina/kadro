@@ -25,16 +25,16 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
             $locale_path = $this->get('settings.locale.directory_path') . '/' . $this->get('settings.locale.file_name');
             self::create_file($locale_path, $lang);
 
-            $this->logger()->nice($this->l('KADRO_SYSTEM_FILE_UPDATED'));
-        } catch (\Exception $e) {
             $this->logger()->notice($this->l('KADRO_SYSTEM_FILE_UPDATED'));
+        } catch (\Exception $e) {
+            $this->logger()->warning($this->l('KADRO_SYSTEM_FILE_UPDATED'));
         }
         $this->router()->hop('traduko');
     }
 
     public static function create_file($locale_path, $lang)
     {
-        $res = Traduko::filter(['lang' => $lang]);
+        $res = $this->modelClassName()::filter(['lang' => $lang]);
         $assoc = [];
         foreach ($res as $id => $trad) {
             if (!isset($assoc[$trad->kategorio])) {

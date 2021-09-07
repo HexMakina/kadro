@@ -75,7 +75,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
 
         if ($this->modelClassName()::toggle_boolean($this->modelClassName()::table_name(), 'active', $operator->operator_id()) === true) {
             $confirmation_message = $operator->is_active() ? 'KADRO_operator_DISABLED' : 'KADRO_operator_ENABLED';
-            $this->logger()->nice($this->l($confirmation_message, [$operator->name()]));
+            $this->logger()->notice($this->l($confirmation_message, [$operator->name()]));
         } else {
             $this->logger()->warning($this->l('CRUDITES_ERR_QUERY_FAILED'));
         }

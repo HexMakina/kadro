@@ -69,7 +69,7 @@ class Reception extends Kadro
             }
 
             $this->get('StateAgent')->operatorId($operator->get_id());
-            $this->logger()->nice($this->l('PAGE_CHECKIN_WELCOME', [$operator->name()]));
+            $this->logger()->notice($this->l('PAGE_CHECKIN_WELCOME', [$operator->name()]));
             $this->router()->hop();
         } catch (\Exception $e) {
             $this->logger()->warning($this->l('KADRO_operator_' . $e->getMessage()));

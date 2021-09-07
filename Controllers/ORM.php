@@ -209,7 +209,7 @@ abstract class ORM extends Kadro implements ORMInterface
     {
         $this->errors = $model->save($this->operator()->operator_id()); // returns [errors]
         if (empty($this->errors())) {
-            $this->logger()->nice($this->l('CRUDITES_INSTANCE_ALTERED', [$this->l('MODEL_' . get_class($model)::model_type() . '_INSTANCE')]));
+            $this->logger()->notice($this->l('CRUDITES_INSTANCE_ALTERED', [$this->l('MODEL_' . get_class($model)::model_type() . '_INSTANCE')]));
             return $model;
         }
         foreach ($this->errors() as $field => $error_msg) {
@@ -271,7 +271,7 @@ abstract class ORM extends Kadro implements ORMInterface
             $this->logger()->info($this->l('CRUDITES_ERR_INSTANCE_IS_UNDELETABLE', ['' . $this->load_model]));
             $this->route_back($this->load_model);
         } else {
-            $this->logger()->nice($this->l('CRUDITES_INSTANCE_DESTROYED', [$this->l('MODEL_' . $this->model_type . '_INSTANCE')]));
+            $this->logger()->notice($this->l('CRUDITES_INSTANCE_DESTROYED', [$this->l('MODEL_' . $this->model_type . '_INSTANCE')]));
             $this->route_back($this->model_type);
         }
     }

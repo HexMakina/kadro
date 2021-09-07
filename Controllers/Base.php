@@ -7,7 +7,7 @@ use HexMakina\kadro\Auth\AccessRefusedException;
 use HexMakina\Interfaces\Auth\OperatorInterface;
 use HexMakina\Interfaces\RouterInterface;
 use HexMakina\Interfaces\Controllers\BaseControllerInterface;
-use HexMakina\LogLaddy\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
 class Base implements BaseControllerInterface, ContainerInterface

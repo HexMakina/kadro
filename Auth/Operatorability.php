@@ -75,14 +75,14 @@ trait Operatorability
         return $Query;
     }
 
-    public function is_active(): bool
+    public function isActive(): bool
     {
-        return is_null($this->operator()) ? false : $this->operator()->is_active();
+        return is_null($this->operator()) ? false : $this->operator()->isActive();
     }
 
-    public function operator_id()
+    public function operatorId()
     {
-        return is_null($this->operator()) ? null : $this->operator()->operator_id();
+        return is_null($this->operator()) ? null : $this->operator()->operatorId();
     }
 
     public function username()
@@ -95,14 +95,14 @@ trait Operatorability
         return is_null($this->operator()) ? null : $this->operator()->password();
     }
 
-    public function password_change($string)
+    public function passwordChange($string)
     {
-        $this->operator()->password_change($string);
+        $this->operator()->passwordChange($string);
     }
 
-    public function password_verify($string): bool
+    public function passwordVerify($string): bool
     {
-        return $this->operator()->password_verify($string);
+        return $this->operator()->passwordVerify($string);
     }
 
     public function name()
@@ -120,13 +120,13 @@ trait Operatorability
         return is_null($this->operator()) ? null : $this->operator()->phone();
     }
 
-    public function language_code()
+    public function languageCode()
     {
-        return is_null($this->operator()) ? null : $this->operator()->language_code();
+        return is_null($this->operator()) ? null : $this->operator()->languageCode();
     }
 
-    public function has_permission($p): bool
+    public function hasPermission($p): bool
     {
-        return is_null($this->operator()) ? false : $this->operator()->has_permission($p);
+        return is_null($this->operator()) ? false : $this->operator()->hasPermission($p);
     }
 }

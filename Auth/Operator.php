@@ -22,12 +22,12 @@ class Operator extends TightModel implements OperatorInterface
         return $this->get('username');
     }
 
-    public function is_active(): bool
+    public function isActive(): bool
     {
         return !empty($this->get('active'));
     }
 
-    public function operator_id()
+    public function operatorId()
     {
         return $this->get_id();
     }
@@ -42,12 +42,12 @@ class Operator extends TightModel implements OperatorInterface
         return $this->get('password');
     }
 
-    public function password_change($string)
+    public function passwordChange($string)
     {
         $this->set('password', password_hash($this->validate_password($string), PASSWORD_DEFAULT));
     }
 
-    public function password_verify($string): bool
+    public function passwordVerify($string): bool
     {
         return password_verify($this->validate_password($string), $this->password() ?? '');
     }
@@ -66,7 +66,7 @@ class Operator extends TightModel implements OperatorInterface
         return $this->get('phone');
     }
 
-    public function language_code()
+    public function languageCode()
     {
         return $this->get('language_code');
     }
@@ -135,10 +135,10 @@ class Operator extends TightModel implements OperatorInterface
         return $this->permissions;
     }
 
-    public function has_permission($p): bool
+    public function hasPermission($p): bool
     {
       // new instances or inactive operators, none shall pass
-        if ($this->is_new() === true || $this->is_active()  === false) {
+        if ($this->isNew() === true || $this->isActive()  === false) {
             return false;
         }
 

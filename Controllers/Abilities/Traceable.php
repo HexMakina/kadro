@@ -32,7 +32,7 @@ trait Traceable
             $trace->isUpdate(true);
         }
         $trace->tablePk($this->formModel()->get_id());
-        $trace->operatorId($this->operator()->operator_id());
+        $trace->operatorId($this->operator()->operatorId());
 
         $this->getTracer()->trace($trace);
     }
@@ -46,7 +46,7 @@ trait Traceable
 
   // public function trace(TracerInterface $tracer, ModelInterface $model, OperatorInterface $op)
   // {
-  //   $tracer->trace($model->last_alter_query, $op->operator_id(), $model->get_id());
+  //   $tracer->trace($model->last_alter_query, $op->operatorId(), $model->get_id());
   //
   // }
 

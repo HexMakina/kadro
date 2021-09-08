@@ -1,7 +1,7 @@
 {if isset($operator)}
 
   {Form::hidden('operator_username', $operator->username())}
-  {Form::hidden('operator_id', $operator->operator_id())}
+  {Form::hidden('operator_id', $operator->operatorId())}
 
   {TableToForm::field($operator, 'name', ['name'=> 'operator_name', 'label' => L('MODEL_operator_FIELD_name')])}
 

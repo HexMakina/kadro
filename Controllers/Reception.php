@@ -30,7 +30,7 @@ class Reception extends Kadro
                 $this->router()->hop('checkin');
             }
 
-            if (!$operator->is_active()) {
+            if (!$operator->isActive()) {
                 $this->checkout();
                 throw new AccessRefusedException();
             }
@@ -60,11 +60,11 @@ class Reception extends Kadro
 
             $operator = get_class($op)::exists(['username' => $username]);
 
-            if (is_null($operator) || !$operator->is_active()) {
+            if (is_null($operator) || !$operator->isActive()) {
                 throw new \Exception('ERR_DISABLED');
             }
 
-            if (!$operator->password_verify($password)) {
+            if (!$operator->passwordVerify($password)) {
                 throw new \Exception('ERR_WRONG_LOGIN_OR_PASSWORD');
             }
 

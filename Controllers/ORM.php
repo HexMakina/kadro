@@ -207,7 +207,7 @@ abstract class ORM extends Kadro implements ORMInterface
 
     public function persist_model($model): ?ModelInterface
     {
-        $this->errors = $model->save($this->operator()->operator_id()); // returns [errors]
+        $this->errors = $model->save($this->operator()->operatorId()); // returns [errors]
         if (empty($this->errors())) {
             $this->logger()->notice($this->l('CRUDITES_INSTANCE_ALTERED', [$this->l('MODEL_' . get_class($model)::model_type() . '_INSTANCE')]));
             return $model;
@@ -267,7 +267,7 @@ abstract class ORM extends Kadro implements ORMInterface
             throw new \Exception('KADRO_ROUTER_MUST_SUBMIT');
         }
 
-        if ($this->load_model->destroy($this->operator()->operator_id()) === false) {
+        if ($this->load_model->destroy($this->operator()->operatorId()) === false) {
             $this->logger()->info($this->l('CRUDITES_ERR_INSTANCE_IS_UNDELETABLE', ['' . $this->load_model]));
             $this->route_back($this->load_model);
         } else {
@@ -345,7 +345,7 @@ abstract class ORM extends Kadro implements ORMInterface
         $route_params = [];
 
         $route_name = get_class($model)::model_type() . '_';
-        if ($model->is_new()) {
+        if ($model->isNew()) {
             $route_name .= 'new';
         } else {
             $route_name .= 'default';

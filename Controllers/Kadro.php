@@ -34,11 +34,11 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         }
 
         $operator = $this->operator();
-        if (is_null($operator) || $operator->is_new() || !$operator->is_active()) {
+        if (is_null($operator) || $operator->isNew() || !$operator->isActive()) {
             throw new AccessRefusedException();
         }
 
-        if (!is_null($permission) && !$operator->has_permission($permission)) {
+        if (!is_null($permission) && !$operator->hasPermission($permission)) {
             throw new AccessRefusedException();
         }
 

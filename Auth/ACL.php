@@ -62,7 +62,7 @@ class ACL extends \HexMakina\TightORM\TightModel
     {
         $ret = new ACL();
         $ret->set('operator_id', $op->operatorId());
-        $ret->set('permission_id', $p->get_id());
+        $ret->set('permission_id', $p->getId());
         $ret->save($op->operatorId());
         return $ret;
     }

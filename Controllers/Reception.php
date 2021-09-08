@@ -68,7 +68,7 @@ class Reception extends Kadro
                 throw new \Exception('ERR_WRONG_LOGIN_OR_PASSWORD');
             }
 
-            $this->get('StateAgent')->operatorId($operator->get_id());
+            $this->get('StateAgent')->operatorId($operator->getId());
             $this->logger()->notice($this->l('PAGE_CHECKIN_WELCOME', [$operator->name()]));
             $this->router()->hop();
         } catch (\Exception $e) {

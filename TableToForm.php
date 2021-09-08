@@ -73,7 +73,7 @@ class TableToForm
 
             $form_field = '';
             if ($column->isAutoIncremented()) {
-                if (!$model->is_new()) {
+                if (!$model->isNew()) {
                     $form_field = self::field($model, $column_name);
                 }
             } else {

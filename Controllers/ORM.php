@@ -349,7 +349,7 @@ abstract class ORM extends Kadro implements ORMInterface
             $route_name .= 'new';
         } else {
             $route_name .= 'default';
-            $route_params = ['id' => $model->get_id()];
+            $route_params = ['id' => $model->getId()];
         }
         $res = $this->router()->hyp($route_name, $route_params);
         return $res;

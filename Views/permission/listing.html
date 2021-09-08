@@ -12,10 +12,10 @@
 
 {$selected_permissions = $operator->permissions()}
 {foreach $listing as $looper}
-  {$route_looper = $controller->router()->hyp('acl_toggle', ['username' => $operator->username(), 'permission_id' => $looper->get_id()])}
+  {$route_looper = $controller->router()->hyp('acl_toggle', ['username' => $operator->username(), 'permission_id' => $looper->getId()])}
   <tr>
     <td>{ucfirst(L('MODEL_permission_'|cat:$looper->get('name')))}</td>
-    <td><a class="w3-button w3-primary " href="{$route_looper}">{if array_key_exists($looper->get_id(),$selected_permissions)}{L('PAGE_ACTION_DESTROY')}{else}{L('PAGE_ACTION_ADD')}{/if}</a></td>
+    <td><a class="w3-button w3-primary " href="{$route_looper}">{if array_key_exists($looper->getId(),$selected_permissions)}{L('PAGE_ACTION_DESTROY')}{else}{L('PAGE_ACTION_ADD')}{/if}</a></td>
   </tr>
 {/foreach}
 

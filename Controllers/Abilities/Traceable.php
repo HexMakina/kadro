@@ -31,7 +31,7 @@ trait Traceable
         } else {
             $trace->isUpdate(true);
         }
-        $trace->tablePk($this->formModel()->get_id());
+        $trace->tablePk($this->formModel()->getId());
         $trace->operatorId($this->operator()->operatorId());
 
         $this->getTracer()->trace($trace);
@@ -46,7 +46,7 @@ trait Traceable
 
   // public function trace(TracerInterface $tracer, ModelInterface $model, OperatorInterface $op)
   // {
-  //   $tracer->trace($model->last_alter_query, $op->operatorId(), $model->get_id());
+  //   $tracer->trace($model->last_alter_query, $op->operatorId(), $model->getId());
   //
   // }
 
@@ -57,7 +57,7 @@ trait Traceable
   //   return $this->get_tracer()->traces($options);
   //
   //   // $q = $this->get_tracer()->tracing_table()->select();
-  //   // $q->aw_fields_eq(['query_table' => get_class($this)::table_name(), 'query_id' => $this->get_id()]);
+  //   // $q->aw_fields_eq(['query_table' => get_class($this)::table_name(), 'query_id' => $this->getId()]);
   //   // $q->order_by(['query_on', 'DESC']);
   //   // $q->run();
   //   // $res = $q->ret_ass();
@@ -68,6 +68,6 @@ trait Traceable
   // don't really know the purpose of this anymore.. came from Tracer
   // public function traces_by_model(ModelInterface $m)
   // {
-  //     return $this->get_tracer()->traces(['id' => $m->get_id(), 'table' => get_class($m)::table_name()]);
+  //     return $this->get_tracer()->traces(['id' => $m->getId(), 'table' => get_class($m)::table_name()]);
   // }
 }

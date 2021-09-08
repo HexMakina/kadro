@@ -35,7 +35,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
 
     public function save()
     {
-        if ($this->operator()->operatorId() !== $this->formModel()->get_id()) {
+        if ($this->operator()->operatorId() !== $this->formModel()->getId()) {
             $this->authorize('group_admin');
         }
 

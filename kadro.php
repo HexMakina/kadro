@@ -3,11 +3,8 @@
 namespace HexMakina\kadro;
 
 use HexMakina\Debugger\Debugger;
-use HexMakina\Hopper\Hopper;
 use HexMakina\LeMarchand\LeMarchand;
 use HexMakina\Lezer\Lezer;
-use HexMakina\LogLaddy\LogLaddy;
-use HexMakina\Smith\Smith;
 
 class kadro
 {
@@ -20,14 +17,24 @@ class kadro
 
         self::$box = LeMarchand::box($settings);
 
-      //-- logger
-        self::$box->put('LoggerInterface', self::reporting());
+        //-- error & logs & messages
+        error_reporting(E_ALL);
+        ini_set('display_errors', PRODUCTION ? 0 : 1);
 
-      //-- router
-        self::$box->put('RouterInterface', self::routing());
+        $log_laddy = self::$box->get('Psr\Log\LoggerInterface');
 
-      //-- sessions, ans soon cookies
-        self::$box->put('StateAgent', self::state());
+
+        //-- router
+        $router = self::$box->get('HexMakina\Interfaces\RouterInterface');
+        $router->addRoutes(require(__DIR__.'/routes.php'));
+        self::$box->put('HexMakina\Interfaces\RouterInterface', $router);
+
+        //-- session
+        $StateAgent = self::$box->get('HexMakina\Interfaces\StateAgentInterface');
+        $StateAgent->addRuntimeFilters((array)self::$box->get('settings.filter'));
+        $StateAgent->addRuntimeFilters((array)($_SESSION['filter'] ?? []));
+        $StateAgent->addRuntimeFilters((array)($_REQUEST['filter'] ?? []));
+        self::$box->put('StateAgent', $StateAgent);
 
 
         self::internationalisation();
@@ -49,51 +56,6 @@ class kadro
         setcookie('lang', $language, time() + (365 * 24 * 60 * 60), "/", "");
 
         return self::$box;
-    }
-
-
-    private static function reporting(): \HexMakina\LogLaddy\LoggerInterface
-    {
-      //-- logger
-        error_reporting(E_ALL);
-        define('PRODUCTION', $_SERVER['HTTP_HOST'] === self::$box->get('settings.app.production_host'));
-        ini_set('display_errors', PRODUCTION ? 0 : 1);
-
-        $log_laddy = new \HexMakina\LogLaddy\LogLaddy();
-        $log_laddy->setHandlers();
-        return $log_laddy;
-    }
-
-    private static function routing()
-    {
-        $Hup = new \HexMakina\Hopper\Hopper(require(__DIR__.'/routes.php'));
-        $Hup->basePath(self::$box->get('settings.Hopper.web_base'));
-        $Hup->filePath(self::$box->get('settings.Hopper.file_root'));
-        $Hup->mapHomeRoute(self::$box->get('settings.Hopper.route_home'));
-        return $Hup;
-    }
-
-    private static function state()
-    {
-      //--  kuketoj
-      // setcookie('cookie_test', 'test_value', time()+(365 * 24 * 60 * 60), "/", "");
-      // $cookies_enabled=isset($_COOKIE['cookie_test']); // houston, do we have cookies ?
-
-      // if($cookies_enabled === false)
-      // {
-      //   ini_set('session.use_cookies', 0);
-      //   ini_set('session.use_only_cookies', 0);
-      //   ini_set('session.use_trans_sid', 1);
-      //   ini_set('session.cache_limiter', 'nocache');
-      // }
-
-      //--  Session Management
-        $StateAgent = new \HexMakina\Smith\Smith(self::$box->get('settings.app.session_start_options') ?? []);
-        $StateAgent->addRuntimeFilters((array)self::$box->get('settings.filter'));
-        $StateAgent->addRuntimeFilters((array)($_SESSION['filter'] ?? []));
-        $StateAgent->addRuntimeFilters((array)($_REQUEST['filter'] ?? []));
-
-        return $StateAgent;
     }
 
     private static function internationalisation()

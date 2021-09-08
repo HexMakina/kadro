@@ -9,7 +9,7 @@ use HexMakina\LeMarchand\LeMarchand;
 
 class Reception extends Kadro
 {
-    public function requires_operator(): bool
+    public function requiresOperator(): bool
     {
         return false;
     }
@@ -25,7 +25,7 @@ class Reception extends Kadro
         $target_controller = $this->get('Controllers\\'.$target_controller);
 
 
-        if ($target_controller->requires_operator()) {
+        if ($target_controller->requiresOperator()) {
             if (is_null($operator = get_class($operator)::exists($this->get('StateAgent')->operatorId()))) {
                 $this->router()->hop('checkin');
             }

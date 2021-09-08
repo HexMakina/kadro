@@ -15,18 +15,18 @@ abstract class ORM extends Kadro implements ORMInterface
     protected $form_model = null;
 
 
-    public function add_errors($errors)
+    public function addErrors($errors)
     {
         foreach ($errors as $err) {
             if (is_array($err)) {
-                $this->add_error(array_unshift($err), array_unshift($err));
+                $this->addError(array_unshift($err), array_unshift($err));
             } else {
-                $this->add_error($err);
+                $this->addError($err);
             }
         }
     }
 
-    public function load_model(): ?ModelInterface
+    public function loadModel(): ?ModelInterface
     {
         return $this->load_model;
     }
@@ -74,11 +74,11 @@ abstract class ORM extends Kadro implements ORMInterface
 
         if ($this->router()->submits()) {
             $this->formModel()->import($this->sanitize_post_data($this->router()->submitted()));
-            $pk_values = $this->modelClassName()::table()->primary_keys_match($this->router()->submitted());
+            $pk_values = $this->modelClassName()::table()->primaryKeysMatch($this->router()->submitted());
 
             $this->load_model = $this->modelClassName()::exists($pk_values);
         } elseif ($this->router()->requests()) {
-            $pk_values = $this->modelClassName()::table()->primary_keys_match($this->router()->params());
+            $pk_values = $this->modelClassName()::table()->primaryKeysMatch($this->router()->params());
 
             if (!is_null($this->load_model = $this->modelClassName()::exists($pk_values))) {
                 $this->formModel(clone $this->load_model);
@@ -91,11 +91,6 @@ abstract class ORM extends Kadro implements ORMInterface
         //     //$this->tracer()->history_by_model($this->load_model);
         //     $this->viewport('load_model_history', $traces ?? []);
         // }
-    }
-
-    public function has_load_model()
-    {
-        return !empty($this->load_model);
     }
 
     // ----------- META -----------
@@ -185,7 +180,7 @@ abstract class ORM extends Kadro implements ORMInterface
     {
         $this->formModel($this->load_model->copy());
 
-        $this->route_back($this->load_model);
+        $this->routeBack($this->load_model);
         $this->edit();
     }
 
@@ -198,7 +193,7 @@ abstract class ORM extends Kadro implements ORMInterface
         $model = $this->persist_model($this->formModel());
 
         if (empty($this->errors())) {
-            $this->route_back($model);
+            $this->routeBack($model);
         } else {
             $this->edit();
             return 'edit';
@@ -235,7 +230,7 @@ abstract class ORM extends Kadro implements ORMInterface
   // default: hop to altered object
     public function after_save()
     {
-        $this->router()->hop($this->route_back());
+        $this->router()->hop($this->routeBack());
     }
 
     public function destroy_confirm()
@@ -269,16 +264,16 @@ abstract class ORM extends Kadro implements ORMInterface
 
         if ($this->load_model->destroy($this->operator()->operatorId()) === false) {
             $this->logger()->info($this->l('CRUDITES_ERR_INSTANCE_IS_UNDELETABLE', ['' . $this->load_model]));
-            $this->route_back($this->load_model);
+            $this->routeBack($this->load_model);
         } else {
             $this->logger()->notice($this->l('CRUDITES_INSTANCE_DESTROYED', [$this->l('MODEL_' . $this->model_type . '_INSTANCE')]));
-            $this->route_back($this->model_type);
+            $this->routeBack($this->model_type);
         }
     }
 
     public function after_destroy()
     {
-        $this->router()->hop($this->route_back());
+        $this->router()->hop($this->routeBack());
     }
 
     public function conclude()
@@ -355,7 +350,7 @@ abstract class ORM extends Kadro implements ORMInterface
         return $res;
     }
 
-    public function route_factory($route = null, $route_params = []): string
+    public function routeFactory($route = null, $route_params = []): string
     {
         if (is_null($route) && $this->router()->submits()) {
             $route = $this->formModel();
@@ -365,7 +360,7 @@ abstract class ORM extends Kadro implements ORMInterface
             $route = $this->route_model($route);
         }
 
-        return parent::route_factory($route, $route_params);
+        return parent::routeFactory($route, $route_params);
     }
 
     private function sanitize_post_data($post_data = [])

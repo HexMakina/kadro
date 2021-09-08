@@ -37,7 +37,7 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $this->container()->get($key);
     }
 
-    public function add_error($message, $context = [])
+    public function addError($message, $context = [])
     {
         $this->errors[] = [$message, $context];
     }
@@ -95,29 +95,24 @@ class Base implements BaseControllerInterface, ContainerInterface
         return true;
     }
 
-    public function has_route_back(): bool
-    {
-        return is_null($this->route_back);
-    }
-
   /*
    * returns string, a URL formatted by RouterInterface::pre_hop()
    *
    * USAGE
-   * route_back($route_name=null) returns previously set $route_back or RouterInterface::ROUTE_HOME_NAME
-   * route_back($route_name [,$route_params]), sets $route_back using route_factory()
+   * routeBack($route_name=null) returns previously set $route_back or RouterInterface::ROUTE_HOME_NAME
+   * routeBack($route_name [,$route_params]), sets $route_back using routeFactory()
    *
    */
-    public function route_back($route_name = null, $route_params = []): string
+    public function routeBack($route_name = null, $route_params = []): string
     {
         if (is_null($route_name)) {
             return $this->route_back ?? $this->router()->hyp(RouterInterface::ROUTE_HOME_NAME);
         }
 
-        return $this->route_back = $this->route_factory($route_name, $route_params);
+        return $this->route_back = $this->routeFactory($route_name, $route_params);
     }
 
-    public function route_factory($route_name = null, $route_params = []): string
+    public function routeFactory($route_name = null, $route_params = []): string
     {
         $route = null;
 

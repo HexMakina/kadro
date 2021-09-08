@@ -16,7 +16,7 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         return get_called_class();
     }
 
-    public function requires_operator(): bool
+    public function requiresOperator(): bool
     {
         return true; // security by default
     }
@@ -29,7 +29,7 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
     // returns true or throws AccessRefusedException
     public function authorize($permission = null): bool
     {
-        if (!$this->requires_operator()) {
+        if (!$this->requiresOperator()) {
             return true;
         }
 

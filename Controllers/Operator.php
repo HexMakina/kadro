@@ -46,7 +46,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
     {
       //------------------------------------------------------------- PASSWORDS
         if ($this->formModel()->get('password') != $this->formModel()->get('password_verification')) {
-            $this->add_error('KADRO_operator_ERR_PASSWORDS_MISMATCH');
+            $this->addError('KADRO_operator_ERR_PASSWORDS_MISMATCH');
             $this->logger()->warning($this->l('KADRO_operator_ERR_PASSWORDS_MISMATCH'));
             $this->edit();
         }

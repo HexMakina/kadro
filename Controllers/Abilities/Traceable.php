@@ -12,7 +12,7 @@ trait Traceable
 {
 
     abstract public function formModel(): ModelInterface;
-    abstract public function load_model(): ?ModelInterface;
+    abstract public function loadModel(): ?ModelInterface;
     abstract public function operator(): OperatorInterface;
 
 
@@ -26,7 +26,7 @@ trait Traceable
         $trace = new Trace();
         $trace->tableName(get_class($this->formModel())::table_name());
 
-        if (is_null($this->load_model())) {
+        if (is_null($this->loadModel())) {
             $trace->isInsert(true);
         } else {
             $trace->isUpdate(true);

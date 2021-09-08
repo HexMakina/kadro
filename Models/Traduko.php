@@ -7,8 +7,8 @@ use HexMakina\TightORM\TightModel;
 
 class Traduko extends TightModel
 {
-    const TABLE_NAME = 'kadro_traduki';
-    const TABLE_ALIAS = 'traduko';
+    public const TABLE_NAME = 'kadro_traduki';
+    public const TABLE_ALIAS = 'traduko';
 
     public function traceable(): bool
     {

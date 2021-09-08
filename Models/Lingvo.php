@@ -7,23 +7,23 @@ use HexMakina\TightORM\TightModel;
 
 class Lingvo extends TightModel
 {
-    const TABLE_NAME = 'kartisto_ISO639';
+    public const TABLE_NAME = 'kartisto_ISO639';
 
-    const ISO_3 = 'Part3';
-    const ISO_2B = 'Part2B';
-    const ISO_2T = 'Part2T';
-    const ISO_1 = 'Part1';
-    const ISO_NAME = 'Ref_Name';
+    public const ISO_3 = 'Part3';
+    public const ISO_2B = 'Part2B';
+    public const ISO_2T = 'Part2T';
+    public const ISO_1 = 'Part1';
+    public const ISO_NAME = 'Ref_Name';
 
-    const ISO_SET = 'Set';
-    const ISO_SETS = [self::ISO_1 => 'ISO 639-1', self::ISO_3 => 'ISO 639-3', self::ISO_2B => 'ISO 639-2B', self::ISO_2T => 'ISO 639-2T'];
-    const ISO_DEFAULT = self::ISO_3;
+    public const ISO_SET = 'Set';
+    public const ISO_SETS = [self::ISO_1 => 'ISO 639-1', self::ISO_3 => 'ISO 639-3', self::ISO_2B => 'ISO 639-2B', self::ISO_2T => 'ISO 639-2T'];
+    public const ISO_DEFAULT = self::ISO_3;
 
-    const ISO_SCOPE = 'Scope';
-    const ISO_SCOPES = ['I' => 'Individual', 'M' => 'Macrolanguage', 'S' => 'Special'];
+    public const ISO_SCOPE = 'Scope';
+    public const ISO_SCOPES = ['I' => 'Individual', 'M' => 'Macrolanguage', 'S' => 'Special'];
 
-    const ISO_TYPE = 'Type';
-    const ISO_TYPES = ['A' => 'Ancient', 'C' => 'Constructed', 'E' => 'Extinct', 'H' => 'Historical', 'L' => 'Living', 'S' => 'Special'];
+    public const ISO_TYPE = 'Type';
+    public const ISO_TYPES = ['A' => 'Ancient', 'C' => 'Constructed', 'E' => 'Extinct', 'H' => 'Historical', 'L' => 'Living', 'S' => 'Special'];
 
 
     public function __toString()

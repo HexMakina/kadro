@@ -7,7 +7,7 @@ use HexMakina\LocalFS\Text\JSON;
 class Traduko extends \HexMakina\kadro\Controllers\ORM
 {
 
-    const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
+    public const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
 
     public function authorize($permission = null): bool
     {

@@ -8,8 +8,8 @@ use HexMakina\TightORM\{TightModel,RelationManyToMany};
 
 class Operator extends TightModel implements OperatorInterface
 {
-    const TABLE_NAME = 'kadro_operator';
-    const TABLE_ALIAS = 'operator';
+    public const TABLE_NAME = 'kadro_operator';
+    public const TABLE_ALIAS = 'operator';
 
 
     protected $permissions = null;

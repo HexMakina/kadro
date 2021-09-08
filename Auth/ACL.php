@@ -6,8 +6,8 @@ use HexMakina\Interfaces\Database\SelectInterface;
 
 class ACL extends \HexMakina\TightORM\TightModel
 {
-    const TABLE_NAME = 'kadro_acl';
-    const TABLE_ALIAS = 'acl';
+    public const TABLE_NAME = 'kadro_acl';
+    public const TABLE_ALIAS = 'acl';
 
     public function traceable(): bool
     {

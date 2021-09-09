@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\Interfaces\ORM\ModelInterface;
-use HexMakina\Interfaces\Controllers\ORMInterface;
+use HexMakina\BlackBox\ORM\ModelInterface;
+use HexMakina\BlackBox\Controllers\ORMInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
 abstract class ORM extends Kadro implements ORMInterface
@@ -135,15 +135,15 @@ abstract class ORM extends Kadro implements ORMInterface
         $class_name = is_null($model) ? $this->modelClassName() : get_class($model);
 
         if (!isset($filters['date_start'])) {
-            $filters['date_start'] = $this->get('StateAgent')->filters('date_start');
+            $filters['date_start'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_start');
         }
         if (!isset($filters['date_stop'])) {
-            $filters['date_stop'] = $this->get('StateAgent')->filters('date_stop');
+            $filters['date_stop'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_stop');
         }
 
         $listing = $this->modelClassName()::filter($filters);
 
-        $this->viewport_listing($class_name, $listing, $this->find_template($this->get('template_engine'), __FUNCTION__));
+        $this->viewport_listing($class_name, $listing, $this->find_template($this->get('\Smarty'), __FUNCTION__));
     }
 
     public function viewport_listing($class_name, $listing, $listing_template)
@@ -356,7 +356,7 @@ abstract class ORM extends Kadro implements ORMInterface
             $route = $this->formModel();
         }
 
-        if (!is_null($route) && is_subclass_of($route, '\HexMakina\Interfaces\ORM\ModelInterface')) {
+        if (!is_null($route) && is_subclass_of($route, '\HexMakina\BlackBox\ORM\ModelInterface')) {
             $route = $this->route_model($route);
         }
 

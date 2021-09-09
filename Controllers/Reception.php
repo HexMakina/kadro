@@ -27,14 +27,11 @@ class Reception extends Kadro
         $target_controller = $this->get('Controllers\\'.$router->targetController());
 
         if ($target_controller->requiresOperator()) {
-            if (is_null($operator = get_class($operator)::exists($this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId()))) {
-                // $this->router()->hop('checkin');
+            if(is_null($operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId()))
                 $this->checkin();
-            }
 
-            if (!$operator->isActive()) {
-                $this->checkout();
-                throw new AccessRefusedException();
+            if(is_null($operator = get_class($operator)::exists($operator_id)) || !$operator->isActive()){
+              $this->checkout();
             }
         }
 

@@ -57,11 +57,9 @@ class Base implements BaseControllerInterface, ContainerInterface
         return true;
     }
 
-    public function execute()
+    public function execute($method)
     {
         $ret = null;
-
-        $method = $this->router()->targetMethod();
 
       // before and after hooks, should they be in basecontroller ?
       // i think so, but pascal just proposed me pastis.. tomorrow

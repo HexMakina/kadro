@@ -18,7 +18,7 @@ trait Traceable
 
     public function getTracer(): TracerInterface
     {
-        return $this->get('TracerInterface');
+        return $this->get('HexMakina\BlackBox\Database\TracerInterface');
     }
 
     public function TraceableTraitor_after_save()

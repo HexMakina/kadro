@@ -83,19 +83,19 @@ class Operator extends TightModel implements OperatorInterface
     {
         $Query = static::table()->select();
         if (isset($options['eager']) && $options['eager'] === true) {
-            $Query->group_by('id');
+            $Query->groupBy('id');
 
             $Query->auto_join([ACL::table(), 'acl'], null, 'LEFT OUTER');
             $Query->auto_join([Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
-            $Query->select_also(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
+            $Query->selectAlso(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
         }
 
         if (isset($filters['model']) && !empty($filters['model'])) {
             $Query->join([static::otm('t'), static::otm('a')], [[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
-            $Query->aw_fields_eq(['model_id' => $filters['model']->getId(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
+            $Query->whereFieldsEQ(['model_id' => $filters['model']->getId(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
         }
 
-        $Query->order_by([$Query->table_label(), 'name', 'ASC']);
+        $Query->orderBy([$Query->tableLabel(), 'name', 'ASC']);
 
 
         return $Query;
@@ -132,10 +132,10 @@ class Operator extends TightModel implements OperatorInterface
         $permission_unique_keys = null;
         if (property_exists($this, 'permission_names') && !is_null($this->get('permission_names'))) {
             $permission_unique_keys = explode(',', $this->get('permission_names') ?? '');
-            $this->permissions = Permission::retrieve(Permission::table()->select()->aw_string_in('name', $permission_unique_keys));
+            $this->permissions = Permission::retrieve(Permission::table()->select()->whereStringIn('name', $permission_unique_keys));
         } elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
             $permission_unique_keys = explode(',', $this->get('permission_ids') ?? '');
-            $this->permissions = Permission::retrieve(Permission::table()->select()->aw_numeric_in('id', $permission_unique_keys));
+            $this->permissions = Permission::retrieve(Permission::table()->select()->whereNumericIn('id', $permission_unique_keys));
         } else {
             $this->permissions = ACL::permissions_for($this);
         }

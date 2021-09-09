@@ -24,9 +24,9 @@ class ACL extends \HexMakina\TightORM\TightModel
         $options['eager'] = false;
         $ret = parent::query_retrieve($filters, $options);
         $eager_params = [];
-        $eager_params[Permission::table_name()] = Permission::table_alias();
-        $eager_params[Operator::table_name()] = Operator::table_alias();
-        $eager_params[ACL::table_name()] = ACL::table_alias();
+        $eager_params[Permission::relationalMappingName()] = Permission::tableAlias();
+        $eager_params[Operator::relationalMappingName()] = Operator::tableAlias();
+        $eager_params[ACL::relationalMappingName()] = ACL::tableAlias();
 
       // why ? why dont you comment.. is the real question
         $ret->eager($eager_params);

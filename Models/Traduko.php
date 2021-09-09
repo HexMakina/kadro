@@ -23,9 +23,9 @@ class Traduko extends TightModel
     public static function query_retrieve($filters = [], $options = []): SelectInterface
     {
         $Query = static::table()->select();
-        $Query->order_by(['kategorio', 'ASC']);
-        $Query->order_by(['sekcio', 'ASC']);
-        $Query->order_by(['referenco', 'ASC']);
+        $Query->orderBy(['kategorio', 'ASC']);
+        $Query->orderBy(['sekcio', 'ASC']);
+        $Query->orderBy(['referenco', 'ASC']);
 
         return $Query;
     }

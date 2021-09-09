@@ -55,7 +55,7 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
 
     public static function init($locale_path)
     {
-        $languages = array_keys(array_slice(Traduko::inspect(Traduko::table_name())->columns(), 4));
+        $languages = array_keys(array_slice(Traduko::inspect(Traduko::relationalMappingName())->columns(), 4));
         foreach ($languages as $l) {
             self::create_file($locale_path, $l);
         }

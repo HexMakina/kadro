@@ -66,33 +66,33 @@ class Lingvo extends TightModel
         }
 
         if (isset($filter['term'])) {
-            $Query->aw_filter_content(['term' => $filter['term'], 'fields' => $searchable_fields], $Query->table_label(), 'OR');
+            $Query->whereFilterContent(['term' => $filter['term'], 'fields' => $searchable_fields], $Query->tableLabel(), 'OR');
         }
 
         if (isset($filter['requires_authority']) && isset(self::ISO_SETS[$filter['requires_authority']])) {
-            $Query->aw_not_empty($filter['requires_authority']);
+            $Query->whereNotEmpty($filter['requires_authority']);
         }
 
         if (isset($filter['types'])) {
             $wc = sprintf("AND " . self::ISO_TYPE . " IN ('%s') ", implode('\', \'', array_keys(self::ISO_TYPES)));
-            $Query->and_where($wc);
+            $Query->where($wc);
         }
         if (isset($filter['scopes'])) {
             $wc = sprintf("AND " . self::ISO_SCOPE . " IN ('%s') ", implode('\', \'', array_keys(self::ISO_SCOPES)));
-            $Query->and_where($wc);
+            $Query->where($wc);
         }
 
-        $Query->order_by([self::TABLE_NAME, self::ISO_1, 'DESC']);
-        $Query->order_by([self::TABLE_NAME, self::ISO_2T, 'DESC']);
-        $Query->order_by([self::TABLE_NAME, self::ISO_3, 'DESC']);
-        $Query->order_by([self::TABLE_NAME, self::ISO_NAME, 'DESC']);
+        $Query->orderBy([self::TABLE_NAME, self::ISO_1, 'DESC']);
+        $Query->orderBy([self::TABLE_NAME, self::ISO_2T, 'DESC']);
+        $Query->orderBy([self::TABLE_NAME, self::ISO_3, 'DESC']);
+        $Query->orderBy([self::TABLE_NAME, self::ISO_NAME, 'DESC']);
 
         return $Query;
     }
 
     public static function search_language($term, $authority = null)
     {
-        $rows = self::query_retrieve(['term' => $term, 'requires_authority' => $authority])->ret_ass();
+        $rows = self::query_retrieve(['term' => $term, 'requires_authority' => $authority])->retAss();
         $ret = [];
         foreach ($rows as $row) {
             $ret[$row[self::ISO_3]] = $row[self::ISO_NAME];
@@ -104,8 +104,8 @@ class Lingvo extends TightModel
     public static function language_name($code)
     {
         $Query = self::table()->select([self::ISO_NAME]);
-        $Query->aw_eq(self::ISO_3, $code);
-        $rows = $Query->ret_col();
+        $Query->whereEQ(self::ISO_3, $code);
+        $rows = $Query->retCol();
 
         if (isset($rows[0])) { // only 1 result
             return current($rows);
@@ -116,7 +116,7 @@ class Lingvo extends TightModel
 
     public static function ISO639_1_to_ISO639_3($code)
     {
-        $Query = self::table()->select([self::ISO_3])->aw_eq(self::ISO_1, $code, self::TABLE_NAME)->limit(1);
+        $Query = self::table()->select([self::ISO_3])->whereEQ(self::ISO_1, $code, self::TABLE_NAME)->limit(1);
         $row = static::retrieve($Query);
         $row = get_object_vars($row[0]);
         return $row[self::ISO_3];

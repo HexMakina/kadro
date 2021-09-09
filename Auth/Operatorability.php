@@ -56,20 +56,20 @@ trait Operatorability
         $permission_ids_and_names = [];
         $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'id', $permission_alias . '_ids');
         $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'name', $permission_alias . '_names');
-        $Query->select_also($permission_ids_and_names);
+        $Query->selectAlso($permission_ids_and_names);
 
-        $Query->select_also(['operator.name as operator_name', 'operator.active as operator_active']);
+        $Query->selectAlso(['operator.name as operator_name', 'operator.active as operator_active']);
 
         if (isset($filters['username'])) {
-            $Query->aw_eq('username', $filters['username'], 'operator');
+            $Query->whereEQ('username', $filters['username'], 'operator');
         }
 
         if (isset($filters['email'])) {
-            $Query->aw_eq('email', $filters['email'], 'operator');
+            $Query->whereEQ('email', $filters['email'], 'operator');
         }
 
         if (isset($filters['active'])) {
-            $Query->aw_eq('active', $filters['active'], 'operator');
+            $Query->whereEQ('active', $filters['active'], 'operator');
         }
 
         return $Query;

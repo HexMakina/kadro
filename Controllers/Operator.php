@@ -73,7 +73,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
             throw new AccessRefusedException();
         }
 
-        if ($this->modelClassName()::toggle_boolean($this->modelClassName()::table_name(), 'active', $operator->operatorId()) === true) {
+        if ($this->modelClassName()::toggle_boolean($this->modelClassName()::relationalMappingName(), 'active', $operator->operatorId()) === true) {
             $confirmation_message = $operator->isActive() ? 'KADRO_operator_DISABLED' : 'KADRO_operator_ENABLED';
             $this->logger()->notice($this->l($confirmation_message, [$operator->name()]));
         } else {

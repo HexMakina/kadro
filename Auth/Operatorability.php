@@ -50,8 +50,8 @@ trait Operatorability
 
     public static function enhance_query_retrieve($Query, $filters, $options)
     {
-        $Query->auto_join([ACL::table(),'ACL'], null, 'LEFT OUTER');
-        $permission_alias = $Query->auto_join([Permission::table(), 'permission'], null, 'LEFT OUTER');
+        $Query->autoJoin([ACL::table(),'ACL'], null, 'LEFT OUTER');
+        $permission_alias = $Query->autoJoin([Permission::table(), 'permission'], null, 'LEFT OUTER');
 
         $permission_ids_and_names = [];
         $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'id', $permission_alias . '_ids');

@@ -85,8 +85,8 @@ class Operator extends TightModel implements OperatorInterface
         if (isset($options['eager']) && $options['eager'] === true) {
             $Query->groupBy('id');
 
-            $Query->auto_join([ACL::table(), 'acl'], null, 'LEFT OUTER');
-            $Query->auto_join([Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
+            $Query->autoJoin([ACL::table(), 'acl'], null, 'LEFT OUTER');
+            $Query->autoJoin([Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
             $Query->selectAlso(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
         }
 

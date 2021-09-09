@@ -3,13 +3,14 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Auth\AccessRefusedException;
-use HexMakina\Interfaces\Auth\OperatorInterface;
-use HexMakina\Interfaces\Controllers\AuthControllerInterface;
-use HexMakina\Interfaces\Controllers\IntlControllerInterface;
+use HexMakina\BlackBox\Auth\OperatorInterface;
+use HexMakina\BlackBox\Controllers\AuthControllerInterface;
+use HexMakina\BlackBox\Controllers\IntlControllerInterface;
 
 class Kadro extends Display implements AuthControllerInterface, IntlControllerInterface
 {
     private $translation_function_name = 'L';
+    private $operator = null;
 
     public function __toString()
     {
@@ -23,7 +24,14 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
 
     public function operator(): OperatorInterface
     {
-        return $this->get('HexMakina\Interfaces\Auth\OperatorInterface');
+        if(is_null($this->operator)){
+          $op_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
+          $op_class = get_class($this->get('HexMakina\BlackBox\Auth\OperatorInterface'));
+          $op = $op_class::safeLoading($op_id);
+
+          $this->operator = $op;
+        }
+        return $this->operator;
     }
 
     // returns true or throws AccessRefusedException

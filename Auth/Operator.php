@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro\Auth;
 
-use HexMakina\Interfaces\Database\SelectInterface;
-use HexMakina\Interfaces\Auth\OperatorInterface;
+use HexMakina\BlackBox\Database\SelectInterface;
+use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\TightORM\{TightModel,RelationManyToMany};
 
 class Operator extends TightModel implements OperatorInterface
@@ -37,6 +37,7 @@ class Operator extends TightModel implements OperatorInterface
         return $this->get('username');
     }
 
+    // TODO remove this, pwd only useful when checkinin
     public function password()
     {
         return $this->get('password');
@@ -69,6 +70,13 @@ class Operator extends TightModel implements OperatorInterface
     public function languageCode()
     {
         return $this->get('language_code');
+    }
+
+    public static function safeLoading($op_id): OperatorInterface
+    {
+      $op = static::one($op_id);
+      $op->set('password', null);
+      return $op;
     }
 
     public static function query_retrieve($filters = [], $options = []): SelectInterface

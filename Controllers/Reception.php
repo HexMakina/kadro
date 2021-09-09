@@ -4,8 +4,8 @@ namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Auth\{Operator,Permission,ACL};
 use HexMakina\kadro\Auth\AccessRefusedException;
-use HexMakina\Interfaces\Auth\OperatorInterface;
-use HexMakina\LeMarchand\LeMarchand;
+use HexMakina\BlackBox\Auth\OperatorInterface;
+// use HexMakina\LeMarchand\LeMarchand;
 
 class Reception extends Kadro
 {
@@ -16,25 +16,26 @@ class Reception extends Kadro
 
     public function welcome(OperatorInterface $operator)
     {
+        $router = $this->get('HexMakina\BlackBox\RouterInterface');
+        $router->match(); // throws RouterException if no match
 
-        if ($this->router()->name() === 'identify') {
+        if ($router->name() === 'identify') {
             $this->identify($operator);
         }
 
-        $target_controller = $this->router()->targetController();
-        $target_controller = $this->get('Controllers\\'.$target_controller);
-
+        // MVC Cascade
+        $target_controller = $this->get('Controllers\\'.$router->targetController());
 
         if ($target_controller->requiresOperator()) {
-            if (is_null($operator = get_class($operator)::exists($this->get('StateAgent')->operatorId()))) {
-                $this->router()->hop('checkin');
+            if (is_null($operator = get_class($operator)::exists($this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId()))) {
+                // $this->router()->hop('checkin');
+                $this->checkin();
             }
 
             if (!$operator->isActive()) {
                 $this->checkout();
                 throw new AccessRefusedException();
             }
-            LeMarchand::box()->put('HexMakina\Interfaces\Auth\OperatorInterface', $operator);
         }
 
         return $operator;
@@ -43,12 +44,12 @@ class Reception extends Kadro
     public function checkin()
     {
         $this->display('checkin', 'standalone');
-        $this->get('HexMakina\Interfaces\StateAgentInterface')->resetMessages();
+        $this->get('HexMakina\BlackBox\StateAgentInterface')->resetMessages();
     }
 
     public function checkout()
     {
-        $this->get('StateAgent')->destroy();
+        $this->get('HexMakina\BlackBox\StateAgentInterface')->destroy();
         $this->router()->hop('checkin');
     }
 
@@ -68,7 +69,7 @@ class Reception extends Kadro
                 throw new \Exception('ERR_WRONG_LOGIN_OR_PASSWORD');
             }
 
-            $this->get('StateAgent')->operatorId($operator->getId());
+            $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId($operator->getId());
             $this->logger()->notice($this->l('PAGE_CHECKIN_WELCOME', [$operator->name()]));
             $this->router()->hop();
         } catch (\Exception $e) {

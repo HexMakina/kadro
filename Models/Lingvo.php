@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Models;
 
-use HexMakina\Interfaces\Database\SelectInterface;
+use HexMakina\BlackBox\Database\SelectInterface;
 use HexMakina\TightORM\TightModel;
 
 class Lingvo extends TightModel

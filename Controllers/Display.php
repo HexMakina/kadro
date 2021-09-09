@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\Interfaces\Controllers\DisplayControllerInterface;
+use HexMakina\BlackBox\Controllers\DisplayControllerInterface;
 
 class Display extends Base implements DisplayControllerInterface
 {
@@ -42,13 +42,13 @@ class Display extends Base implements DisplayControllerInterface
 
     public function display($custom_template = null, $standalone = false)
     {
-        $smarty = $this->get('template_engine');
+        $smarty = $this->get('\Smarty');
 
         $template = $this->find_template($smarty, $custom_template); // throws Exception if nothing found
 
         $this->viewport('controller', $this);
 
-        $this->viewport('user_messages', $this->get('HexMakina\Interfaces\StateAgentInterface')->messages());
+        $this->viewport('user_messages', $this->get('HexMakina\BlackBox\StateAgentInterface')->messages());
 
         $this->viewport('web_root', $this->router()->webRoot());
         $this->viewport('view_path', $this->router()->filePath() . $this->get('settings.smarty.template_path') . 'app/');

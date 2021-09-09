@@ -2,8 +2,8 @@
 
 namespace HexMakina\kadro\Auth;
 
-use HexMakina\Interfaces\Auth\OperatorInterface;
-use HexMakina\Interfaces\ORM\ModelInterface;
+use HexMakina\BlackBox\Auth\OperatorInterface;
+use HexMakina\BlackBox\ORM\ModelInterface;
 
 trait Operatorability
 {

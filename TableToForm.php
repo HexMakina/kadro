@@ -2,7 +2,7 @@
 
 namespace HexMakina\kadro;
 
-use HexMakina\Interfaces\ORM\ModelInterface;
+use HexMakina\BlackBox\ORM\ModelInterface;
 use HexMakina\Marker\{Form,Element};
 
 class TableToForm

@@ -3,10 +3,8 @@
 namespace HexMakina\kadro\Controllers;
 
 use Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
-use HexMakina\kadro\Auth\AccessRefusedException;
-use HexMakina\Interfaces\Auth\OperatorInterface;
-use HexMakina\Interfaces\RouterInterface;
-use HexMakina\Interfaces\Controllers\BaseControllerInterface;
+use HexMakina\BlackBox\RouterInterface;
+use HexMakina\BlackBox\Controllers\BaseControllerInterface;
 use Psr\Log\LoggerInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
@@ -51,7 +49,7 @@ class Base implements BaseControllerInterface, ContainerInterface
 
     public function router(): RouterInterface
     {
-        return $this->get('HexMakina\Interfaces\RouterInterface');
+        return $this->get('HexMakina\BlackBox\RouterInterface');
     }
 
     public function prepare()

@@ -25,22 +25,20 @@ class kadro
 
 
         //-- router
-        $router = self::$box->get('HexMakina\Interfaces\RouterInterface');
+        $router = self::$box->get('HexMakina\BlackBox\RouterInterface');
         $router->addRoutes(require(__DIR__.'/routes.php'));
-        self::$box->put('HexMakina\Interfaces\RouterInterface', $router);
 
         //-- session
-        $StateAgent = self::$box->get('HexMakina\Interfaces\StateAgentInterface');
+        $StateAgent = self::$box->get('HexMakina\BlackBox\StateAgentInterface');
         $StateAgent->addRuntimeFilters((array)self::$box->get('settings.filter'));
         $StateAgent->addRuntimeFilters((array)($_SESSION['filter'] ?? []));
         $StateAgent->addRuntimeFilters((array)($_REQUEST['filter'] ?? []));
-        self::$box->put('StateAgent', $StateAgent);
 
 
         self::internationalisation();
 
       // ----     ŝablonoj
-        self::$box->put('template_engine', self::templating());
+        self::templating();
 
       // ----     lingva
         $json_path = self::$box->get('settings.locale.json_path');
@@ -50,8 +48,8 @@ class kadro
         $language = $lezer->availableLanguage();
         $lezer->init();
 
-        self::$box->get('template_engine')->assign('lezer', $lezer);
-        self::$box->get('template_engine')->assign('language', $language);
+        self::$box->get('\Smarty')->assign('lezer', $lezer);
+        self::$box->get('\Smarty')->assign('language', $language);
 
         setcookie('lang', $language, time() + (365 * 24 * 60 * 60), "/", "");
 
@@ -89,9 +87,7 @@ class kadro
 
     private static function templating()
     {
-        $smarty = new \Smarty();
-        self::$box->put('template_engine', $smarty);
-
+        $smarty = self::$box->get('\Smarty');
       // Load smarty template parser
         $smarty->setTemplateDir(self::$box->get('settings.smarty.template_app_directory'));
 

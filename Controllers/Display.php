@@ -9,9 +9,9 @@ class Display extends Base implements DisplayControllerInterface
     protected $template_variables = [];
 
   // Display is Base with a display function
-    public function execute()
+    public function execute($method)
     {
-        $custom_template = parent::execute();
+        $custom_template = parent::execute($method);
         return $this->display($custom_template);
     }
 

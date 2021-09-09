@@ -53,11 +53,11 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         return true;
     }
 
-    public function execute()
+    public function execute($method)
     {
       // kadro controller is a display controller with authentification and intl
         $this->authorize();
-        return parent::execute();
+        return parent::execute($method);
     }
 
     public function prepare()

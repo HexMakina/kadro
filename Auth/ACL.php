@@ -2,6 +2,7 @@
 
 namespace HexMakina\kadro\Auth;
 
+use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\BlackBox\Database\SelectInterface;
 
 class ACL extends \HexMakina\TightORM\TightModel

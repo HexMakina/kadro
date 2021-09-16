@@ -70,11 +70,6 @@ class Base implements BaseControllerInterface, ContainerInterface
             if (method_exists($this, $chainling) && empty($this->errors())) {
                 $res = $this->$chainling();
 
-                if ($this->logger()->hasHaltingMessages()) { // logger handled a critical error during the chailing execution
-                  ddt('DEPRECATED CALL halting messages should halt the system, not be detected', __FUNCTION__);
-                  break; // dont go on with other
-                }
-
                 if ($chainling === $method) {
                     $ret = $res;
                 }

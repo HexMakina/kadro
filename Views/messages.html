@@ -5,8 +5,7 @@
   {foreach $messages_by_field as $field => $field_messages}
     {foreach $field_messages as $messages }
       {foreach $messages as $message}
-      {print_r($level, true)}
-  <div role="alert" class="w3-col l8 w3-right ox-notification ox-{$level}">sqdsqd
+  <div role="alert" class="w3-col l8 w3-right ox-notification ox-{$level}">
     {if !is_numeric($field) && !empty($field)}{$field}:{/if}{$lezer->l($message)|nl2br}<br/>
   </div>
       {/foreach}

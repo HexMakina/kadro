@@ -69,10 +69,10 @@ class Reception extends Kadro
             }
 
             $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId($operator->getId());
-            $this->logger()->notice($this->l('PAGE_CHECKIN_WELCOME', [$operator->name()]));
+            $this->logger()->notice('PAGE_CHECKIN_WELCOME', [$operator->name()]);
             $this->router()->hop();
         } catch (\Exception $e) {
-            $this->logger()->warning($this->l('KADRO_operator_' . $e->getMessage()));
+            $this->logger()->warning('KADRO_operator_' . $e->getMessage());
             $this->router()->hop('checkin');
         }
     }

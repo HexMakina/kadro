@@ -23,7 +23,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
         parent::edit();
 
       // do we create? or do we edit someone else ? must be admin
-        if (is_null($this->load_model) || $this->operator()->operatorId() !== $this->load_model->operatorId()) {
+        if (is_null($this->load_model) || $this->operator()->getId() !== $this->load_model->getId()) {
             $this->authorize('group_admin');
         }
     }
@@ -35,7 +35,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
 
     public function save()
     {
-        if ($this->operator()->operatorId() !== $this->formModel()->getId()) {
+        if ($this->operator()->getId() !== $this->formModel()->getId()) {
             $this->authorize('group_admin');
         }
 
@@ -73,7 +73,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
             throw new AccessRefusedException();
         }
 
-        if ($this->modelClassName()::toggleBoolean($this->modelClassName()::relationalMappingName(), 'active', $operator->operatorId()) === true) {
+        if ($this->modelClassName()::toggleBoolean($this->modelClassName()::relationalMappingName(), 'active', $operator->getId()) === true) {
             $confirmation_message = $operator->isActive() ? 'KADRO_operator_DISABLED' : 'KADRO_operator_ENABLED';
             $this->logger()->notice($this->l($confirmation_message, [$operator->name()]));
         } else {
@@ -94,7 +94,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
 
         $permission_id = $this->router()->params('permission_id');
 
-        $row_data = ['operator_id' => $operator->operatorId(), 'permission_id' => $permission_id];
+        $row_data = ['operator_id' => $operator->getId(), 'permission_id' => $permission_id];
         $row = ACL::table()->restore($row_data);
         if ($row->isNew()) {
             $row = ACL::table()->produce($row_data);

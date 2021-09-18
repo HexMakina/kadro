@@ -37,4 +37,32 @@ trait HasOperator
 
     return $this->operator;
   }
+
+
+  public static function enhance_query_retrieve($Query, $filters, $options)
+  {
+      $Query->autoJoin([ACL::table(),'ACL'], null, 'LEFT OUTER');
+      $permission_alias = $Query->autoJoin([Permission::table(), 'permission'], null, 'LEFT OUTER');
+
+      $permission_ids_and_names = [];
+      $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'id', $permission_alias . '_ids');
+      $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'name', $permission_alias . '_names');
+      $Query->selectAlso($permission_ids_and_names);
+
+      $Query->selectAlso(['operator.name as operator_name', 'operator.active as operator_active']);
+
+      if (isset($filters['username'])) {
+          $Query->whereEQ('username', $filters['username'], 'operator');
+      }
+
+      if (isset($filters['email'])) {
+          $Query->whereEQ('email', $filters['email'], 'operator');
+      }
+
+      if (isset($filters['active'])) {
+          $Query->whereEQ('active', $filters['active'], 'operator');
+      }
+
+      return $Query;
+  }
 }

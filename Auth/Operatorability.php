@@ -50,6 +50,7 @@ trait Operatorability
 
     public static function enhance_query_retrieve($Query, $filters, $options)
     {
+        ddt($Query);
         $Query->autoJoin([ACL::table(),'ACL'], null, 'LEFT OUTER');
         $permission_alias = $Query->autoJoin([Permission::table(), 'permission'], null, 'LEFT OUTER');
 

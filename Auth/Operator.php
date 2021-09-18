@@ -74,9 +74,9 @@ class Operator extends TightModel implements OperatorInterface
 
     public static function safeLoading($op_id): OperatorInterface
     {
-      $op = static::one($op_id);
-      $op->set('password', null);
-      return $op;
+        $op = static::one($op_id);
+        $op->set('password', null);
+        return $op;
     }
 
     public static function query_retrieve($filters = [], $options = []): SelectInterface

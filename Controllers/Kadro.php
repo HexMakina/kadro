@@ -24,12 +24,12 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
 
     public function operator(): OperatorInterface
     {
-        if(is_null($this->operator)){
-          $op_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
-          $op_class = get_class($this->get('HexMakina\BlackBox\Auth\OperatorInterface'));
-          $op = $op_class::safeLoading($op_id);
+        if (is_null($this->operator)) {
+            $op_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
+            $op_class = get_class($this->get('HexMakina\BlackBox\Auth\OperatorInterface'));
+            $op = $op_class::safeLoading($op_id);
 
-          $this->operator = $op;
+            $this->operator = $op;
         }
         return $this->operator;
     }

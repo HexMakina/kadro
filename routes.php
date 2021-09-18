@@ -1,4 +1,5 @@
 <?php
+
 return [
   // --- auth
   ['GET', 'checkin', 'Reception::checkin', 'checkin'],

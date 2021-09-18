@@ -22,7 +22,7 @@ class Base implements BaseControllerInterface, ContainerInterface
 
     public function container(): ContainerInterface
     {
-      return LeMarchand::box();
+        return LeMarchand::box();
     }
 
     public function has($key)

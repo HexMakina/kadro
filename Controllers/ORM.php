@@ -103,7 +103,7 @@ abstract class ORM extends Kadro implements ORMInterface
     {
         if (is_null($this->model_class_name)) {
             preg_match(LeMarchand::RX_MVC, get_called_class(), $m);
-            $this->model_class_name = $this->get('Models\\'.$m[2].'::class');
+            $this->model_class_name = $this->get('Models\\' . $m[2] . '::class');
         }
 
         return $this->model_class_name;

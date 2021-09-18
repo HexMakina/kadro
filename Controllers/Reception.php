@@ -5,6 +5,7 @@ namespace HexMakina\kadro\Controllers;
 use HexMakina\kadro\Auth\{Operator,Permission,ACL};
 use HexMakina\kadro\Auth\AccessRefusedException;
 use HexMakina\BlackBox\Auth\OperatorInterface;
+
 // use HexMakina\LeMarchand\LeMarchand;
 
 class Reception extends Kadro
@@ -24,14 +25,15 @@ class Reception extends Kadro
         }
 
         // MVC Cascade
-        $target_controller = $this->get('Controllers\\'.$router->targetController());
+        $target_controller = $this->get('Controllers\\' . $router->targetController());
 
         if ($target_controller->requiresOperator()) {
-            if(is_null($operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId()))
+            if (is_null($operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId())) {
                 $this->checkin();
+            }
 
-            if(is_null($operator = get_class($operator)::exists($operator_id)) || !$operator->isActive()){
-              $this->checkout();
+            if (is_null($operator = get_class($operator)::exists($operator_id)) || !$operator->isActive()) {
+                $this->checkout();
             }
         }
 

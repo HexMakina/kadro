@@ -26,7 +26,7 @@ class kadro
 
         //-- router
         $router = self::$box->get('HexMakina\BlackBox\RouterInterface');
-        $router->addRoutes(require(__DIR__.'/routes.php'));
+        $router->addRoutes(require(__DIR__ . '/routes.php'));
 
         //-- session
         $StateAgent = self::$box->get('HexMakina\BlackBox\StateAgentInterface');

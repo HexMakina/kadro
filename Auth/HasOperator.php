@@ -4,6 +4,7 @@ namespace HexMakina\kadro\Auth;
 
 use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\BlackBox\ORM\ModelInterface;
+use HexMakina\Crudites\Queries\AutoJoin;
 
 trait HasOperator
 {
@@ -42,8 +43,8 @@ trait HasOperator
 
     public static function enhance_query_retrieve($Query, $filters, $options)
     {
-        $Query->autoJoin([ACL::table(),'ACL'], null, 'LEFT OUTER');
-        $permission_alias = $Query->autoJoin([Permission::table(), 'permission'], null, 'LEFT OUTER');
+        AutoJoin::join($Query,[ACL::table(),'ACL'], null, 'LEFT OUTER');
+        $permission_alias = AutoJoin::join($Query,[Permission::table(), 'permission'], null, 'LEFT OUTER');
 
         $permission_ids_and_names = [];
         $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'id', $permission_alias . '_ids');

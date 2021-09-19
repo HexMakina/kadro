@@ -4,6 +4,7 @@ namespace HexMakina\kadro\Auth;
 
 use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\BlackBox\Database\SelectInterface;
+use HexMakina\Crudites\Queries\AutoJoin;
 
 class ACL extends \HexMakina\TightORM\TightModel
 {
@@ -29,8 +30,8 @@ class ACL extends \HexMakina\TightORM\TightModel
         $eager_params[Operator::relationalMappingName()] = Operator::tableAlias();
         $eager_params[ACL::relationalMappingName()] = ACL::tableAlias();
 
-      // why ? why dont you comment.. is the real question
-        $ret->eager($eager_params);
+        // why ? why dont you comment.. is the real question
+        AutoJoin::eager($ret, $eager_params);
 
         return $ret;
     }
@@ -51,7 +52,7 @@ class ACL extends \HexMakina\TightORM\TightModel
     public static function permissions_names_for(OperatorInterface $op)
     {
         $operator_with_perms = get_class($op)::exists($op->getId());
-      // $operator_with_perms = get_class($op)::retrieve($operator_with_perms);
+        // $operator_with_perms = get_class($op)::retrieve($operator_with_perms);
         if (is_null($operator_with_perms)) {
             return [];
         }

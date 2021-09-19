@@ -4,6 +4,8 @@ namespace HexMakina\kadro\Auth;
 
 use HexMakina\BlackBox\Database\SelectInterface;
 use HexMakina\BlackBox\Auth\OperatorInterface;
+use HexMakina\Crudites\Queries\AutoJoin;
+
 use HexMakina\TightORM\{TightModel,RelationManyToMany};
 
 class Operator extends TightModel implements OperatorInterface
@@ -85,8 +87,8 @@ class Operator extends TightModel implements OperatorInterface
         if (isset($options['eager']) && $options['eager'] === true) {
             $Query->groupBy('id');
 
-            $Query->autoJoin([ACL::table(), 'acl'], null, 'LEFT OUTER');
-            $Query->autoJoin([Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
+            AutoJoin::join($Query, [ACL::table(), 'acl'], null, 'LEFT OUTER');
+            AutoJoin::join($Query, [Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
             $Query->selectAlso(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
         }
 

@@ -2,6 +2,6 @@
 {block name=form_hidden_fields}{/block}
 {block name=form_header}{/block}
 {block name=form_fields}{TableToForm::fields($form_model, 'w3-col l6')}{/block}
-{block name=form_submit}{Form::submit('SUBMIT')}{/block}
+{block name=form_submit}{Form::submit('SUBMIT', 'SUBMIT')}{/block}
 {block name=form_footer}{/block}
 </form>

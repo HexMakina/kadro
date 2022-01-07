@@ -22,7 +22,7 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
     public function update_file($lang = 'fra')
     {
         try {
-            $locale_path = $this->get('settings.locale.directory_path') . '/' . $this->get('settings.locale.file_name');
+            $locale_path = $this->get('settings.locale.json_path');
             self::create_file($locale_path, $lang);
 
             $this->logger()->notice($this->l('KADRO_SYSTEM_FILE_UPDATED'));

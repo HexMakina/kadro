@@ -9,15 +9,14 @@ class TableToForm
 {
     private static function compute_field_value($model, $field_name)
     {
+        $ret = '';
         if (method_exists($model, $field_name)) {
-            return $model->$field_name();
+            $ret = $model->$field_name();
+        }elseif (property_exists($model, $field_name)) {
+            $ret = $model->$field_name;
         }
 
-        if (property_exists($model, $field_name)) {
-            return $model->$field_name;
-        }
-
-        return '';
+        return $ret;
     }
 
     public static function label($model, $field_name, $attributes = [], $errors = [])
@@ -28,18 +27,6 @@ class TableToForm
             $label_content = $attributes['label'];
             unset($attributes['label']);
         }
-      // else
-      // {
-      //   $field_label = sprintf('MODEL_%s_FIELD_%s', get_class($model)::model_type(),$field_name);
-      //   if(!defined("L::$field_label"))
-      //   {
-      //       $field_label = sprintf('MODEL_common_FIELD_%s',$field_name);
-      //     if(!defined("L::$field_label"))
-      //       $field_label = $field_name;
-      //   }
-      //
-      //   $label_content = L($field_label);
-      // }
 
         $ret = Form::label($field_name, $label_content, $attributes, $errors);
         return $ret;

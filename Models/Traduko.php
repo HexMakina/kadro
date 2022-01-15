@@ -2,13 +2,13 @@
 
 namespace HexMakina\kadro\Models;
 
-use HexMakina\Crudites\Interfaces\SelectInterface;
+use HexMakina\BlackBox\Database\SelectInterface;
 use HexMakina\TightORM\TightModel;
 
 class Traduko extends TightModel
 {
-    const TABLE_NAME = 'kadro_traduki';
-    const TABLE_ALIAS = 'traduko';
+    public const TABLE_NAME = 'kadro_traduki';
+    public const TABLE_ALIAS = 'traduko';
 
     public function traceable(): bool
     {
@@ -23,9 +23,9 @@ class Traduko extends TightModel
     public static function query_retrieve($filters = [], $options = []): SelectInterface
     {
         $Query = static::table()->select();
-        $Query->order_by(['kategorio', 'ASC']);
-        $Query->order_by(['sekcio', 'ASC']);
-        $Query->order_by(['referenco', 'ASC']);
+        $Query->orderBy(['kategorio', 'ASC']);
+        $Query->orderBy(['sekcio', 'ASC']);
+        $Query->orderBy(['referenco', 'ASC']);
 
         return $Query;
     }

@@ -44,7 +44,7 @@
   <div {block name=page_header_content_3_attribute}style="float:left"{/block}>{block name=page_header_content_3}
     {if isset($listing_actions)} {foreach $listing_actions as $action_url => $action_label}<a href="{$action_url}">{$action_label}</a>{/foreach}{/if}
     {if isset($route_new)}<a href="{$route_new}">new</a>{/if}
-    <a href="{$controller->route_back()}">cancel</a>
+    <a href="{$controller->routeBack()}">cancel</a>
     {/block}</div>
   {/block}
 </header>

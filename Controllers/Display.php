@@ -2,14 +2,16 @@
 
 namespace HexMakina\kadro\Controllers;
 
-class DisplayController extends BaseController implements Interfaces\DisplayControllerInterface
+use HexMakina\BlackBox\Controllers\DisplayControllerInterface;
+
+class Display extends Base implements DisplayControllerInterface
 {
     protected $template_variables = [];
 
-  // DisplayController is BaseController with a display function
-    public function execute()
+  // Display is Base with a display function
+    public function execute($method)
     {
-        $custom_template = parent::execute();
+        $custom_template = parent::execute($method);
         return $this->display($custom_template);
     }
 
@@ -40,27 +42,25 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
 
     public function display($custom_template = null, $standalone = false)
     {
-        $smarty = $this->box('template_engine');
+        $smarty = $this->get('\Smarty');
 
         $template = $this->find_template($smarty, $custom_template); // throws Exception if nothing found
 
         $this->viewport('controller', $this);
 
-        $this->viewport('user_messages', $this->logger()->get_user_report());
+        $this->viewport('user_messages', $this->get('HexMakina\BlackBox\StateAgentInterface')->messages());
 
-
-        $this->viewport('file_root', $this->router()->file_root());
-        $this->viewport('view_path', $this->router()->file_root() . $this->box('settings.smarty.template_path') . 'app/');
-        $this->viewport('web_root', $this->router()->web_root());
-        $this->viewport('view_url', $this->router()->web_root() . $this->box('settings.smarty.template_path'));
-        $this->viewport('images_url', $this->router()->web_root() . $this->box('settings.smarty.template_path') . 'images/');
+        $this->viewport('web_root', $this->router()->webRoot());
+        $this->viewport('view_path', $this->router()->filePath() . $this->get('settings.smarty.template_path') . 'app/');
+        $this->viewport('view_url', $this->router()->webRoot() . $this->get('settings.smarty.template_path'));
+        $this->viewport('images_url', $this->router()->webRoot() . $this->get('settings.smarty.template_path') . 'images/');
 
         foreach ($this->viewport() as $template_var_name => $value) {
             $smarty->assign($template_var_name, $value);
         }
 
         if ($standalone === false) {
-            $smarty->display(sprintf('%s|%s', $this->box('settings.smarty.template_inclusion_path'), $template));
+            $smarty->display(sprintf('%s|%s', $this->get('settings.smarty.template_inclusion_path'), $template));
         } else {
             $smarty->display($template);
         }
@@ -69,7 +69,7 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
         return true;
     }
 
-    private function template_base()
+    protected function template_base()
     {
         return strtolower(str_replace('Controller', '', (new \ReflectionClass(get_called_class()))->getShortName()));
     }
@@ -87,13 +87,13 @@ class DisplayController extends BaseController implements Interfaces\DisplayCont
             $templates ['custom_1'] = '_layouts/' . $custom_template . '.html';
         }
 
-        if (!empty($this->router()->target_method())) {
+        if (!empty($this->router()->targetMethod())) {
           // 1. check for template in controller-related directory
-            $templates ['target_1'] = sprintf('%s/%s.html', $controller_template_path, $this->router()->target_method());
+            $templates ['target_1'] = sprintf('%s/%s.html', $controller_template_path, $this->router()->targetMethod());
           // 2. check for template in app-related directory
-            $templates ['target_2'] = sprintf('_layouts/%s.html', $this->router()->target_method());
+            $templates ['target_2'] = sprintf('_layouts/%s.html', $this->router()->targetMethod());
           // 3. check for template in kadro directory
-            $templates ['target_3'] = sprintf('%s.html', $this->router()->target_method());
+            $templates ['target_3'] = sprintf('%s.html', $this->router()->targetMethod());
         }
 
         $templates ['default_3'] = sprintf('%s/edit.html', $controller_template_path);

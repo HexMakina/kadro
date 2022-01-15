@@ -1,14 +1,13 @@
 {if !empty($user_messages)}
 <div class="w3-container">
 <div class="w3-row">
-{foreach $user_messages as $level => $messages_by_field}
-  
-  {foreach $messages_by_field as $field => $field_messages}{foreach $field_messages as $messages }{foreach $messages as $message}
+{foreach $user_messages as $level => $messages}
+  {foreach $messages as $field => $message}
   <div role="alert" class="w3-col l8 w3-right ox-notification ox-{$level}">
-    {if !is_numeric($field) && !empty($field)}{$field}:{/if}{$message|nl2br}<br/>
-  </div>  
-  {/foreach}{/foreach}{/foreach}
-  
+    {if !is_numeric($field) && !empty($field)}{$lezer->l($field)}:{/if}{$lezer->l($message[0], $message[1])|nl2br}<br/>
+  </div>
+  {/foreach}
 {/foreach}
 </div>
+
 {/if}

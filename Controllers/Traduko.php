@@ -2,39 +2,39 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\kadro\Models\Traduko;
 use HexMakina\LocalFS\Text\JSON;
 
-class TradukoController extends \HexMakina\kadro\Controllers\ORMController
+class Traduko extends \HexMakina\kadro\Controllers\ORM
 {
-    const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
 
-    public function authorize($permission = null)
+    public const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
+
+    public function authorize($permission = null): bool
     {
         return parent::authorize('group_admin');
     }
 
-    public function route_back($route_name = null, $route_params = []): string
+    public function routeBack($route_name = null, $route_params = []): string
     {
-        return $this->router()->prehop('traduko');
+        return $this->router()->hyp('traduko');
     }
 
     public function update_file($lang = 'fra')
     {
         try {
-            $locale_path = $this->box('settings.locale.directory_path') . '/' . $this->box('settings.locale.file_name');
+            $locale_path = $this->get('settings.locale.json_path');
             self::create_file($locale_path, $lang);
 
-            $this->logger()->nice($this->l('KADRO_SYSTEM_FILE_UPDATED'));
-        } catch (\Exception $e) {
             $this->logger()->notice($this->l('KADRO_SYSTEM_FILE_UPDATED'));
+        } catch (\Exception $e) {
+            $this->logger()->warning($this->l('KADRO_SYSTEM_FILE_UPDATED'));
         }
         $this->router()->hop('traduko');
     }
 
     public static function create_file($locale_path, $lang)
     {
-        $res = Traduko::filter(['lang' => $lang]);
+        $res = $this->modelClassName()::filter(['lang' => $lang]);
         $assoc = [];
         foreach ($res as $id => $trad) {
             if (!isset($assoc[$trad->kategorio])) {
@@ -55,7 +55,7 @@ class TradukoController extends \HexMakina\kadro\Controllers\ORMController
 
     public static function init($locale_path)
     {
-        $languages = array_keys(array_slice(Traduko::inspect(Traduko::table_name())->columns(), 4));
+        $languages = array_keys(array_slice(Traduko::inspect(Traduko::relationalMappingName())->columns(), 4));
         foreach ($languages as $l) {
             self::create_file($locale_path, $l);
         }

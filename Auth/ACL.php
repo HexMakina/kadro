@@ -2,12 +2,14 @@
 
 namespace HexMakina\kadro\Auth;
 
-use HexMakina\Crudites\Interfaces\SelectInterface;
+use HexMakina\BlackBox\Auth\OperatorInterface;
+use HexMakina\BlackBox\Database\SelectInterface;
+use HexMakina\Crudites\Queries\AutoJoin;
 
 class ACL extends \HexMakina\TightORM\TightModel
 {
-    const TABLE_NAME = 'kadro_acl';
-    const TABLE_ALIAS = 'acl';
+    public const TABLE_NAME = 'kadro_acl';
+    public const TABLE_ALIAS = 'acl';
 
     public function traceable(): bool
     {
@@ -24,19 +26,19 @@ class ACL extends \HexMakina\TightORM\TightModel
         $options['eager'] = false;
         $ret = parent::query_retrieve($filters, $options);
         $eager_params = [];
-        $eager_params[Permission::table_name()] = Permission::table_alias();
-        $eager_params[Operator::table_name()] = Operator::table_alias();
-        $eager_params[ACL::table_name()] = ACL::table_alias();
+        $eager_params[Permission::relationalMappingName()] = Permission::tableAlias();
+        $eager_params[Operator::relationalMappingName()] = Operator::tableAlias();
+        $eager_params[ACL::relationalMappingName()] = ACL::tableAlias();
 
-      // why ? why dont you comment.. is the real question
-        $ret->eager($eager_params);
+        // why ? why dont you comment.. is the real question
+        AutoJoin::eager($ret, $eager_params);
 
         return $ret;
     }
 
     public static function permissions_for(OperatorInterface $op)
     {
-        $res = self::any(['operator_id' => $op->operator_id()]);
+        $res = self::any(['operator_id' => $op->getId()]);
 
         $permission_ids = [];
         foreach ($res as $r) {
@@ -49,8 +51,8 @@ class ACL extends \HexMakina\TightORM\TightModel
 
     public static function permissions_names_for(OperatorInterface $op)
     {
-        $operator_with_perms = get_class($op)::exists($op->operator_id());
-      // $operator_with_perms = get_class($op)::retrieve($operator_with_perms);
+        $operator_with_perms = get_class($op)::exists($op->getId());
+        // $operator_with_perms = get_class($op)::retrieve($operator_with_perms);
         if (is_null($operator_with_perms)) {
             return [];
         }
@@ -61,9 +63,9 @@ class ACL extends \HexMakina\TightORM\TightModel
     public static function allow_in(OperatorInterface $op, Permission $p)
     {
         $ret = new ACL();
-        $ret->set('operator_id', $op->operator_id());
-        $ret->set('permission_id', $p->get_id());
-        $ret->save($op->operator_id());
+        $ret->set('operator_id', $op->getId());
+        $ret->set('permission_id', $p->getId());
+        $ret->save($op->getId());
         return $ret;
     }
 }

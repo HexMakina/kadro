@@ -22,7 +22,7 @@ trait Event
 
     public function event_label()
     {
-        return ''.$this;
+        return '' . $this;
     }
 
     public static function today($format = Dato::FORMAT)
@@ -34,5 +34,4 @@ trait Event
     {
         return Dato::format($date, $format);
     }
-
 }

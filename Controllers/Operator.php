@@ -13,9 +13,9 @@
 namespace HexMakina\kadro\Controllers;
 
 use HexMakina\Crudites\Crudites;
-use HexMakina\kadro\Auth\{Operator,OperatorInterface,ACL,AccessRefusedException};
+use HexMakina\kadro\Auth\{ACL,AccessRefusedException};
 
-class OperatorController extends \HexMakina\kadro\Controllers\ORMController
+class Operator extends \HexMakina\kadro\Controllers\ORM
 {
 
     public function edit()
@@ -23,19 +23,19 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
         parent::edit();
 
       // do we create? or do we edit someone else ? must be admin
-        if (is_null($this->load_model) || $this->operator()->operator_id() !== $this->load_model->operator_id()) {
+        if (is_null($this->load_model) || $this->operator()->getId() !== $this->load_model->getId()) {
             $this->authorize('group_admin');
         }
     }
 
-    public function class_name(): string
+    public function modelClassName(): string
     {
         return "\HexMakina\kadro\Auth\Operator";
     }
 
     public function save()
     {
-        if ($this->operator()->operator_id() !== $this->form_model->operator_id()) {
+        if ($this->operator()->getId() !== $this->formModel()->getId()) {
             $this->authorize('group_admin');
         }
 
@@ -45,8 +45,8 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     public function before_save()
     {
       //------------------------------------------------------------- PASSWORDS
-        if ($this->form_model->get('password') != $this->form_model->get('password_verification')) {
-            $this->add_error('KADRO_operator_ERR_PASSWORDS_MISMATCH');
+        if ($this->formModel()->get('password') != $this->formModel()->get('password_verification')) {
+            $this->addError('KADRO_operator_ERR_PASSWORDS_MISMATCH');
             $this->logger()->warning($this->l('KADRO_operator_ERR_PASSWORDS_MISMATCH'));
             $this->edit();
         }
@@ -68,44 +68,41 @@ class OperatorController extends \HexMakina\kadro\Controllers\ORMController
     {
         parent::authorize('group_admin');
 
-        $operator = Operator::one($this->router()->params());
+        $operator = $this->modelClassName()::one($this->router()->params());
         if ($operator->username() == $this->operator()->username()) {
             throw new AccessRefusedException();
         }
 
-        if (Operator::toggle_boolean(Operator::table_name(), 'active', $operator->operator_id()) === true) {
-            $confirmation_message = $operator->is_active() ? 'KADRO_operator_DISABLED' : 'KADRO_operator_ENABLED';
-            $this->logger()->nice($this->l($confirmation_message, [$operator->name()]));
+        if ($this->modelClassName()::toggleBoolean($this->modelClassName()::relationalMappingName(), 'active', $operator->getId()) === true) {
+            $confirmation_message = $operator->isActive() ? 'KADRO_operator_DISABLED' : 'KADRO_operator_ENABLED';
+            $this->logger()->notice($this->l($confirmation_message, [$operator->name()]));
         } else {
             $this->logger()->warning($this->l('CRUDITES_ERR_QUERY_FAILED'));
         }
 
-        $this->router()->hop_back();
+        $this->router()->hopBack();
     }
 
     public function change_acl()
     {
         parent::authorize('group_admin');
 
-        $operator = Operator::one(['username' => $this->router()->params('username')]);
+        $operator = $this->modelClassName()::one(['username' => $this->router()->params('username')]);
         if ($operator->username() == $this->operator()->username()) {
             throw new AccessRefusedException();
         }
 
         $permission_id = $this->router()->params('permission_id');
 
-        $row_data = ['operator_id' => $operator->operator_id(), 'permission_id' => $permission_id];
+        $row_data = ['operator_id' => $operator->getId(), 'permission_id' => $permission_id];
         $row = ACL::table()->restore($row_data);
-        if ($row->is_new()) {
+        if ($row->isNew()) {
             $row = ACL::table()->produce($row_data);
             $row->persist();
         } else {
             $row->wipe();
         }
-      // force reload for permission purposes
-        $operator = get_class($operator)::one($operator->operator_id());
-
-        $this->box('OperatorInterface', $operator);
-        $this->router()->hop_back();
+        // force reload for permission purposes
+        $this->router()->hopBack();
     }
 }

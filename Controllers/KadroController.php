@@ -38,6 +38,13 @@ class KadroController extends DisplayController implements AuthControllerInterfa
         return true;
     }
 
+    // intl function, calls to lezer
+    public function l($message, $context=[]) : string
+    {
+        return call_user_func($this->translation_function_name, $message, $context);
+    }
+
+    
     public function execute()
     {
       // kadro controller is a display controller with authentification and intl
@@ -51,11 +58,7 @@ class KadroController extends DisplayController implements AuthControllerInterfa
         $this->trim_request_data();
     }
 
-    // intl function, calls to lezer
-    public function l($message, $context=[]) : string
-    {
-        return call_user_func($this->translation_function_name, $message, $context);
-    }
+
 
     private function trim_request_data()
     {

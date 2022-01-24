@@ -90,63 +90,65 @@ class TableToForm
 
     private static function fieldByType($field, $field_value, $attributes = [], $errors = []): string
     {
+        $ret = null;
         if ($field->isAutoIncremented()) {
-            return Form::hidden($field->name(), $field_value);
+            $ret = Form::hidden($field->name(), $field_value);
         }
-        if ($field->type()->isBoolean()) {
+        elseif ($field->type()->isBoolean()) {
             $option_list = $attributes['values'] ?? [0 => 0, 1 => 1];
-            return Form::select($field->name(), $option_list, $field_value, $attributes); //
+            $ret = Form::select($field->name(), $option_list, $field_value, $attributes); //
         }
-        if ($field->type()->isInteger()) {
-            return Form::input($field->name(), $field_value, $attributes, $errors);
+        elseif ($field->type()->isInteger()) {
+            $ret = Form::input($field->name(), $field_value, $attributes, $errors);
         }
-        if ($field->type()->isYear()) {
+        elseif ($field->type()->isYear()) {
             $attributes['size'] = $attributes['maxlength'] = 4;
-            return Form::input($field->name(), $field_value, $attributes, $errors);
+            $ret = Form::input($field->name(), $field_value, $attributes, $errors);
         }
-        if ($field->type()->isDate()) {
-            return Form::date($field->name(), $field_value, $attributes, $errors);
+        elseif ($field->type()->isDate()) {
+            $ret = Form::date($field->name(), $field_value, $attributes, $errors);
         }
-        if ($field->type()->isTime()) {
-            return Form::time($field->name(), $field_value, $attributes, $errors);
+        elseif ($field->type()->isTime()) {
+            $ret = Form::time($field->name(), $field_value, $attributes, $errors);
         }
-        if ($field->type()->isDatetime()) {
-            return Form::datetime($field->name(), $field_value, $attributes, $errors);
+        elseif ($field->type()->isDatetime()) {
+            $ret = Form::datetime($field->name(), $field_value, $attributes, $errors);
         }
-        if ($field->type()->isText()) {
-            return Form::textarea($field->name(), $field_value, $attributes, $errors);
+        elseif ($field->type()->isText()) {
+            $ret = Form::textarea($field->name(), $field_value, $attributes, $errors);
         }
-        if ($field->type()->isEnum()) {
+        elseif ($field->type()->isEnum()) {
             $enum_values = [];
             foreach ($field->type()->getEnumValues() as $e_val) {
                 $enum_values[$e_val] = $e_val;
             }
 
             $selected = $attributes['value'] ?? $field_value ?? '';
-          // foreach($field->)
-            return Form::select($field->name(), $enum_values, $selected, $attributes); //
-
-          // throw new \Exception('ENUM IS NOT HANDLED BY TableToFom');
+            $ret = Form::select($field->name(), $enum_values, $selected, $attributes); //
         }
-        if ($field->type()->isString()) {
+        elseif ($field->type()->isString()) {
             $max_length = $field->type()->getLength();
             $attributes['size'] = $attributes['maxlength'] = $max_length;
-            return Form::input($field->name(), $field_value, $attributes, $errors);
+            $ret = Form::input($field->name(), $field_value, $attributes, $errors);
         }
+        else
+          $ret = Form::input($field->name(), $field_value, $attributes, $errors);
 
-        return Form::input($field->name(), $field_value, $attributes, $errors);
+        return $ret;
     }
 
     private static function computeFieldValue($model, $field_name)
     {
+        $ret = '';
+        
         if (method_exists($model, $field_name)) {
-            return $model->$field_name();
+            $ret = $model->$field_name();
         }
 
         if (property_exists($model, $field_name)) {
-            return $model->$field_name;
+            $ret = $model->$field_name;
         }
 
-        return '';
+        return $ret;
     }
 }

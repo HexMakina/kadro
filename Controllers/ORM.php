@@ -170,7 +170,7 @@ abstract class ORM extends Kadro implements ORMInterface
       foreach (array_keys($current) as $field) {
           $ret[$field] = $this->l(sprintf('MODEL_%s_FIELD_%s', $class_name::model_type(), $field));
       }
-      return $listing_fields;
+      return $ret;
     }
 
     private function listing_fields_from_table($class_name){

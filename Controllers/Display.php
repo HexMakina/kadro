@@ -17,27 +17,22 @@ class Display extends Base implements DisplayControllerInterface
 
     public function viewport($key = null, $value = null, $coercion = false)
     {
-      // no key, returns all
+        $ret = null;
+        // no key, returns all
         if (is_null($key)) {
-            return $this->template_variables;
+            $ret = $this->template_variables;
         }
-
-      // got key, got null value, returns $[$key]
-        if (is_null($value)) {
-            if ($coercion === true) { // break rule 1 ?
-                $this->template_variables[$key] = null;
-            }
-
-            return $this->template_variables[$key] ?? null;
-        }
-
-      // got key, got value
-      // sets or coerces $[$key]=$value and returns $[$key]
-        if (!isset($this->template_variables[$key]) || $coercion === true) {
+        // got key, got null value, returns $[$key]
+        elseif (is_null($value) && $coercion === true) {
             $this->template_variables[$key] = $value;
         }
-
-        return $this->template_variables[$key] ?? null;
+        // got key, got value
+        // sets or coerces $[$key]=$value and returns $[$key]
+        elseif (!isset($this->template_variables[$key]) || $coercion === true) {
+            $this->template_variables[$key] = $value;
+        }
+        
+        return $ret ?? $this->template_variables[$key] ?? null;
     }
 
     public function display($custom_template = null, $standalone = false)

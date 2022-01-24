@@ -145,21 +145,9 @@ abstract class ORM extends Kadro implements ORMInterface
     {
         $listing_fields = [];
         if (empty($listing)) {
-            $hidden_columns = ['created_by', 'created_on', 'password'];
-            foreach ($class_name::table()->columns() as $column) {
-                if (!$column->isAutoIncremented() && !in_array($column->name(), $hidden_columns)) {
-                    $listing_fields[$column->name()] = $this->l(sprintf('MODEL_%s_FIELD_%s', $class_name::model_type(), $column->name()));
-                }
-            }
+            $listing_fields = $this->listing_fields_from_table($class_name);
         } else {
-            $current = current($listing);
-            if (is_object($current)) {
-                $current = get_object_vars($current);
-            }
-
-            foreach (array_keys($current) as $field) {
-                $listing_fields[$field] = $this->l(sprintf('MODEL_%s_FIELD_%s', $class_name::model_type(), $field));
-            }
+            $listing_fields = $this->listing_fields_from_listing($class_name, $listing);
         }
 
         $this->viewport('listing', $listing);
@@ -171,6 +159,38 @@ abstract class ORM extends Kadro implements ORMInterface
         $this->viewport('route_export', $this->router()->hyp($class_name::model_type() . '_export'));
     }
 
+    private function listing_fields_from_listing($class_name, $listing){
+      $ret = [];
+
+      $current = current($listing);
+      if (is_object($current)) {
+          $current = get_object_vars($current);
+      }
+
+      foreach (array_keys($current) as $field) {
+          $ret[$field] = $this->l(sprintf('MODEL_%s_FIELD_%s', $class_name::model_type(), $field));
+      }
+      return $listing_fields;
+    }
+
+    private function listing_fields_from_table($class_name){
+      $ret = [];
+      $hidden_columns = ['created_by', 'created_on', 'password'];
+      foreach ($class_name::table()->columns() as $column) {
+          if (!$column->isAutoIncremented() && !in_array($column->name(), $hidden_columns)) {
+              $ret[$column->name()] = $this->l(sprintf('MODEL_%s_FIELD_%s', $class_name::model_type(), $column->name()));
+          }
+      }
+      return $ret;
+    }
+
+    private function listing_fields($class_name, $listing){
+      $listing_fields = [];
+
+
+
+      return $listing_fields;
+    }
     public function copy()
     {
         $this->formModel($this->load_model->copy());

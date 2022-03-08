@@ -34,7 +34,7 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
 
     public static function create_file($locale_path, $lang)
     {
-        $res = $this->modelClassName()::filter(['lang' => $lang]);
+        $res = \HexMakina\kadro\Models\Traduko::filter(['lang' => $lang]);
         $assoc = [];
         foreach ($res as $id => $trad) {
             if (!isset($assoc[$trad->kategorio])) {

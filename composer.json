@@ -20,7 +20,8 @@
         "hexmakina/traitor": "0.1.*",
         "hexmakina/tracer": "0.1.*",
         "hexmakina/black-box": "0.0.*",
-        "hexmakina/state-agent": "0.1.*"
+        "hexmakina/state-agent": "0.1.*",
+        "phpstan/phpstan": "1.8.x-dev"
     },
     "license": "mit",
     "authors": [
@@ -33,7 +34,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "HexMakina\\kadro\\": "/"
+            "HexMakina\\kadro\\": "/src"
         }
     }
 }

@@ -1,0 +1,1027 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "0af38f763ad31ec991c7478ce1dc4f79",
+    "packages": [
+        {
+            "name": "altorouter/altorouter",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dannyvankooten/AltoRouter.git",
+                "reference": "f6fede4f94ced7c22ba63a9b8af0bf2dc38e3cb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dannyvankooten/AltoRouter/zipball/f6fede4f94ced7c22ba63a9b8af0bf2dc38e3cb2",
+                "reference": "f6fede4f94ced7c22ba63a9b8af0bf2dc38e3cb2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "phpunit/phpunit": "5.7.*",
+                "squizlabs/php_codesniffer": "3.4.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "AltoRouter.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danny van Kooten",
+                    "email": "dannyvankooten@gmail.com",
+                    "homepage": "http://dannyvankooten.com/"
+                },
+                {
+                    "name": "Koen Punt",
+                    "homepage": "https://github.com/koenpunt"
+                },
+                {
+                    "name": "niahoo",
+                    "homepage": "https://github.com/niahoo"
+                }
+            ],
+            "description": "A lightning fast router for PHP",
+            "homepage": "https://github.com/dannyvankooten/AltoRouter",
+            "keywords": [
+                "lightweight",
+                "router",
+                "routing"
+            ],
+            "support": {
+                "issues": "https://github.com/dannyvankooten/AltoRouter/issues",
+                "source": "https://github.com/dannyvankooten/AltoRouter/tree/2.0.2"
+            },
+            "time": "2020-03-09T08:34:59+00:00"
+        },
+        {
+            "name": "hexmakina/black-box",
+            "version": "0.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/BlackBox.git",
+                "reference": "574e499290395a2f41508b56d73e9e378bd6ed21"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/BlackBox/zipball/574e499290395a2f41508b56d73e9e378bd6ed21",
+                "reference": "574e499290395a2f41508b56d73e9e378bd6ed21",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "psr/log": "1.1.*"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\BlackBox\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "PHP Interfaces for web development",
+            "keywords": [
+                "interfaces"
+            ],
+            "support": {
+                "issues": "https://github.com/HexMakina/BlackBox/issues",
+                "source": "https://github.com/HexMakina/BlackBox/tree/0.0.6"
+            },
+            "time": "2021-09-19T15:03:23+00:00"
+        },
+        {
+            "name": "hexmakina/crudites",
+            "version": "0.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/Crudites.git",
+                "reference": "c7111eadc60a09fd7aa42cf991382a40cfdd0524"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/Crudites/zipball/c7111eadc60a09fd7aa42cf991382a40cfdd0524",
+                "reference": "c7111eadc60a09fd7aa42cf991382a40cfdd0524",
+                "shasum": ""
+            },
+            "require": {
+                "hexmakina/black-box": "0.0.*",
+                "php": ">=7.1"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\Crudites\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "PHP/PDO CRUD",
+            "keywords": [
+                "crud",
+                "database",
+                "database connection",
+                "delete",
+                "insert",
+                "intropection",
+                "mariasql",
+                "mysql",
+                "pdo",
+                "php",
+                "select",
+                "update"
+            ],
+            "support": {
+                "issues": "https://github.com/HexMakina/Crudites/issues",
+                "source": "https://github.com/HexMakina/Crudites/tree/0.0.11"
+            },
+            "time": "2022-06-03T14:34:47+00:00"
+        },
+        {
+            "name": "hexmakina/debugger",
+            "version": "0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/Debugger.git",
+                "reference": "4b3ca12c33f8179936b78794c60f61e1443a2b1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/Debugger/zipball/4b3ca12c33f8179936b78794c60f61e1443a2b1a",
+                "reference": "4b3ca12c33f8179936b78794c60f61e1443a2b1a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\Debugger\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "Debugger is a PHP wrapper class for var_dump() output",
+            "support": {
+                "issues": "https://github.com/HexMakina/Debugger/issues",
+                "source": "https://github.com/HexMakina/Debugger/tree/0.1.4"
+            },
+            "time": "2021-09-21T12:59:43+00:00"
+        },
+        {
+            "name": "hexmakina/hopper",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/Hopper.git",
+                "reference": "0bd566f2e6c620c9871370199a77a97f90b3925b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/Hopper/zipball/0bd566f2e6c620c9871370199a77a97f90b3925b",
+                "reference": "0bd566f2e6c620c9871370199a77a97f90b3925b",
+                "shasum": ""
+            },
+            "require": {
+                "altorouter/altorouter": "2.0.*",
+                "hexmakina/black-box": "0.0.*",
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\Hopper\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "Router and reverse router based on AltoRouter",
+            "support": {
+                "issues": "https://github.com/HexMakina/Hopper/issues",
+                "source": "https://github.com/HexMakina/Hopper/tree/0.1.1"
+            },
+            "time": "2021-09-09T23:03:48+00:00"
+        },
+        {
+            "name": "hexmakina/le-marchand",
+            "version": "0.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/LeMarchand.git",
+                "reference": "5057116a02a4a2d37983377ac3ee2b30063ab823"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/LeMarchand/zipball/5057116a02a4a2d37983377ac3ee2b30063ab823",
+                "reference": "5057116a02a4a2d37983377ac3ee2b30063ab823",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "psr/container": "^1.0"
+            },
+            "provide": {
+                "psr/container-implementation": "^1.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\LeMarchand\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "LeMarchand is a PSR-11 container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "psr11"
+            ],
+            "support": {
+                "issues": "https://github.com/HexMakina/LeMarchand/issues",
+                "source": "https://github.com/HexMakina/LeMarchand/tree/0.2.0"
+            },
+            "time": "2022-08-25T07:35:21+00:00"
+        },
+        {
+            "name": "hexmakina/lezer",
+            "version": "0.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/Lezer.git",
+                "reference": "8407cf1b36506272d5da21a55da9143c0d531d02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/Lezer/zipball/8407cf1b36506272d5da21a55da9143c0d531d02",
+                "reference": "8407cf1b36506272d5da21a55da9143c0d531d02",
+                "shasum": ""
+            },
+            "require": {
+                "hexmakina/local-fs": "0.0.*",
+                "hexmakina/tempus": "0.0.*",
+                "philipp15b/php-i18n": "^4.0",
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\Lezer\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "Another 18n class, called Lezer, shorthand L",
+            "support": {
+                "issues": "https://github.com/HexMakina/Lezer/issues",
+                "source": "https://github.com/HexMakina/Lezer/tree/0.0.4"
+            },
+            "time": "2021-09-19T23:05:15+00:00"
+        },
+        {
+            "name": "hexmakina/local-fs",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/LocalFS.git",
+                "reference": "852296766e81b3a5353ce148dfecb8fa0f20ed18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/LocalFS/zipball/852296766e81b3a5353ce148dfecb8fa0f20ed18",
+                "reference": "852296766e81b3a5353ce148dfecb8fa0f20ed18",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\LocalFS\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "LocalFS is a PHP wrapper class for managing local filesystem",
+            "support": {
+                "issues": "https://github.com/HexMakina/LocalFS/issues",
+                "source": "https://github.com/HexMakina/LocalFS/tree/0.0.3"
+            },
+            "time": "2021-08-18T16:44:34+00:00"
+        },
+        {
+            "name": "hexmakina/log-laddy",
+            "version": "0.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/LogLaddy.git",
+                "reference": "33b6c5d37ce372d2d4f6a33cf14a4fabc546a380"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/LogLaddy/zipball/33b6c5d37ce372d2d4f6a33cf14a4fabc546a380",
+                "reference": "33b6c5d37ce372d2d4f6a33cf14a4fabc546a380",
+                "shasum": ""
+            },
+            "require": {
+                "hexmakina/black-box": "0.0.*",
+                "hexmakina/debugger": "0.1.*",
+                "php": ">=7.0",
+                "psr/log": "1.1.2"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\LogLaddy\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "LogLaddy is a PSR-3 Logger Interface implementation, but aimed at user interface messaging",
+            "support": {
+                "issues": "https://github.com/HexMakina/LogLaddy/issues",
+                "source": "https://github.com/HexMakina/LogLaddy/tree/0.0.7"
+            },
+            "time": "2021-09-19T13:36:30+00:00"
+        },
+        {
+            "name": "hexmakina/marker",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/Marker.git",
+                "reference": "a41bf5c513be6f9c0f8ea2163e83c0f90f695ae2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/Marker/zipball/a41bf5c513be6f9c0f8ea2163e83c0f90f695ae2",
+                "reference": "a41bf5c513be6f9c0f8ea2163e83c0f90f695ae2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\Marker\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "Marker is an HTML generator",
+            "support": {
+                "issues": "https://github.com/HexMakina/Marker/issues",
+                "source": "https://github.com/HexMakina/Marker/tree/0.1.0"
+            },
+            "time": "2021-09-02T21:31:42+00:00"
+        },
+        {
+            "name": "hexmakina/state-agent",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/StateAgent.git",
+                "reference": "8522a5d371caa0a2ef6fccd035e3546f7daf44df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/StateAgent/zipball/8522a5d371caa0a2ef6fccd035e3546f7daf44df",
+                "reference": "8522a5d371caa0a2ef6fccd035e3546f7daf44df",
+                "shasum": ""
+            },
+            "require": {
+                "hexmakina/black-box": "0.0.*",
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\StateAgent\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "StateAgent Smith manages PHP Session: user messages, current operator, cookies & search filters",
+            "support": {
+                "issues": "https://github.com/HexMakina/StateAgent/issues",
+                "source": "https://github.com/HexMakina/StateAgent/tree/0.1.2"
+            },
+            "time": "2021-09-09T22:55:19+00:00"
+        },
+        {
+            "name": "hexmakina/tempus",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/Tempus.git",
+                "reference": "4e275b1f78815f11982e3bf2940e541d7553f1c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/Tempus/zipball/4e275b1f78815f11982e3bf2940e541d7553f1c2",
+                "reference": "4e275b1f78815f11982e3bf2940e541d7553f1c2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\Tempus\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "Tempus handles Gregorian calendar",
+            "support": {
+                "issues": "https://github.com/HexMakina/Tempus/issues",
+                "source": "https://github.com/HexMakina/Tempus/tree/0.0.3"
+            },
+            "time": "2021-08-18T20:17:16+00:00"
+        },
+        {
+            "name": "hexmakina/tight-orm",
+            "version": "0.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/TightORM.git",
+                "reference": "da7b02b0851b73609d582c802832dc439d301713"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/TightORM/zipball/da7b02b0851b73609d582c802832dc439d301713",
+                "reference": "da7b02b0851b73609d582c802832dc439d301713",
+                "shasum": ""
+            },
+            "require": {
+                "hexmakina/black-box": "0.0.*",
+                "hexmakina/crudites": "0.0.*",
+                "hexmakina/traitor": "0.1.*",
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\TightORM\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "TightORM, close to sql table ORM",
+            "keywords": [
+                "orm",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/HexMakina/TightORM/issues",
+                "source": "https://github.com/HexMakina/TightORM/tree/0.0.6"
+            },
+            "time": "2021-09-19T12:49:36+00:00"
+        },
+        {
+            "name": "hexmakina/tracer",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/Tracer.git",
+                "reference": "37008d38897685b864deb72c922cd26abb6c8f2d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/Tracer/zipball/37008d38897685b864deb72c922cd26abb6c8f2d",
+                "reference": "37008d38897685b864deb72c922cd26abb6c8f2d",
+                "shasum": ""
+            },
+            "require": {
+                "hexmakina/black-box": "0.0.*",
+                "hexmakina/crudites": "0.0.*",
+                "php": ">=7.1"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\Tracer\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "SQL query logger",
+            "support": {
+                "issues": "https://github.com/HexMakina/Tracer/issues",
+                "source": "https://github.com/HexMakina/Tracer/tree/0.1.2"
+            },
+            "time": "2021-09-10T07:07:38+00:00"
+        },
+        {
+            "name": "hexmakina/traitor",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HexMakina/Traitor.git",
+                "reference": "54a153585e56612154d7ebcfde1cfbaca6d08a17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HexMakina/Traitor/zipball/54a153585e56612154d7ebcfde1cfbaca6d08a17",
+                "reference": "54a153585e56612154d7ebcfde1cfbaca6d08a17",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "HexMakina\\Traitor\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "HexMakina",
+                    "email": "touch@hexmakina.be",
+                    "homepage": "https://hexmakina.be"
+                }
+            ],
+            "description": "Traitor",
+            "keywords": [
+                "introspection",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/HexMakina/Traitor/issues",
+                "source": "https://github.com/HexMakina/Traitor/tree/0.1.0"
+            },
+            "time": "2021-08-29T16:08:51+00:00"
+        },
+        {
+            "name": "mustangostang/spyc",
+            "version": "0.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mustangostang/spyc.git",
+                "reference": "23c35ae854d835f2d7bcc3e3ad743d7e57a8c14d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/23c35ae854d835f2d7bcc3e3ad743d7e57a8c14d",
+                "reference": "23c35ae854d835f2d7bcc3e3ad743d7e57a8c14d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.3.*@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Spyc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mustangostang",
+                    "email": "vlad.andersen@gmail.com"
+                }
+            ],
+            "description": "A simple YAML loader/dumper class for PHP",
+            "homepage": "https://github.com/mustangostang/spyc/",
+            "keywords": [
+                "spyc",
+                "yaml",
+                "yml"
+            ],
+            "support": {
+                "issues": "https://github.com/mustangostang/spyc/issues",
+                "source": "https://github.com/mustangostang/spyc/tree/master"
+            },
+            "time": "2017-02-24T16:06:33+00:00"
+        },
+        {
+            "name": "philipp15b/php-i18n",
+            "version": "v4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Philipp15b/php-i18n.git",
+                "reference": "693bd6800134ef20e45c070ff382b7ebd143c745"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Philipp15b/php-i18n/zipball/693bd6800134ef20e45c070ff382b7ebd143c745",
+                "reference": "693bd6800134ef20e45c070ff382b7ebd143c745",
+                "shasum": ""
+            },
+            "require": {
+                "mustangostang/spyc": "0.6.2",
+                "php": ">= 5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "i18n.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Philipp Schröer",
+                    "email": "github@philworld.de"
+                }
+            ],
+            "description": "Simple i18n class for PHP",
+            "homepage": "https://github.com/Philipp15b/php-i18n",
+            "support": {
+                "issues": "https://github.com/Philipp15b/php-i18n/issues",
+                "source": "https://github.com/Philipp15b/php-i18n"
+            },
+            "time": "2018-03-26T12:50:46+00:00"
+        },
+        {
+            "name": "phpstan/phpstan",
+            "version": "1.8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "a5ce26b6a7c44cf7d134c3617beef98c3589ddad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a5ce26b6a7c44cf7d134c3617beef98c3589ddad",
+                "reference": "a5ce26b6a7c44cf7d134c3617beef98c3589ddad",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "default-branch": true,
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "source": "https://github.com/phpstan/phpstan/tree/1.8.x"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpstan/phpstan",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-08-25T08:13:11+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/513e0666f7216c7459170d56df27dfcefe1689ea",
+                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/container/issues",
+                "source": "https://github.com/php-fig/container/tree/1.1.2"
+            },
+            "time": "2021-11-05T16:50:12+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/446d54b4cb6bf489fc9d75f55843658e6f25d801",
+                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/1.1.2"
+            },
+            "time": "2019-11-01T11:05:21+00:00"
+        },
+        {
+            "name": "smarty/smarty",
+            "version": "v4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smarty-php/smarty.git",
+                "reference": "97aeb14c6fc2fb733938809926e2f9d6c581a70d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/97aeb14c6fc2fb733938809926e2f9d6c581a70d",
+                "reference": "97aeb14c6fc2fb733938809926e2f9d6c581a70d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5 || ^7.5",
+                "smarty/smarty-lexer": "^3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "libs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Monte Ohrt",
+                    "email": "monte@ohrt.com"
+                },
+                {
+                    "name": "Uwe Tews",
+                    "email": "uwe.tews@googlemail.com"
+                },
+                {
+                    "name": "Rodney Rehm",
+                    "email": "rodney.rehm@medialize.de"
+                },
+                {
+                    "name": "Simon Wisselink",
+                    "homepage": "https://www.iwink.nl/"
+                }
+            ],
+            "description": "Smarty - the compiling PHP template engine",
+            "homepage": "https://smarty-php.github.io/smarty/",
+            "keywords": [
+                "templating"
+            ],
+            "support": {
+                "forum": "https://github.com/smarty-php/smarty/discussions",
+                "issues": "https://github.com/smarty-php/smarty/issues",
+                "source": "https://github.com/smarty-php/smarty/tree/v4.2.0"
+            },
+            "time": "2022-08-01T21:57:38+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "phpstan/phpstan": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=8"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}

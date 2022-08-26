@@ -10,19 +10,28 @@ class kadro
 {
     private static $box; // PSR-11 Service Locator, ugly until DI is ready
 
+    private const ENV_PRODUCTION = 1;
+    private const ENV_STAGING = 0;
+    private const ENV_DEVELOPPEMENT = -1;
+
+    private const ENV_DEFAULT = self::ENV_PRODUCTION;
+
+    private static $environment = self::ENV_DEFAULT;
+
 
     public static function init($settings)
     {
+        // load debugger
         new Debugger();
 
+        // container
         self::$box = LeMarchand::box($settings);
 
-        //-- error & logs & messages
-        error_reporting(E_ALL);
-        ini_set('display_errors', PRODUCTION ? 0 : 1);
+        // prod, stage, dev
+        self::setEnvironmentType($settings);
+
 
         $log_laddy = self::$box->get('Psr\Log\LoggerInterface');
-
 
         //-- router
         $router = self::$box->get('HexMakina\BlackBox\RouterInterface');
@@ -120,4 +129,55 @@ class kadro
 
         return $smarty;
     }
+
+
+    public static function isProduction(): bool
+    {
+        return self::$environment === self::ENV_PRODUCTION;
+    }
+
+    public static function isStaging(): bool
+    {
+        return self::$environment === self::ENV_STAGING;
+    }
+
+    public static function isDevelopment(): bool
+    {
+        return self::$environment === self::ENV_DEVELOPPEMENT;
+    }
+
+    private static function setEnvironmentType($settings)
+    {
+      foreach([
+          'production_host' => self::ENV_PRODUCTION,
+          'staging_host' => self::ENV_STAGING,
+          'development_host' => self::ENV_DEVELOPPEMENT] as $host => $constant)
+      {
+        if(isset($settings['app'][$host]) && $settings['app'][$host] === $_SERVER['HTTP_HOST'])
+        {
+          self::$environment = $constant;
+        }
+      }
+      //-- error & logs & messages
+
+      switch(self::$environment)
+      {
+        case self::ENV_PRODUCTION:
+          error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+          ini_set('display_errors', 0);
+          break;
+
+        case self::ENV_STAGING:
+          error_reporting(E_ALL);
+          ini_set('display_errors', 1);
+          break;
+
+        case self::ENV_DEVELOPPEMENT:
+          error_reporting(E_ALL);
+          ini_set('display_errors', 1);
+          break;
+      }
+
+    }
+
 }

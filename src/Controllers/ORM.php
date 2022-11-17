@@ -8,20 +8,22 @@ use HexMakina\LeMarchand\Configuration;
 
 abstract class ORM extends Kadro implements ORMInterface
 {
-    protected $model_class_name = null;
-    protected $model_type = null;
+    protected $model_class_name;
 
-    protected $load_model = null;
-    protected $form_model = null;
+    protected $model_type;
+
+    protected ?\HexMakina\BlackBox\ORM\ModelInterface $load_model = null;
+
+    protected $form_model;
 
 
-    public function addErrors($errors)
+    public function addErrors($errors): void
     {
-        foreach ($errors as $err) {
-            if (is_array($err)) {
-                $this->addError(array_unshift($err), array_unshift($err));
+        foreach ($errors as $error) {
+            if (is_array($error)) {
+                $this->addError(array_unshift($error), array_unshift($error));
             } else {
-                $this->addError($err);
+                $this->addError($error);
             }
         }
     }
@@ -31,14 +33,15 @@ abstract class ORM extends Kadro implements ORMInterface
         return $this->load_model;
     }
 
-    public function formModel(ModelInterface $setter = null): ModelInterface
+    public function formModel(ModelInterface $model = null): ModelInterface
     {
-        if (!is_null($setter)) {
-            $this->form_model = $setter;
+        if (!is_null($model)) {
+            $this->form_model = $model;
         } elseif (is_null($this->form_model)) {
-            $reflection = new \ReflectionClass($this->modelClassName());
-            $this->form_model = $reflection->newInstanceWithoutConstructor(); //That's it!
+            $reflectionClass = new \ReflectionClass($this->modelClassName());
+            $this->form_model = $reflectionClass->newInstanceWithoutConstructor(); //That's it!
         }
+
         return $this->form_model;
     }
 
@@ -64,7 +67,7 @@ abstract class ORM extends Kadro implements ORMInterface
         return $ret;
     }
 
-    public function prepare()
+    public function prepare(): void
     {
         parent::prepare();
 
@@ -84,6 +87,7 @@ abstract class ORM extends Kadro implements ORMInterface
                 $this->formModel(clone $this->load_model);
             }
         }
+
         // TODO restore model history
         // if (!is_null($this->load_model) && is_subclass_of($this->load_model, '\HexMakina\Tracer\TraceableInterface') && $this->load_model->traceable()) {
         //   // $traces = $this->tracer()->traces_by_model($this->load_model);
@@ -109,29 +113,33 @@ abstract class ORM extends Kadro implements ORMInterface
         return $this->model_class_name;
     }
 
-    public function model_type_to_label($model = null)
+    public function model_type_to_label($model = null): string
     {
-        $model = $model ?? $this->load_model ?? $this->formModel();
+        $model ??= $this->load_model ?? $this->formModel();
         return $this->l(sprintf('MODEL_%s_INSTANCE', get_class($model)::model_type()));
     }
-    public function field_name_to_label($model, $field_name)
+
+    public function field_name_to_label($model, $field_name): string
     {
-        $model = $model ?? $this->load_model ?? $this->formModel();
+        $model ??= $this->load_model ?? $this->formModel();
         return $this->l(sprintf('MODEL_%s_FIELD_%s', (get_class($model))::model_type(), $field_name));
     }
 
-    public function dashboard()
+    public function dashboard(): void
     {
         $this->listing(); //default dashboard is a listing
     }
 
-    public function listing($model = null, $filters = [], $options = [])
+    public function listing($model = null, $filters = [], $options = []): void
     {
-        $class_name = is_null($model) ? $this->modelClassName() : get_class($model);
+        if (is_null($model)) {
+            $this->modelClassName();
+        }
 
         if (!isset($filters['date_start'])) {
             $filters['date_start'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_start');
         }
+
         if (!isset($filters['date_stop'])) {
             $filters['date_stop'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_stop');
         }
@@ -141,9 +149,8 @@ abstract class ORM extends Kadro implements ORMInterface
         $this->viewport_listing($class_name, $listing, $this->find_template($this->get('\Smarty'), __FUNCTION__));
     }
 
-    public function viewport_listing($class_name, $listing, $listing_template)
+    public function viewport_listing($class_name, $listing, $listing_template): void
     {
-        $listing_fields = [];
         if (empty($listing)) {
             $listing_fields = $this->listing_fields_from_table($class_name);
         } else {
@@ -159,7 +166,10 @@ abstract class ORM extends Kadro implements ORMInterface
         $this->viewport('route_export', $this->router()->hyp($class_name::model_type() . '_export'));
     }
 
-    private function listing_fields_from_listing($class_name, $listing){
+    /**
+     * @return array<int|string, string>
+     */
+    private function listing_fields_from_listing($class_name, $listing): array{
       $ret = [];
 
       $current = current($listing);
@@ -170,10 +180,14 @@ abstract class ORM extends Kadro implements ORMInterface
       foreach (array_keys($current) as $field) {
           $ret[$field] = $this->l(sprintf('MODEL_%s_FIELD_%s', $class_name::model_type(), $field));
       }
+
       return $ret;
     }
 
-    private function listing_fields_from_table($class_name){
+    /**
+     * @return array<int|string, string>
+     */
+    private function listing_fields_from_table($class_name): array{
       $ret = [];
       $hidden_columns = ['created_by', 'created_on', 'password'];
       foreach ($class_name::table()->columns() as $column) {
@@ -181,17 +195,10 @@ abstract class ORM extends Kadro implements ORMInterface
               $ret[$column->name()] = $this->l(sprintf('MODEL_%s_FIELD_%s', $class_name::model_type(), $column->name()));
           }
       }
+
       return $ret;
     }
-
-    private function listing_fields($class_name, $listing){
-      $listing_fields = [];
-
-
-
-      return $listing_fields;
-    }
-    public function copy()
+    public function copy(): void
     {
         $this->formModel($this->load_model->copy());
 
@@ -199,7 +206,7 @@ abstract class ORM extends Kadro implements ORMInterface
         $this->edit();
     }
 
-    public function edit()
+    public function edit(): void
     {
     }
 
@@ -222,6 +229,7 @@ abstract class ORM extends Kadro implements ORMInterface
             $this->logger()->notice($this->l('CRUDITES_INSTANCE_ALTERED', [$this->l('MODEL_' . get_class($model)::model_type() . '_INSTANCE')]));
             return $model;
         }
+
         foreach ($this->errors() as $field => $error_msg) {
             $this->logger()->warning($this->l($error_msg, [$field]));
         }
@@ -229,7 +237,7 @@ abstract class ORM extends Kadro implements ORMInterface
         return null;
     }
 
-    public function before_edit()
+    public function before_edit(): void
     {
         if (!is_null($this->router()->params('id')) && is_null($this->load_model)) {
             $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->modelClassName()::model_type() . '_INSTANCE')]));
@@ -237,18 +245,21 @@ abstract class ORM extends Kadro implements ORMInterface
         }
     }
 
-    public function before_save()
+    /**
+     * @return mixed[]
+     */
+    public function before_save(): array
     {
         return [];
     }
 
   // default: hop to altered object
-    public function after_save()
+    public function after_save(): void
     {
         $this->router()->hop($this->routeBack());
     }
 
-    public function destroy_confirm()
+    public function destroy_confirm(): string
     {
         if (is_null($this->load_model)) {
             $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->model_type . '_INSTANCE')]));
@@ -260,7 +271,7 @@ abstract class ORM extends Kadro implements ORMInterface
         return 'destroy';
     }
 
-    public function before_destroy() // default: checks for load_model and immortality, hops back to object on failure
+    public function before_destroy(): void // default: checks for load_model and immortality, hops back to object on failure
     {
         if (is_null($this->load_model)) {
             $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->model_type . '_INSTANCE')]));
@@ -286,23 +297,23 @@ abstract class ORM extends Kadro implements ORMInterface
         }
     }
 
-    public function after_destroy()
+    public function after_destroy(): void
     {
         $this->router()->hop($this->routeBack());
     }
 
-    public function conclude()
+    public function conclude(): void
     {
         $this->viewport('errors', $this->errors());
         $this->viewport('form_model_type', $this->model_type);
         $this->viewport('form_model', $this->formModel());
 
-        if (isset($this->load_model)) {
+        if ($this->load_model !== null) {
             $this->viewport('load_model', $this->load_model);
         }
     }
 
-    public function collection_to_csv($collection, $filename)
+    public function collection_to_csv($collection, $filename): string
     {
       // TODO use Format/File/CSV class to generate file
         $file_path = $this->get('settings.export.directory') . $filename . '.csv';
@@ -316,8 +327,10 @@ abstract class ORM extends Kadro implements ORMInterface
                 fputcsv($fp, array_keys($line));
                 $header = true;
             }
+
             fputcsv($fp, $line);
         }
+
         fclose($fp);
 
         return $file_path;
@@ -326,17 +339,14 @@ abstract class ORM extends Kadro implements ORMInterface
     public function export()
     {
         $format = $this->router()->params('format');
-        switch ($format) {
-            case null:
-                $filename = $this->model_type;
-                $collection = $this->modelClassName()::listing();
-                $file_path = $this->collection_to_csv($collection, $filename);
-                $this->router()->sendFile($file_path);
-                break;
-
-            case 'xlsx':
-                $report_controller = $this->get('HexMakina\koral\Controllers\ReportController');
-                return $report_controller->collection($this->modelClassName());
+        if ($format == null) {
+            $filename = $this->model_type;
+            $collection = $this->modelClassName()::listing();
+            $file_path = $this->collection_to_csv($collection, $filename);
+            $this->router()->sendFile($file_path);
+        } elseif ($format == 'xlsx') {
+            $report_controller = $this->get('HexMakina\koral\Controllers\ReportController');
+            return $report_controller->collection($this->modelClassName());
         }
     }
 
@@ -361,8 +371,8 @@ abstract class ORM extends Kadro implements ORMInterface
             $route_name .= 'default';
             $route_params = ['id' => $model->getId()];
         }
-        $res = $this->router()->hyp($route_name, $route_params);
-        return $res;
+
+        return $this->router()->hyp($route_name, $route_params);
     }
 
     public function routeFactory($route = null, $route_params = []): string

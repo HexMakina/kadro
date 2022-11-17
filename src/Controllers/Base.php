@@ -12,9 +12,13 @@ class Base implements BaseControllerInterface, ContainerInterface
 {
     use \HexMakina\Traitor\Traitor;
 
-    protected $route_back = null;
-    protected $errors = [];
+    protected $route_back;
 
+    protected array $errors = [];
+
+    /**
+     * @return mixed[][]
+     */
     public function errors(): array
     {
         return $this->errors;
@@ -25,7 +29,7 @@ class Base implements BaseControllerInterface, ContainerInterface
         return LeMarchand::box();
     }
 
-    public function has($key)
+    public function has($key): bool
     {
         return $this->container()->has($key);
     }
@@ -35,7 +39,7 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $this->container()->get($key);
     }
 
-    public function addError($message, $context = [])
+    public function addError($message, $context = []): void
     {
         $this->errors[] = [$message, $context];
     }
@@ -52,7 +56,7 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $this->get('HexMakina\BlackBox\RouterInterface');
     }
 
-    public function prepare()
+    public function prepare(): bool
     {
         return true;
     }
@@ -64,7 +68,7 @@ class Base implements BaseControllerInterface, ContainerInterface
       // before and after hooks, should they be in basecontroller ?
       // i think so, but pascal just proposed me pastis.. tomorrow
 
-        foreach (['prepare', "before_$method", $method, "after_$method"] as $step => $chainling) {
+        foreach (['prepare', sprintf('before_%s', $method), $method, sprintf('after_%s', $method)] as $chainling) {
             $this->traitor($chainling);
 
             if (method_exists($this, $chainling) && empty($this->errors())) {
@@ -81,7 +85,7 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $ret;
     }
 
-    public function conclude()
+    public function conclude(): bool
     {
         return true;
     }
@@ -105,16 +109,12 @@ class Base implements BaseControllerInterface, ContainerInterface
 
     public function routeFactory($route_name = null, $route_params = []): string
     {
-        $route = null;
-
         if (is_string($route_name) && !empty($route_name)) {
             if ($this->router()->routeExists($route_name)) {
-                $route = $this->router()->hyp($route_name, $route_params);
-            } else {
-                $route = $route_name;
+                return $this->router()->hyp($route_name, $route_params);
             }
 
-            return $route;
+            return $route_name;
         }
 
         throw new \Exception('ROUTE_FACTORY_PARAM_TYPE_ERROR');

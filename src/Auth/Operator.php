@@ -10,11 +10,18 @@ use HexMakina\TightORM\{TightModel,RelationManyToMany};
 
 class Operator extends TightModel implements OperatorInterface
 {
+    /**
+     * @var string
+     */
     public const TABLE_NAME = 'kadro_operator';
+
+    /**
+     * @var string
+     */
     public const TABLE_ALIAS = 'operator';
 
 
-    protected $permissions = null;
+    protected $permissions;
 
     // use Permissionability;
     use \HexMakina\TightORM\RelationManyToMany;
@@ -45,7 +52,7 @@ class Operator extends TightModel implements OperatorInterface
         return $this->get('password');
     }
 
-    public function passwordChange($string)
+    public function passwordChange($string): void
     {
         $this->set('password', password_hash($this->validate_password($string), PASSWORD_DEFAULT));
     }
@@ -64,6 +71,7 @@ class Operator extends TightModel implements OperatorInterface
     {
         return $this->get('email');
     }
+
     public function phone()
     {
         return $this->get('phone');
@@ -83,24 +91,24 @@ class Operator extends TightModel implements OperatorInterface
 
     public static function query_retrieve($filters = [], $options = []): SelectInterface
     {
-        $Query = static::table()->select();
+        $select = static::table()->select();
         if (isset($options['eager']) && $options['eager'] === true) {
-            $Query->groupBy('id');
+            $select->groupBy('id');
 
-            AutoJoin::join($Query, [ACL::table(), 'acl'], null, 'LEFT OUTER');
-            AutoJoin::join($Query, [Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
-            $Query->selectAlso(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
+            AutoJoin::join($select, [ACL::table(), 'acl'], null, 'LEFT OUTER');
+            AutoJoin::join($select, [Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
+            $select->selectAlso(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
         }
 
         if (isset($filters['model']) && !empty($filters['model'])) {
-            $Query->join([static::otm('t'), static::otm('a')], [[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
-            $Query->whereFieldsEQ(['model_id' => $filters['model']->getId(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
+            $select->join([static::otm('t'), static::otm('a')], [[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
+            $select->whereFieldsEQ(['model_id' => $filters['model']->getId(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
         }
 
-        $Query->orderBy([$Query->tableLabel(), 'name', 'ASC']);
+        $select->orderBy([$select->tableLabel(), 'name', 'ASC']);
 
 
-        return $Query;
+        return $select;
     }
 
     public function immortal(): bool
@@ -112,15 +120,18 @@ class Operator extends TightModel implements OperatorInterface
     {
         if (property_exists($this, 'permission_names') && !is_null($this->get('permission_names'))) {
             return explode(',', $this->get('permission_names') ?? '');
-        } elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
+        }
+        if (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
             $ids = explode(',', $this->get('permission_ids') ?? '');
             $ret = [];
             $permissions = Permission::get_many_by_AIPK($ids);
-            foreach ($permissions as $id => $p) {
-                $ret[] = "$p";
+            foreach ($permissions as $permission) {
+                $ret[] = sprintf('%s', $permission);
             }
+
             return $ret;
-        } else {
+        }
+        else {
             return ACL::permissions_names_for($this);
         }
     }
@@ -131,6 +142,7 @@ class Operator extends TightModel implements OperatorInterface
         if (!is_null($this->permissions)) {
             return $this->permissions;
         }
+
         $permission_unique_keys = null;
         if (property_exists($this, 'permission_names') && !is_null($this->get('permission_names'))) {
             $permission_unique_keys = explode(',', $this->get('permission_names') ?? '');
@@ -148,30 +160,36 @@ class Operator extends TightModel implements OperatorInterface
     public function hasPermission($p): bool
     {
       // new instances or inactive operators, none shall pass
-        if ($this->isNew() === true || $this->isActive()  === false) {
+        if ($this->isNew() === true) {
             return false;
         }
-
-        $permission_name = $permission_id = null;
+        if ($this->isActive()  === false) {
+            return false;
+        }
+        $permission_name = null;
+        $permission_id = null;
         if (is_subclass_of($p, '\HexMakina\kadro\Auth\Permission')) {
             $permission_name = $p->get('name');
             $permission_id = $p->getId();
-        } elseif (preg_match('/[0-9]+/', $p)) {
+        } elseif (preg_match('#\d+#', $p)) {
             $permission_id = $p;
         } else {
             $permission_name = $p;
         }
-
         if (!is_null($this->get('permission_names')) && !is_null($permission_name)) {
             return strpos($this->get('permission_names'), $permission_name) !== false;
-        } elseif (!is_null($this->get('permission_ids')) && !is_null($permission_id)) {
+        }
+
+        if (!is_null($this->get('permission_ids')) && !is_null($permission_id)) {
             return strpos($this->get('permission_ids'), $permission_id) !== false;
         } elseif (!is_null($permission_name)) {
             if (method_exists($this, $permission_name) && $this->$permission_name() == true) {
                 return true;
-            } elseif (property_exists($this, $permission_name) && $this->get('$permission_name') == true) {
+            }
+            if (property_exists($this, $permission_name) && $this->get('$permission_name') == true) {
                 return true;
-            } elseif (ACL::match($this, $permission_name) === true) {
+            }
+            elseif (ACL::match($this, $permission_name) === true) {
                 return true;
             }
         }

@@ -18,7 +18,7 @@ use HexMakina\kadro\Auth\{ACL,AccessRefusedException};
 class Operator extends \HexMakina\kadro\Controllers\ORM
 {
 
-    public function edit()
+    public function edit(): void
     {
         parent::edit();
 
@@ -33,7 +33,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
         return "\HexMakina\kadro\Auth\Operator";
     }
 
-    public function save()
+    public function save(): void
     {
         if ($this->operator()->getId() !== $this->formModel()->getId()) {
             $this->authorize('group_admin');
@@ -42,7 +42,10 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
         parent::save();
     }
 
-    public function before_save()
+    /**
+     * @return mixed[]
+     */
+    public function before_save(): array
     {
       //------------------------------------------------------------- PASSWORDS
         if ($this->formModel()->get('password') != $this->formModel()->get('password_verification')) {
@@ -50,21 +53,22 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
             $this->logger()->warning($this->l('KADRO_operator_ERR_PASSWORDS_MISMATCH'));
             $this->edit();
         }
+
         return $this->errors(); // useless call, errors are managed globally but interface expects it.. refactor needed
     }
 
-    public function dashboard()
+    public function dashboard(): void
     {
         $real_operator_class = get_class($this->operator());
         $this->viewport('users', $real_operator_class::filter([], ['order_by' => [null,'username', 'ASC']]));
     }
 
-    public function destroy()
+    public function destroy(): void
     {
         $this->change_active();
     }
 
-    public function change_active()
+    public function change_active(): void
     {
         parent::authorize('group_admin');
 
@@ -83,7 +87,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
         $this->router()->hopBack();
     }
 
-    public function change_acl()
+    public function change_acl(): void
     {
         parent::authorize('group_admin');
 
@@ -102,6 +106,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
         } else {
             $row->wipe();
         }
+
         // force reload for permission purposes
         $this->router()->hopBack();
     }

@@ -12,7 +12,9 @@ trait Traceable
 {
 
     abstract public function formModel(): ModelInterface;
+
     abstract public function loadModel(): ?ModelInterface;
+
     abstract public function operator(): OperatorInterface;
 
 
@@ -21,7 +23,7 @@ trait Traceable
         return $this->get('HexMakina\BlackBox\Database\TracerInterface');
     }
 
-    public function TraceableTraitor_after_save()
+    public function TraceableTraitor_after_save(): void
     {
         $trace = new Trace();
         $trace->tableName(get_class($this->formModel())::relationalMappingName());
@@ -31,13 +33,14 @@ trait Traceable
         } else {
             $trace->isUpdate(true);
         }
+
         $trace->tablePk($this->formModel()->getId());
         $trace->operatorId($this->operator()->getId());
 
         $this->getTracer()->trace($trace);
     }
 
-    public function TraceableTraitor_after_destroy()
+    public function TraceableTraitor_after_destroy(): void
     {
         ;
     }

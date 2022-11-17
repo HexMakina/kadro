@@ -7,7 +7,14 @@ use HexMakina\TightORM\TightModel;
 
 class Traduko extends TightModel
 {
+    /**
+     * @var string
+     */
     public const TABLE_NAME = 'kadro_traduki';
+
+    /**
+     * @var string
+     */
     public const TABLE_ALIAS = 'traduko';
 
     public function traceable(): bool
@@ -22,11 +29,11 @@ class Traduko extends TightModel
 
     public static function query_retrieve($filters = [], $options = []): SelectInterface
     {
-        $Query = static::table()->select();
-        $Query->orderBy(['kategorio', 'ASC']);
-        $Query->orderBy(['sekcio', 'ASC']);
-        $Query->orderBy(['referenco', 'ASC']);
+        $select = static::table()->select();
+        $select->orderBy(['kategorio', 'ASC']);
+        $select->orderBy(['sekcio', 'ASC']);
+        $select->orderBy(['referenco', 'ASC']);
 
-        return $Query;
+        return $select;
     }
 }

@@ -8,18 +8,31 @@ use HexMakina\Lezer\Lezer;
 
 class kadro
 {
-    private static $box; // PSR-11 Service Locator, ugly until DI is ready
-
+    private static ?\Psr\Container\ContainerInterface $box = null; // PSR-11 Service Locator, ugly until DI is ready
+    /**
+     * @var int
+     */
     private const ENV_PRODUCTION = 1;
+
+    /**
+     * @var int
+     */
     private const ENV_STAGING = 0;
+
+    /**
+     * @var int
+     */
     private const ENV_DEVELOPPEMENT = -1;
 
+    /**
+     * @var int
+     */
     private const ENV_DEFAULT = self::ENV_PRODUCTION;
 
-    private static $environment = self::ENV_DEFAULT;
+    private static int $environment = self::ENV_DEFAULT;
 
 
-    public static function init($settings)
+    public static function init($settings): \Psr\Container\ContainerInterface
     {
         // load debugger
         new Debugger();
@@ -65,7 +78,7 @@ class kadro
         return self::$box;
     }
 
-    private static function internationalisation()
+    private static function internationalisation(): void
     {
         // ----     parametroj:signo
         $setting = 'settings.default.charset';
@@ -100,9 +113,10 @@ class kadro
       // Load smarty template parser
         $smarty->setTemplateDir(self::$box->get('settings.smarty.template_app_directory'));
 
-        foreach (self::$box->get('settings.smarty.template_extra_directories') as $i => $template_dir) {
+        foreach (self::$box->get('settings.smarty.template_extra_directories') as $template_dir) {
             $smarty->addTemplateDir($template_dir);
         }
+
         $smarty->addTemplateDir(__DIR__ . '/Views/'); //kadro templates
 
         $setting = 'settings.smarty.compiled_path';
@@ -146,7 +160,7 @@ class kadro
         return self::$environment === self::ENV_DEVELOPPEMENT;
     }
 
-    private static function setEnvironmentType($settings)
+    private static function setEnvironmentType($settings): void
     {
       foreach([
           'production_host' => self::ENV_PRODUCTION,
@@ -158,6 +172,7 @@ class kadro
           self::$environment = $constant;
         }
       }
+
       //-- error & logs & messages
 
       switch(self::$environment)
@@ -168,9 +183,6 @@ class kadro
           break;
 
         case self::ENV_STAGING:
-          error_reporting(E_ALL);
-          ini_set('display_errors', 1);
-          break;
 
         case self::ENV_DEVELOPPEMENT:
           error_reporting(E_ALL);

@@ -47,16 +47,19 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         if (is_null($operator) || $operator->isNew() || !$operator->isActive()) {
             throw new AccessRefusedException();
         }
+
         if (is_null($permission)) {
             return true;
         }
+
         if ($operator->hasPermission($permission)) {
             return true;
         }
+
         throw new AccessRefusedException();
     }
 
-    public function execute($method)
+    public function execute($method): bool
     {
       // kadro controller is a display controller with authentification and intl
         $this->authorize();

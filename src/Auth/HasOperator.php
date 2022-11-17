@@ -10,26 +10,26 @@ trait HasOperator
 {
     use \HexMakina\TightORM\HasOne;
 
-    private $operator = null;
+    private $operator;
 
     abstract public function get($prop_name);
 
-    public function operator(OperatorInterface $setter = null)
+    public function operator(OperatorInterface $operator = null)
     {
-        if (!is_null($setter)) {
-            $this->operator = $setter;
+        if (!is_null($operator)) {
+            $this->operator = $operator;
         }
 
         if (is_null($this->operator)) {
-            $extract_attempt = self::extract(new Operator(), $this, true);
-            if (!is_null($extract_attempt)) {
+            $model = self::extract(new Operator(), $this, true);
+            if (!is_null($model)) {
                 foreach (['permission_names', 'permission_ids'] as $permission_marker) {
                     if (property_exists($this, $permission_marker)) {
-                        $extract_attempt->set($permission_marker, $this->$permission_marker);
+                        $model->set($permission_marker, $this->$permission_marker);
                     }
                 }
 
-                $this->operator = $extract_attempt;
+                $this->operator = $model;
             }
         }
 

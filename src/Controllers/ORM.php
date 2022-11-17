@@ -198,6 +198,7 @@ abstract class ORM extends Kadro implements ORMInterface
 
       return $ret;
     }
+
     public function copy(): void
     {
         $this->formModel($this->load_model->copy());

@@ -7,6 +7,9 @@ use HexMakina\LocalFS\Text\JSON;
 class Traduko extends \HexMakina\kadro\Controllers\ORM
 {
 
+    /**
+     * @var string
+     */
     public const JSON_FILENAME = 'user_interface_{LANGUAGE}.json';
 
     public function authorize($permission = null): bool
@@ -19,45 +22,50 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
         return $this->router()->hyp('traduko');
     }
 
-    public function update_file($lang = 'fra')
+    public function update_file($lang = 'fra'): void
     {
         try {
             $locale_path = $this->get('settings.locale.json_path');
             self::create_file($locale_path, $lang);
 
             $this->logger()->notice($this->l('KADRO_SYSTEM_FILE_UPDATED'));
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->logger()->warning($this->l('KADRO_SYSTEM_FILE_UPDATED'));
         }
+
         $this->router()->hop('traduko');
     }
 
-    public static function create_file($locale_path, $lang)
+    public static function create_file($locale_path, $lang): void
     {
         $res = \HexMakina\kadro\Models\Traduko::filter(['lang' => $lang]);
         $assoc = [];
-        foreach ($res as $id => $trad) {
-            if (!isset($assoc[$trad->kategorio])) {
-                $assoc[$trad->kategorio] = [];
-            }
-            if (!isset($assoc[$trad->kategorio][$trad->sekcio])) {
-                $assoc[$trad->kategorio][$trad->sekcio] = [];
+        foreach ($res as $re) {
+            if (!isset($assoc[$re->kategorio])) {
+                $assoc[$re->kategorio] = [];
             }
 
-            $assoc[$trad->kategorio][$trad->sekcio][$trad->referenco] = $trad->$lang;
+            if (!isset($assoc[$re->kategorio][$re->sekcio])) {
+                $assoc[$re->kategorio][$re->sekcio] = [];
+            }
+
+            $assoc[$re->kategorio][$re->sekcio][$re->referenco] = $re->$lang;
         }
 
         $file_path = str_replace('{LANGUAGE}', $lang, $locale_path);
 
-        $file = new JSON($file_path, 'w+');
-        $file->set_content(JSON::from_php($assoc));
+        $json = new JSON($file_path, 'w+');
+        $json->set_content(JSON::from_php($assoc));
     }
 
-    public static function init($locale_path)
+    /**
+     * @return int[]|string[]
+     */
+    public static function init($locale_path): array
     {
         $languages = array_keys(array_slice(Traduko::inspect(Traduko::relationalMappingName())->columns(), 4));
-        foreach ($languages as $l) {
-            self::create_file($locale_path, $l);
+        foreach ($languages as $language) {
+            self::create_file($locale_path, $language);
         }
 
         return $languages;

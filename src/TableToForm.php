@@ -7,19 +7,7 @@ use HexMakina\Marker\{Form,Element};
 
 class TableToForm
 {
-    private static function compute_field_value($model, $field_name)
-    {
-        $ret = '';
-        if (method_exists($model, $field_name)) {
-            $ret = $model->$field_name();
-        }elseif (property_exists($model, $field_name)) {
-            $ret = $model->$field_name;
-        }
-
-        return $ret;
-    }
-
-    public static function label($model, $field_name, $attributes = [], $errors = [])
+    public static function label($model, string $field_name, $attributes = [], array $errors = []): string
     {
         $label_content = $field_name;
 
@@ -27,15 +15,13 @@ class TableToForm
             $label_content = $attributes['label'];
             unset($attributes['label']);
         }
-
-        $ret = Form::label($field_name, $label_content, $attributes, $errors);
-        return $ret;
+        return Form::label($field_name, $label_content, $attributes, $errors);
     }
 
     public static function field(ModelInterface $model, $field_name, $attributes = [], $errors = []): string
     {
         $field_value = $attributes['value'] ?? self::computeFieldValue($model, $field_name);
-        $attributes['name'] = $attributes['name'] ?? $field_name;
+        $attributes['name'] ??= $field_name;
 
         $table = get_class($model)::table();
 
@@ -54,7 +40,7 @@ class TableToForm
         return self::fieldByType($field, $field_value, $attributes, $errors);
     }
 
-    public static function fieldWithLabel($model, $field_name, $attributes = [], $errors = []): string
+    public static function fieldWithLabel(\HexMakina\BlackBox\ORM\ModelInterface $model, $field_name, $attributes = [], $errors = []): string
     {
         $field_attributes = $attributes;
         if (isset($attributes['label'])) {
@@ -82,6 +68,7 @@ class TableToForm
                     $form_field = new Element('div', $form_field, ['class' => $group_class]);
                 }
             }
+
             $ret .= PHP_EOL . $form_field;
         }
 
@@ -90,7 +77,6 @@ class TableToForm
 
     private static function fieldByType($field, $field_value, $attributes = [], $errors = []): string
     {
-        $ret = null;
         if ($field->isAutoIncremented()) {
             $ret = Form::hidden($field->name(), $field_value);
         }
@@ -102,7 +88,8 @@ class TableToForm
             $ret = Form::input($field->name(), $field_value, $attributes, $errors);
         }
         elseif ($field->type()->isYear()) {
-            $attributes['size'] = $attributes['maxlength'] = 4;
+            $attributes['size'] = 4;
+            $attributes['maxlength'] = 4;
             $ret = Form::input($field->name(), $field_value, $attributes, $errors);
         }
         elseif ($field->type()->isDate()) {
@@ -119,8 +106,8 @@ class TableToForm
         }
         elseif ($field->type()->isEnum()) {
             $enum_values = [];
-            foreach ($field->type()->getEnumValues() as $e_val) {
-                $enum_values[$e_val] = $e_val;
+            foreach ($field->type()->getEnumValues() as $enumValue) {
+                $enum_values[$enumValue] = $enumValue;
             }
 
             $selected = $attributes['value'] ?? $field_value ?? '';
@@ -128,7 +115,8 @@ class TableToForm
         }
         elseif ($field->type()->isString()) {
             $max_length = $field->type()->getLength();
-            $attributes['size'] = $attributes['maxlength'] = $max_length;
+            $attributes['size'] = $max_length;
+            $attributes['maxlength'] = $max_length;
             $ret = Form::input($field->name(), $field_value, $attributes, $errors);
         }
         else
@@ -146,7 +134,7 @@ class TableToForm
         }
 
         if (property_exists($model, $field_name)) {
-            $ret = $model->$field_name;
+            return $model->$field_name;
         }
 
         return $ret;

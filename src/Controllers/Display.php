@@ -6,10 +6,10 @@ use HexMakina\BlackBox\Controllers\DisplayControllerInterface;
 
 class Display extends Base implements DisplayControllerInterface
 {
-    protected $template_variables = [];
+    protected array $template_variables = [];
 
   // Display is Base with a display function
-    public function execute($method)
+    public function execute($method): bool
     {
         $custom_template = parent::execute($method);
         return $this->display($custom_template);
@@ -35,7 +35,7 @@ class Display extends Base implements DisplayControllerInterface
         return $ret ?? $this->template_variables[$key] ?? null;
     }
 
-    public function display($custom_template = null, $standalone = false)
+    public function display($custom_template = null, $standalone = false): bool
     {
         $smarty = $this->get('\Smarty');
 
@@ -64,12 +64,12 @@ class Display extends Base implements DisplayControllerInterface
         return true;
     }
 
-    protected function template_base()
+    protected function template_base(): string
     {
         return strtolower(str_replace('Controller', '', (new \ReflectionClass(get_called_class()))->getShortName()));
     }
 
-    protected function find_template($smarty, $custom_template = null)
+    protected function find_template($smarty, $custom_template = null): string
     {
         $controller_template_path = $this->template_base();
         $templates = [];

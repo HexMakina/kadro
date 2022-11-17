@@ -40,19 +40,19 @@ class Reception extends Kadro
         return $operator;
     }
 
-    public function checkin()
+    public function checkin(): void
     {
         $this->display('checkin', 'standalone');
         $this->get('HexMakina\BlackBox\StateAgentInterface')->resetMessages();
     }
 
-    public function checkout()
+    public function checkout(): void
     {
         $this->get('HexMakina\BlackBox\StateAgentInterface')->destroy();
         $this->router()->hop('checkin');
     }
 
-    public function identify($op)
+    public function identify($op): void
     {
         try {
             $username = $this->router()->submitted('username');
@@ -71,8 +71,8 @@ class Reception extends Kadro
             $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId($operator->getId());
             $this->logger()->notice('PAGE_CHECKIN_WELCOME', [$operator->name()]);
             $this->router()->hop();
-        } catch (\Exception $e) {
-            $this->logger()->warning('KADRO_operator_' . $e->getMessage());
+        } catch (\Exception $exception) {
+            $this->logger()->warning('KADRO_operator_' . $exception->getMessage());
             $this->router()->hop('checkin');
         }
     }

@@ -8,9 +8,10 @@ trait Event
 {
 
     abstract public function get($prop_name);
+
     abstract public function __toString();
 
-    public function event_field()
+    public function event_field(): string
     {
         return 'occured_on';
     }

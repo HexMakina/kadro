@@ -9,10 +9,14 @@ use HexMakina\BlackBox\Controllers\IntlControllerInterface;
 
 class Kadro extends Display implements AuthControllerInterface, IntlControllerInterface
 {
-    private $translation_function_name = 'L';
-    private $operator = null;
+    private string $translation_function_name = 'L';
 
-    public function __toString()
+    /**
+     * @var mixed|null
+     */
+    private $operator;
+
+    public function __toString(): string
     {
         return get_called_class();
     }
@@ -26,9 +30,9 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
     {
         $op_class = get_class($this->get('HexMakina\BlackBox\Auth\OperatorInterface'));
         if (is_null($this->operator) && !empty($op_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId())) {
-            $op = $op_class::safeLoading($op_id);
-            $this->operator = $op;
+            $this->operator = $op_class::safeLoading($op_id);
         }
+
         return $this->operator ?? new $op_class;
     }
 
@@ -43,12 +47,13 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         if (is_null($operator) || $operator->isNew() || !$operator->isActive()) {
             throw new AccessRefusedException();
         }
-
-        if (!is_null($permission) && !$operator->hasPermission($permission)) {
-            throw new AccessRefusedException();
+        if (is_null($permission)) {
+            return true;
         }
-
-        return true;
+        if ($operator->hasPermission($permission)) {
+            return true;
+        }
+        throw new AccessRefusedException();
     }
 
     public function execute($method)
@@ -58,7 +63,7 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         return parent::execute($method);
     }
 
-    public function prepare()
+    public function prepare(): void
     {
         parent::prepare();
         $this->trim_request_data();
@@ -70,17 +75,17 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         return call_user_func($this->translation_function_name, $message, $context);
     }
 
-    private function trim_request_data()
+    private function trim_request_data(): void
     {
-        array_walk_recursive($_GET, function (&$value) {
+        array_walk_recursive($_GET, static function (&$value) : void {
             $value = trim($value);
         });
-        array_walk_recursive($_REQUEST, function (&$value) {
+        array_walk_recursive($_REQUEST, static function (&$value) : void {
             $value = trim($value);
         });
 
         if ($this->router()->submits()) {
-            array_walk_recursive($_POST, function (&$value) {
+            array_walk_recursive($_POST, static function (&$value) : void {
                 $value = trim($value);
             });
         }

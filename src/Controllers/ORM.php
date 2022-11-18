@@ -401,7 +401,7 @@ abstract class ORM extends Kadro implements ORMInterface
     }
 
     // overriding displaycontroller
-    protected function template_base()
+    protected function template_base() : string
     {
         return $this->modelClassName()::model_type();
     }

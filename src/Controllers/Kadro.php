@@ -18,7 +18,7 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
 
     public function __toString(): string
     {
-        return get_called_class();
+        return static::class;
     }
 
     public function requiresOperator(): bool

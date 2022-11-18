@@ -66,7 +66,7 @@ class Display extends Base implements DisplayControllerInterface
 
     protected function template_base(): string
     {
-        return strtolower(str_replace('Controller', '', (new \ReflectionClass(get_called_class()))->getShortName()));
+        return strtolower(str_replace('Controller', '', (new \ReflectionClass(static::class))->getShortName()));
     }
 
     protected function find_template($smarty, $custom_template = null): string

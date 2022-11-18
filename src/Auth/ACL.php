@@ -57,14 +57,16 @@ class ACL extends \HexMakina\TightORM\TightModel
         return Permission::filter(['ids' => $permission_ids]);
     }
 
-    public static function permissions_names_for(OperatorInterface $operator)
+    public static function permissions_names_for(OperatorInterface $operator) : array
     {
+        if($operator->isNew())
+            return [];
+
         $operator_with_perms = get_class($operator)::exists($operator->getId());
         // $operator_with_perms = get_class($op)::retrieve($operator_with_perms);
         if (is_null($operator_with_perms)) {
             return [];
         }
-
         return explode(',', $operator_with_perms->get('permission_names'));
     }
 

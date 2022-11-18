@@ -116,12 +116,13 @@ class Operator extends TightModel implements OperatorInterface
         return true; // never delete a user, always deactivate
     }
 
-    public function permission_names()
+    public function permission_names() : array
     {
+        $ret = [];
         if (property_exists($this, 'permission_names') && !is_null($this->get('permission_names'))) {
-            return explode(',', $this->get('permission_names') ?? '');
+            $ret = explode(',', $this->get('permission_names') ?? '');
         }
-        if (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
+        elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
             $ids = explode(',', $this->get('permission_ids') ?? '');
             $ret = [];
             $permissions = Permission::get_many_by_AIPK($ids);
@@ -132,8 +133,10 @@ class Operator extends TightModel implements OperatorInterface
             return $ret;
         }
         else {
-            return ACL::permissions_names_for($this);
+            $ret = ACL::permissions_names_for($this);
+
         }
+        return $ret;
     }
 
     public function permissions()

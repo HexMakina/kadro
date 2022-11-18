@@ -8,127 +8,148 @@ use HexMakina\Lezer\Lezer;
 
 class kadro
 {
-    private static ?\Psr\Container\ContainerInterface $box = null; // PSR-11 Service Locator, ugly until DI is ready
     /**
-     * @var int
+     * @var string
      */
-    private const ENV_PRODUCTION = 1;
-
-    /**
-     * @var int
-     */
-    private const ENV_STAGING = 0;
+    private const ENV_PRODUCTION = 'production';
 
     /**
-     * @var int
+     * @var string
      */
-    private const ENV_DEVELOPPEMENT = -1;
+    private const ENV_STAGING = 'staging';
 
     /**
-     * @var int
+     * @var string
      */
-    private const ENV_DEFAULT = self::ENV_PRODUCTION;
+    private const ENV_DEVELOPPEMENT = 'dev';
 
-    private static int $environment = self::ENV_DEFAULT;
+    private \Psr\Container\ContainerInterface $box; // PSR-11 Service Locator, ugly until DI is ready
 
-
-    public static function init($settings): \Psr\Container\ContainerInterface
+    public function __construct(array $settings)
     {
-        // load debugger
+        //-- loading the Debugger class and therefor shorthands
         new Debugger();
 
-        // container
-        self::$box = LeMarchand::box($settings);
+        $this->box = LeMarchand::box($settings);
 
-        // prod, stage, dev
-        self::setEnvironmentType($settings);
+        $this->setErrorReporting();
 
-
-        $log_laddy = self::$box->get('Psr\Log\LoggerInterface');
+        $log_laddy = $this->box->get('Psr\Log\LoggerInterface');
 
         //-- router
-        $router = self::$box->get('HexMakina\BlackBox\RouterInterface');
+        $router = $this->box->get('HexMakina\BlackBox\RouterInterface');
         $router->addRoutes(require(__DIR__ . '/routes.php'));
 
         //-- session
-        $StateAgent = self::$box->get('HexMakina\BlackBox\StateAgentInterface');
-        $StateAgent->addRuntimeFilters((array)self::$box->get('settings.filter'));
+        $StateAgent = $this->box->get('HexMakina\BlackBox\StateAgentInterface');
+        $StateAgent->addRuntimeFilters((array)$this->box->get('settings.filter'));
         $StateAgent->addRuntimeFilters((array)($_SESSION['filter'] ?? []));
         $StateAgent->addRuntimeFilters((array)($_REQUEST['filter'] ?? []));
 
 
-        self::internationalisation();
+        $this->internationalisation();
 
-      // ----     ŝablonoj
-        self::templating();
+        // ----     ŝablonoj
+        $this->templating();
 
-      // ----     lingva
-        $json_path = self::$box->get('settings.locale.json_path');
-        $cache_path = self::$box->get('settings.locale.cache_path');
-        $fallback_lang = self::$box->get('settings.locale.fallback_lang');
+        // ----     lingva
+        $this->locale();
+
+    }
+
+    public function container(): \Psr\Container\ContainerInterface
+    {
+        return $this->box;
+    }
+
+    public function isProduction(): bool
+    {
+        return $this->matchesHost(self::ENV_PRODUCTION);
+    }
+
+    public function isStaging(): bool
+    {
+        return $this->matchesHost(self::ENV_STAGING);
+    }
+
+    public function isDevelopment(): bool
+    {
+        return $this->matchesHost(self::ENV_DEVELOPPEMENT);
+    }
+
+    private function matchesHost(string $env) : bool
+    {
+      return $this->box->get(sprintf('settings.env.%s.host', $env)) === $_SERVER['HTTP_HOST'];
+
+    }
+
+
+    private function locale() : void
+    {
+        $json_path = $this->box->get('settings.locale.json_path');
+        $cache_path = $this->box->get('settings.locale.cache_path');
+        $fallback_lang = $this->box->get('settings.locale.fallback_lang');
         $lezer = new Lezer($json_path, $cache_path, $fallback_lang);
         $language = $lezer->availableLanguage();
         $lezer->init();
 
-        self::$box->get('\Smarty')->assign('lezer', $lezer);
-        self::$box->get('\Smarty')->assign('language', $language);
+        $this->box->get('\Smarty')->assign('lezer', $lezer);
+        $this->box->get('\Smarty')->assign('language', $language);
 
         setcookie('lang', $language, time() + (365 * 24 * 60 * 60), "/", "");
-
-        return self::$box;
     }
 
-    private static function internationalisation(): void
+    private function internationalisation(): void
     {
         // ----     parametroj:signo
         $setting = 'settings.default.charset';
-        if (is_string(self::$box->get($setting))) {
-            ini_set('default_charset', self::$box->get($setting));
-            header('Content-type: text/html; charset=' . strtolower(self::$box->get($setting)));
+        if (is_string($this->box->get($setting))) {
+            ini_set('default_charset', $this->box->get($setting));
+            header('Content-type: text/html; charset=' . strtolower($this->box->get($setting)));
         } else {
             throw new \UnexpectedValueException($setting);
         }
 
         // ----     parametroj:linguo
         $setting = 'settings.default.language';
-        if (is_string(self::$box->get($setting))) {
-            putenv('LANG=' . self::$box->get($setting));
-            setlocale(LC_ALL, self::$box->get($setting));
+        if (is_string($this->box->get($setting))) {
+            putenv('LANG=' . $this->box->get($setting));
+            setlocale(LC_ALL, $this->box->get($setting));
         } else {
             throw new \UnexpectedValueException($setting);
         }
 
         // ----     parametroj:datoj
         $setting = 'settings.default.timezone';
-        if (is_string(self::$box->get($setting))) {
-            date_default_timezone_set(self::$box->get($setting));
+        if (is_string($this->box->get($setting))) {
+            date_default_timezone_set($this->box->get($setting));
         } else {
             throw new \UnexpectedValueException($setting);
         }
     }
 
-    private static function templating()
+    private function templating()
     {
-        $smarty = self::$box->get('\Smarty');
+        $smarty = $this->box->get('\Smarty');
       // Load smarty template parser
-        $smarty->setTemplateDir(self::$box->get('settings.smarty.template_app_directory'));
+        $smarty->setTemplateDir($this->box->get('settings.smarty.template_app_directory'));
 
-        foreach (self::$box->get('settings.smarty.template_extra_directories') as $template_dir) {
+        foreach ($this->box->get('settings.smarty.template_extra_directories') as $template_dir) {
             $smarty->addTemplateDir($template_dir);
         }
 
         $smarty->addTemplateDir(__DIR__ . '/Views/'); //kadro templates
 
         $setting = 'settings.smarty.compiled_path';
-        if (is_string(self::$box->get($setting))) {
-            $smarty->setCompileDir(self::$box->get($setting));
+        if (is_string($this->box->get($setting))) {
+            $smarty->setCompileDir($this->box->get($setting));
         } else {
             throw new \UnexpectedValueException($setting);
         }
 
         $setting = 'settings.smarty.debug';
-        if (is_bool(self::$box->get($setting))) {
-            $smarty->setDebugging(self::$box->get($setting));
+        if (is_bool($this->box->get($setting))) {
+            $smarty->setDebugging($this->box->get($setting));
         } else {
             throw new \UnexpectedValueException($setting);
         }
@@ -139,57 +160,29 @@ class kadro
         $smarty->registerClass('TableToForm', '\HexMakina\kadro\TableToForm');
         $smarty->registerClass('Dato', '\HexMakina\Tempus\Dato');
 
-        $smarty->assign('APP_NAME', self::$box->get('settings.app.name'));
+        $smarty->assign('APP_NAME', $this->box->get('settings.app.name'));
 
         return $smarty;
     }
 
-
-    public static function isProduction(): bool
+    private function setErrorReporting(): void
     {
-        return self::$environment === self::ENV_PRODUCTION;
-    }
-
-    public static function isStaging(): bool
-    {
-        return self::$environment === self::ENV_STAGING;
-    }
-
-    public static function isDevelopment(): bool
-    {
-        return self::$environment === self::ENV_DEVELOPPEMENT;
-    }
-
-    private static function setEnvironmentType($settings): void
-    {
-      foreach([
-          'production_host' => self::ENV_PRODUCTION,
-          'staging_host' => self::ENV_STAGING,
-          'development_host' => self::ENV_DEVELOPPEMENT] as $host => $constant)
-      {
-        if(isset($settings['app'][$host]) && $settings['app'][$host] === $_SERVER['HTTP_HOST'])
+        //-- error & logs & messages
+        if($this->isDevelopment())
         {
-          self::$environment = $constant;
-        }
-      }
-
-      //-- error & logs & messages
-
-      switch(self::$environment)
-      {
-        case self::ENV_PRODUCTION:
-          error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
-          ini_set('display_errors', 0);
-          break;
-
-        case self::ENV_STAGING:
-
-        case self::ENV_DEVELOPPEMENT:
           error_reporting(E_ALL);
           ini_set('display_errors', 1);
-          break;
-      }
-
+        }
+        elseif($this->isStaging())
+        {
+          error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+          ini_set('display_errors', 1);
+        }
+        elseif($this->isProduction())
+        {
+          error_reporting(0);
+          ini_set('display_errors', 0);
+        }
     }
 
 }

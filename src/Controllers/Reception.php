@@ -15,22 +15,24 @@ class Reception extends Kadro
 
     public function welcome(OperatorInterface $operator)
     {
-        $router = $this->get('HexMakina\BlackBox\RouterInterface');
-        $router->match(); // throws RouterException if no match
+        $this->router()->match(); // throws RouterException if no match
 
-        if ($router->name() === 'identify') {
+        if ($this->router()->name() === 'identify') {
             $this->identify($operator);
         }
 
         // MVC Cascade
-        $target_controller = $this->get('Controllers\\' . $router->targetController());
+        $target_controller = $this->get('Controllers\\' . $this->router()->targetController());
 
         if ($target_controller->requiresOperator()) {
-            if (is_null($operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId())) {
+
+            $operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
+            if (is_null($operator_id)) {
                 $this->checkin();
             }
 
-            if (is_null($operator = get_class($operator)::exists($operator_id)) || !$operator->isActive()) {
+            $operator = get_class($operator)::exists($operator_id);
+            if (is_null($operator) || !$operator->isActive()) {
                 $this->checkout();
             }
         }
@@ -38,24 +40,26 @@ class Reception extends Kadro
         return $operator;
     }
 
+    // GET
     public function checkin(): void
     {
         $this->display('checkin', 'standalone');
         $this->get('HexMakina\BlackBox\StateAgentInterface')->resetMessages();
     }
 
+    // GET
     public function checkout(): void
     {
         $this->get('HexMakina\BlackBox\StateAgentInterface')->destroy();
         $this->router()->hop('checkin');
     }
 
+    // POST
     public function identify($op): void
     {
         try {
             $username = $this->router()->submitted('username');
             $password = $this->router()->submitted('password');
-
             $operator = get_class($op)::exists(['username' => $username]);
 
             if (is_null($operator) || !$operator->isActive()) {

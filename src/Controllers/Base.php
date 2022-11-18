@@ -56,9 +56,9 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $this->get('HexMakina\BlackBox\RouterInterface');
     }
 
-    public function prepare(): bool
+    public function prepare(): void
     {
-        return true;
+
     }
 
     public function execute($method)
@@ -85,9 +85,8 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $ret;
     }
 
-    public function conclude(): bool
+    public function conclude(): void
     {
-        return true;
     }
 
   /*

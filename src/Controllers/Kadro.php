@@ -66,12 +66,10 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         return parent::execute($method);
     }
 
-    public function prepare(): bool
+    public function prepare(): void
     {
         parent::prepare();
         $this->trim_request_data();
-
-        return true;
     }
 
     // intl function, calls to lezer

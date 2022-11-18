@@ -15,6 +15,7 @@ class TableToForm
             $label_content = $attributes['label'];
             unset($attributes['label']);
         }
+
         return Form::label($field_name, $label_content, $attributes, $errors);
     }
 
@@ -40,7 +41,7 @@ class TableToForm
         return self::fieldByType($field, $field_value, $attributes, $errors);
     }
 
-    public static function fieldWithLabel(\HexMakina\BlackBox\ORM\ModelInterface $model, $field_name, $attributes = [], $errors = []): string
+    public static function fieldWithLabel(\HexMakina\BlackBox\ORM\ModelInterface $model, string $field_name, $attributes = [], array $errors = []): string
     {
         $field_attributes = $attributes;
         if (isset($attributes['label'])) {

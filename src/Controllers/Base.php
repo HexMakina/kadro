@@ -2,10 +2,12 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use Psr\Container\{ContainerInterface,ContainerExceptionInterface,NotFoundExceptionInterface};
 use HexMakina\BlackBox\RouterInterface;
-use HexMakina\BlackBox\Controllers\BaseControllerInterface;
+use \HexMakina\Traitor\Traitor;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+
+use HexMakina\BlackBox\Controllers\BaseControllerInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
 class Base implements BaseControllerInterface, ContainerInterface
@@ -24,6 +26,11 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $this->errors;
     }
 
+    public function addError($message, $context = []): void
+    {
+        $this->errors[] = [$message, $context];
+    }
+
     public function container(): ContainerInterface
     {
         return LeMarchand::box();
@@ -39,10 +46,6 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $this->container()->get($key);
     }
 
-    public function addError($message, $context = []): void
-    {
-        $this->errors[] = [$message, $context];
-    }
 
     public function logger(): LoggerInterface
     {
@@ -58,7 +61,6 @@ class Base implements BaseControllerInterface, ContainerInterface
 
     public function prepare(): void
     {
-
     }
 
     public function execute($method)
@@ -69,6 +71,7 @@ class Base implements BaseControllerInterface, ContainerInterface
       // i think so, but pascal just proposed me pastis.. tomorrow
 
         foreach (['prepare', sprintf('before_%s', $method), $method, sprintf('after_%s', $method)] as $chainling) {
+
             $this->traitor($chainling);
 
             if (method_exists($this, $chainling) && empty($this->errors())) {

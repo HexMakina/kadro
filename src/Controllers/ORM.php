@@ -16,7 +16,6 @@ abstract class ORM extends Kadro implements ORMInterface
 
     protected $form_model;
 
-
     public function addErrors($errors): void
     {
         foreach ($errors as $error) {
@@ -146,7 +145,7 @@ abstract class ORM extends Kadro implements ORMInterface
 
         $listing = $this->modelClassName()::filter($filters);
 
-        $this->viewport_listing($class_name, $listing, $this->find_template($this->get('\Smarty'), __FUNCTION__));
+        $this->viewport_listing($this->modelClassName(), $listing, $this->find_template($this->get('\Smarty'), __FUNCTION__));
     }
 
     public function viewport_listing($class_name, $listing, $listing_template): void
@@ -214,7 +213,6 @@ abstract class ORM extends Kadro implements ORMInterface
     public function save()
     {
         $model = $this->persist_model($this->formModel());
-
         if (empty($this->errors())) {
             $this->routeBack($model);
         } else {
@@ -260,11 +258,12 @@ abstract class ORM extends Kadro implements ORMInterface
         $this->router()->hop($this->routeBack());
     }
 
+    //GET
     public function destroy_confirm(): string
     {
-        if (is_null($this->load_model)) {
-            $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->model_type . '_INSTANCE')]));
-            $this->router()->hop($this->model_type);
+        if (is_null($this->loadModel())) {
+            $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->modelType() . '_INSTANCE')]));
+            $this->router()->hop($this->modelType());
         }
 
         $this->before_destroy();
@@ -274,15 +273,17 @@ abstract class ORM extends Kadro implements ORMInterface
 
     public function before_destroy(): void // default: checks for load_model and immortality, hops back to object on failure
     {
-        if (is_null($this->load_model)) {
-            $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->model_type . '_INSTANCE')]));
-            $this->router()->hop($this->model_type);
-        } elseif ($this->load_model->immortal()) {
-            $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_IS_IMMORTAL', [$this->l('MODEL_' . $this->model_type . '_INSTANCE')]));
-            $this->router()->hop($this->route_model($this->load_model));
+        if (is_null($this->loadModel())) {
+            $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_NOT_FOUND', [$this->l('MODEL_' . $this->modelType() . '_INSTANCE')]));
+            $this->router()->hop($this->modelType());
+
+        } elseif ($this->loadModel()->immortal()) {
+            $this->logger()->warning($this->l('CRUDITES_ERR_INSTANCE_IS_IMMORTAL', [$this->l('MODEL_' . $this->modelType() . '_INSTANCE')]));
+            $this->router()->hop($this->route_model($this->loadModel()));
         }
     }
 
+    //POST
     public function destroy()
     {
         if (!$this->router()->submits()) {

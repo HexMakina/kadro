@@ -116,6 +116,9 @@ class Operator extends TightModel implements OperatorInterface
         return true; // never delete a user, always deactivate
     }
 
+    /**
+     * @return string[]|mixed[]
+     */
     public function permission_names() : array
     {
         $ret = [];
@@ -136,6 +139,7 @@ class Operator extends TightModel implements OperatorInterface
             $ret = ACL::permissions_names_for($this);
 
         }
+
         return $ret;
     }
 
@@ -162,13 +166,15 @@ class Operator extends TightModel implements OperatorInterface
 
     public function hasPermission($p): bool
     {
-      // new instances or inactive operators, none shall pass
+        // new instances or inactive operators, none shall pass
         if ($this->isNew() === true) {
             return false;
         }
+
         if ($this->isActive()  === false) {
             return false;
         }
+
         $permission_name = null;
         $permission_id = null;
         if (is_subclass_of($p, '\HexMakina\kadro\Auth\Permission')) {
@@ -179,20 +185,23 @@ class Operator extends TightModel implements OperatorInterface
         } else {
             $permission_name = $p;
         }
+
         if (!is_null($this->get('permission_names')) && !is_null($permission_name)) {
-            return strpos($this->get('permission_names'), $permission_name) !== false;
+            return false !== strpos($this->get('permission_names'), $permission_name);
+        }
+        if (!is_null($this->get('permission_ids')) && !is_null($permission_id)) {
+            return false !== strpos($this->get('permission_ids'), $permission_id);
         }
 
-        if (!is_null($this->get('permission_ids')) && !is_null($permission_id)) {
-            return strpos($this->get('permission_ids'), $permission_id) !== false;
-        } elseif (!is_null($permission_name)) {
+        if (!is_null($permission_name)) {
             if (method_exists($this, $permission_name) && $this->$permission_name() == true) {
                 return true;
             }
+
             if (property_exists($this, $permission_name) && $this->get('$permission_name') == true) {
                 return true;
             }
-            elseif (ACL::match($this, $permission_name) === true) {
+            if (ACL::match($this, $permission_name) === true) {
                 return true;
             }
         }

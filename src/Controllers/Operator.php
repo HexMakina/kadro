@@ -91,7 +91,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
     {
         parent::authorize('group_admin');
 
-        $operator = $this->modelClassName()::one(['username' => $this->router()->params('username')]);
+        $operator = $this->modelClassName()::one('username', $this->router()->params('username'));
         if ($operator->username() == $this->operator()->username()) {
             throw new AccessRefusedException();
         }

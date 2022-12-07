@@ -22,6 +22,7 @@ or, if the password contains a blank space
 
 `php vendor/hexmakina/kadro/install.php -db DATABASE_NAME -u DATABASE_USER -p "DATABASE_PASSWORD"`
 
+it creates a default root user "root" with password "root"
 
 ## 1. Auth
 ### Operators

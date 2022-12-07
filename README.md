@@ -1,5 +1,5 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/HexMakina/kadro/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/HexMakina/kadro/?branch=main)
-<img src="https://img.shields.io/badge/PHP-7.3-brightgreen" alt="PHP 7.4 Required" />
+<img src="https://img.shields.io/badge/PHP-7.4-brightgreen" alt="PHP 7.4 Required" />
 <img src="https://img.shields.io/badge/PSR-3-brightgreen" alt="PSR-3 Compliant" />
 <img src="https://img.shields.io/badge/PSR-4-brightgreen" alt="PSR-4 Compliant" />
 <img src="https://img.shields.io/badge/PSR-11-brightgreen" alt="PSR-11 Compliant" />
@@ -8,6 +8,20 @@
 [![Latest Stable Version](http://poser.pugx.org/hexmakina/kadro/v)](https://packagist.org/packages/hexmakina/kadro)
 # kadro
 PHP MVC framework for building web applications
+
+# install 
+`composer require hexmakina/kadro`
+
+then run `vendor/hexmakina/kadro/install.php` to initialise the application with reqired tables and data
+
+for instance: 
+
+`php vendor/hexmakina/kadro/install.php -db DATABASE_NAME -u DATABASE_USER -p DATABASE_PASSWORD`
+
+or, if the password contains a blank space
+
+`php vendor/hexmakina/kadro/install.php -db DATABASE_NAME -u DATABASE_USER -p "DATABASE_PASSWORD"`
+
 
 ## 1. Auth
 ### Operators

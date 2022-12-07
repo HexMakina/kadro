@@ -1,5 +1,9 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/HexMakina/kadro/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/HexMakina/kadro/?branch=main)
-<img src="https://img.shields.io/badge/PHP-7.3-brightgreen" alt="PHP 7.3 Required" />
+<img src="https://img.shields.io/badge/PHP-7.3-brightgreen" alt="PHP 7.4 Required" />
+<img src="https://img.shields.io/badge/PSR-3-brightgreen" alt="PSR-3 Compliant" />
+<img src="https://img.shields.io/badge/PSR-4-brightgreen" alt="PSR-4 Compliant" />
+<img src="https://img.shields.io/badge/PSR-11-brightgreen" alt="PSR-11 Compliant" />
+<img src="https://img.shields.io/badge/PSR-12-brightgreen" alt="PSR-12 Compliant" />
 [![License](http://poser.pugx.org/hexmakina/kadro/license)](https://packagist.org/packages/hexmakina/kadro)
 [![Latest Stable Version](http://poser.pugx.org/hexmakina/kadro/v)](https://packagist.org/packages/hexmakina/kadro)
 # kadro
@@ -11,7 +15,6 @@ PHP MVC framework for building web applications
 ### ACL
 
 ## 2. Model
-### Router
 ### PSR-3 Logger
 ### PSR-4 Autoloader
 ### PSR-11 Container
@@ -68,4 +71,32 @@ $this->Trait2_Traitor_conclude()
 $this->conclude()
 ```
 
-## Installation script
+## 5. Routing
+
+kadro requires a 'home' route:
+- GET ''
+
+kadro reserves the following routes
+```
+return [
+  // --- auth
+  ['GET', 'checkin', 'Reception::checkin', 'checkin'],
+  ['GET', 'checkout', 'Reception::checkout', 'checkout'],
+  ['POST', 'identify', 'Reception::identify', 'identify'],
+  ['GET', 'operator/[*:username]/toggle/active', 'Operator::change_active', 'operator_change_active'],
+  ['GET', 'operator/[*:username]/change-acl/[i:permission_id]', 'Operator::change_acl', 'acl_toggle'],
+
+  // --- TRADUKO
+  ['POST', 'traduko/update_file', 'Traduko::update_file', 'traduko_update_file'],
+
+  // --- LOCALE JSON
+  ['GET', 'locale/language_codes.[a:format]', 'Export::otto_languages', 'otto_languages'],
+
+  // --- EXPORT
+  ['GET', 'export', 'Export::dashboard', 'export'], // default ExportController is dashboard
+  ['GET', 'otto/language_codes.[a:format]/term/[a:search]?', 'Export::otto_languages', 'otto_languages_search'],
+  ['GET', 'otto/[a:model]/distinct/[*:field].[a:format]', 'Export::otto_distinct_field', 'otto_distinct_field'],
+  ['GET', 'otto/[a:model]/distinct/[*:field].[a:format]/term/[*:search]?', 'Export::otto_distinct_field', 'otto_distinct_field_where'],
+  ['GET', 'export/[*:action].[a:format]', 'Export::dynamic_action_call', 'export_action_call'],
+];
+```

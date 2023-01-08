@@ -8,9 +8,6 @@ return [
   ['GET', 'operator/[*:username]/toggle/active', 'Operator::change_active', 'operator_change_active'],
   ['GET', 'operator/[*:username]/change-acl/[i:permission_id]', 'Operator::change_acl', 'acl_toggle'],
 
-  // --- SEARCH
-  ['POST|GET', 'search', 'Search::results', 'search'],
-
   // --- TRADUKO
   ['POST', 'traduko/update_file', 'Traduko::update_file', 'traduko_update_file'],
 

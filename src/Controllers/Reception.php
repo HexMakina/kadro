@@ -38,13 +38,16 @@ class Reception extends Kadro
                 }
             }
         }
+
+        $target_controller->execute($this->router()->targetMethod());
     }
 
     // GET
     public function checkin(): void
     {
-        $this->display('checkin', 'standalone');
+        $res = $this->display(__FUNCTION__);
         $this->get('HexMakina\BlackBox\StateAgentInterface')->resetMessages();
+        die($res);
     }
 
     // GET
@@ -61,7 +64,6 @@ class Reception extends Kadro
             $username = $this->router()->submitted('username');
             $password = $this->router()->submitted('password');
             $operator = get_class($op)::exists('username', $username);
-
             if (is_null($operator) ) {
                 throw new \Exception('OPERATOR_DOES_NOT_EXIST');
             }

@@ -130,39 +130,46 @@ class kadro
 
     private function templating()
     {
-        $smarty = $this->box->get('\Smarty');
-      // Load smarty template parser
-        $smarty->setTemplateDir($this->box->get('settings.smarty.template_app_directory'));
-
-        foreach ($this->box->get('settings.smarty.template_extra_directories') as $template_dir) {
-            $smarty->addTemplateDir($template_dir);
+        $engine = $this->box->get('HexMakina\BlackBox\TemplateInterface');
+        foreach ($this->box->get('settings.template.extraDirectories') as $name => $template_dir) {
+            $engine->addFolder($name, $template_dir, true);
         }
 
-        $smarty->addTemplateDir(__DIR__ . '/Views/'); //kadro templates
+        // dd($engine);
+        // $smarty = $this->box->get('\Smarty');
+        // Load smarty template parser
 
-        $setting = 'settings.smarty.compiled_path';
-        if (is_string($this->box->get($setting))) {
-            $smarty->setCompileDir($this->box->get($setting));
-        } else {
-            throw new \UnexpectedValueException($setting);
-        }
-
-        $setting = 'settings.smarty.debug';
-        if (is_bool($this->box->get($setting))) {
-            $smarty->setDebugging($this->box->get($setting));
-        } else {
-            throw new \UnexpectedValueException($setting);
-        }
-
-        $smarty->registerClass('Lezer', '\HexMakina\Lezer\Lezer');
-        $smarty->registerClass('Marker', '\HexMakina\Marker\Marker');
-        $smarty->registerClass('Form', '\HexMakina\Marker\Form');
-        $smarty->registerClass('TableToForm', '\HexMakina\kadro\TableToForm');
-        $smarty->registerClass('Dato', '\HexMakina\Tempus\Dato');
-
-        $smarty->assign('APP_NAME', $this->box->get('settings.app.name'));
-
-        return $smarty;
+        // $smarty->setTemplateDir($this->box->get('settings.smarty.template_app_directory'));
+        //
+        // foreach ($this->box->get('settings.smarty.template_extra_directories') as $template_dir) {
+        //     $smarty->addTemplateDir($template_dir);
+        // }
+        //
+        // $smarty->addTemplateDir(__DIR__ . '/Views/'); //kadro templates
+        //
+        // $setting = 'settings.smarty.compiled_path';
+        // if (is_string($this->box->get($setting))) {
+        //     $smarty->setCompileDir($this->box->get($setting));
+        // } else {
+        //     throw new \UnexpectedValueException($setting);
+        // }
+        //
+        // $setting = 'settings.smarty.debug';
+        // if (is_bool($this->box->get($setting))) {
+        //     $smarty->setDebugging($this->box->get($setting));
+        // } else {
+        //     throw new \UnexpectedValueException($setting);
+        // }
+        //
+        // $smarty->registerClass('Lezer', '\HexMakina\Lezer\Lezer');
+        // $smarty->registerClass('Marker', '\HexMakina\Marker\Marker');
+        // $smarty->registerClass('Form', '\HexMakina\Marker\Form');
+        // $smarty->registerClass('TableToForm', '\HexMakina\kadro\TableToForm');
+        // $smarty->registerClass('Dato', '\HexMakina\Tempus\Dato');
+        //
+        // $smarty->assign('APP_NAME', $this->box->get('settings.app.name'));
+        //
+        // return $smarty;
     }
 
     private function setErrorReporting(): void

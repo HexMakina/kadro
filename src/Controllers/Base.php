@@ -21,6 +21,12 @@ class Base implements BaseControllerInterface, ContainerInterface
     /**
      * @return mixed[][]
      */
+
+    public function className()
+    {
+      return (new \ReflectionClass(static::class))->getShortName();
+    }
+
     public function errors(): array
     {
         return $this->errors;

@@ -12,7 +12,7 @@ abstract class ORM extends Kadro implements ORMInterface
 
     protected $model_type;
 
-    protected ?\HexMakina\BlackBox\ORM\ModelInterface $load_model = null;
+    protected ?ModelInterface $load_model = null;
 
     protected $form_model;
 
@@ -71,7 +71,6 @@ abstract class ORM extends Kadro implements ORMInterface
         parent::prepare();
 
         $this->model_type = $this->modelClassName()::model_type();
-
         $pk_values = [];
 
         if ($this->router()->submits()) {
@@ -81,8 +80,8 @@ abstract class ORM extends Kadro implements ORMInterface
             $this->load_model = $this->modelClassName()::exists($pk_values);
         } elseif ($this->router()->requests()) {
             $pk_values = $this->modelClassName()::table()->primaryKeysMatch($this->router()->params());
-
-            if (!is_null($this->load_model = $this->modelClassName()::exists($pk_values))) {
+            $this->load_model = $this->modelClassName()::exists($pk_values);
+            if (!is_null($this->load_model)) {
                 $this->formModel(clone $this->load_model);
             }
         }
@@ -108,7 +107,6 @@ abstract class ORM extends Kadro implements ORMInterface
             preg_match(Configuration::RX_MVC, static::class, $m);
             $this->model_class_name = $this->get('Models\\' . $m[2] . '::class');
         }
-
         return $this->model_class_name;
     }
 

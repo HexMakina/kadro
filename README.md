@@ -12,7 +12,7 @@ PHP MVC framework for building web applications
 # install 
 `composer require hexmakina/kadro`
 
-then run `vendor/hexmakina/kadro/install.php` to initialise the application with reqired tables and data
+then run `vendor/hexmakina/kadro/install.php` to initialise the application with base tables and data
 
 for instance: 
 

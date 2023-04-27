@@ -22,7 +22,7 @@ class Base implements BaseControllerInterface, ContainerInterface
      * @return mixed[][]
      */
 
-    public function className()
+    public function className(): string
     {
       return (new \ReflectionClass(static::class))->getShortName();
     }
@@ -88,8 +88,8 @@ class Base implements BaseControllerInterface, ContainerInterface
                 }
             }
         }
-
         $this->conclude();
+        $this->traitor('conclude');
 
         return $ret;
     }

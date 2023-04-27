@@ -39,6 +39,18 @@ class Display extends Base implements DisplayControllerInterface
     {
         $engine = $this->get('HexMakina\BlackBox\TemplateInterface');
 
+        if($this->has('settings.template.registerClass'))
+        {
+            foreach($this->get('settings.template.registerClass') as $class => $namespaced_class){
+                $engine->registerFunction($class, function() use($namespaced_class){
+                    return $namespaced_class;
+                });
+            }
+        }
+        foreach($this->get('settings.template.extensions') as $namespaced_class){
+            $engine->loadExtension(new $namespaced_class);
+        }
+        
         $template = $this->find_template($engine, $template); // throws Exception if nothing found
 
         $this->viewport('controller', $this);
@@ -47,11 +59,6 @@ class Display extends Base implements DisplayControllerInterface
         $engine->addData($this->viewport());
         return $engine->render($template);
     }
-
-    // protected function template_base(): string
-    // {
-    //     return strtolower(str_replace('Controller', '', (new \ReflectionClass(static::class))->getShortName()));
-    // }
 
     protected function find_template($engine, $template_name): string
     {
@@ -74,38 +81,7 @@ class Display extends Base implements DisplayControllerInterface
           if($engine->exists($name))
             return $name;
         }
-        //
-        // $name = 'Reception/checkin';
-        // vd($engine->path($name), $name);
-        // dd($engine->exists($name), $name);
-        // if (!empty($custom_template)) {
-        //   // 1. check for custom template in the current controller directory
-        //     $templates ['custom_3'] = sprintf('%s/%s.%s', $controller_template_path, $custom_template, $template_extension);
-        //   // 2. check for custom template formatted as controller/view
-        //     $templates ['custom_2'] = sprintf('%s.%s', $custom_template, $template_extension);
-        //     $templates ['custom_1'] = sprintf('_layouts/%s.%s', $custom_template, $template_extension);
-        // }
-        //
-        // if (!empty($this->router()->targetMethod())) {
-        //   // 1. check for template in controller-related directory
-        //     $templates ['target_1'] = sprintf('%s/%s.html', $controller_template_path, $this->router()->targetMethod());
-        //   // 2. check for template in app-related directory
-        //     $templates ['target_2'] = sprintf('_layouts/%s.html', $this->router()->targetMethod());
-        //   // 3. check for template in kadro directory
-        //     $templates ['target_3'] = sprintf('%s.html', $this->router()->targetMethod());
-        // }
-        //
-        // $templates ['default_3'] = sprintf('%s/edit.html', $controller_template_path);
-        // $templates ['default_4'] = 'edit.tpl';
-        // $templates = array_unique($templates);
-        //
-        // while (!is_null($tpl_path = array_shift($templates))) {
-        //     vd($engine->exists($tpl_path), $tpl_path);
-        //     if ($engine->exists($tpl_path)) {
-        //         return $tpl_path;
-        //     }
-        // }
-        // dd($templates);
+
 
         throw new \Exception('KADRO_ERR_NO_TEMPLATE_TO_DISPLAY');
     }

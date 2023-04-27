@@ -4,7 +4,7 @@ namespace HexMakina\kadro\Controllers;
 
 use HexMakina\kadro\Auth\{Operator};
 use HexMakina\BlackBox\Auth\OperatorInterface;
-
+use Throwable;
 
 class Reception extends Kadro
 {
@@ -13,33 +13,51 @@ class Reception extends Kadro
         return false;
     }
 
-    public function welcome(OperatorInterface $operator) : void
+    public function welcome(OperatorInterface $operator): void
     {
         $this->router()->match(); // throws RouterException if no match
-
         if ($this->router()->name() === 'identify') {
             $this->identify($operator);
         }
 
-        // MVC Cascade
-        $target_controller = $this->get('Controllers\\' . $this->router()->targetController());
+        $try = array_unique([
+            'Controllers\\' . $this->router()->targetController(),
+            'Controllers\\' . $this->router()->targetController() . $this->router()->params('controller')
+        ]);
 
-        if ($target_controller->requiresOperator()) {
-
-            $operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
-            if (empty($operator_id)) {
-                $this->checkin();
-                die;
+        $target_controller = null;
+        foreach ($try as $target_controller) {
+            try {
+                // MVC Cascade
+                $target_controller = $this->get($target_controller);
+                break;
+            } 
+            catch (Throwable $t) {
+                // faster than calling ::has() then ::get()
             }
-            else{
-                $operator = get_class($operator)::exists($operator_id);
-                if (is_null($operator) || !$operator->isActive()) {
-                    $this->checkout();
+        }
+
+        if ($target_controller instanceof \HexMakina\BlackBox\Controllers\AuthControllerInterface) {
+            if ($target_controller->requiresOperator()) {
+
+                $operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
+                if (empty($operator_id)) {
+                    $this->checkin();
+                    die;
+                } else {
+                    $operator = get_class($operator)::exists($operator_id);
+                    if (is_null($operator) || !$operator->isActive()) {
+                        $this->checkout();
+                    }
                 }
             }
         }
 
-        $target_controller->execute($this->router()->targetMethod());
+        if ($target_controller instanceof \HexMakina\BlackBox\Controllers\BaseControllerInterface) {
+            $target_controller->execute($this->router()->targetMethod());
+        }
+
+        dd('WHOOPS THERE IT IS');
     }
 
     // GET
@@ -64,7 +82,7 @@ class Reception extends Kadro
             $username = $this->router()->submitted('username');
             $password = $this->router()->submitted('password');
             $operator = get_class($op)::exists('username', $username);
-            if (is_null($operator) ) {
+            if (is_null($operator)) {
                 throw new \Exception('OPERATOR_DOES_NOT_EXIST');
             }
 
@@ -79,7 +97,6 @@ class Reception extends Kadro
             $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId($operator->getId());
             $this->logger()->notice('PAGE_CHECKIN_WELCOME', [$operator->name()]);
             $this->router()->hop();
-
         } catch (\Exception $exception) {
             $this->logger()->warning('KADRO_operator_' . $exception->getMessage());
             $this->router()->hop('checkin');

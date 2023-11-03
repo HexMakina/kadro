@@ -38,7 +38,7 @@ class Operator extends TightModel implements OperatorInterface
 
     public function operatorId()
     {
-        return $this->getId();
+        return $this->id();
     }
 
     public function username()
@@ -102,10 +102,10 @@ class Operator extends TightModel implements OperatorInterface
 
         if (isset($filters['model']) && !empty($filters['model'])) {
             $select->join([static::otm('t'), static::otm('a')], [[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
-            $select->whereFieldsEQ(['model_id' => $filters['model']->getId(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
+            $select->whereFieldsEQ(['model_id' => $filters['model']->id(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
         }
 
-        $select->orderBy([$select->tableLabel(), 'name', 'ASC']);
+        $select->orderBy(['name', 'ASC']);
 
 
         return $select;
@@ -179,7 +179,7 @@ class Operator extends TightModel implements OperatorInterface
         $permission_id = null;
         if (is_subclass_of($p, '\HexMakina\kadro\Auth\Permission')) {
             $permission_name = $p->get('name');
-            $permission_id = $p->getId();
+            $permission_id = $p->id();
         } elseif (preg_match('#\d+#', $p)) {
             $permission_id = $p;
         } else {

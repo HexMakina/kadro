@@ -15,16 +15,20 @@ class Base implements BaseControllerInterface, ContainerInterface
     use \HexMakina\Traitor\Traitor;
 
     protected $route_back;
-
+    protected $nid;
     protected array $errors = [];
 
     /**
      * @return mixed[][]
      */
 
-    public function className(): string
+    // returns the Unified Resource Name of the controller
+    public function nid(): string
     {
-      return (new \ReflectionClass(static::class))->getShortName();
+        if(empty($this->nid))
+            $this->nid = (new \ReflectionClass(static::class))->getShortName();
+
+        return $this->nid;
     }
 
     public function errors(): array

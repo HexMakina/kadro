@@ -8,11 +8,13 @@ class Display extends Base implements DisplayControllerInterface
 {
     protected array $template_variables = [];
 
-  // Display is Base with a display function
-    public function execute($method): bool
+    // Display is Base with a display function
+    public function execute($method):bool
     {
         $custom_template = parent::execute($method);
-        return $this->display($custom_template);
+        echo $this->display($custom_template);
+
+        return true;
     }
 
     public function viewport($key = null, $value = null, $coercion = false)
@@ -38,7 +40,6 @@ class Display extends Base implements DisplayControllerInterface
     public function display($template, $standalone = false) : string
     {
         $engine = $this->get('HexMakina\BlackBox\TemplateInterface');
-
         if($this->has('settings.template.registerClass'))
         {
             foreach($this->get('settings.template.registerClass') as $class => $namespaced_class){
@@ -55,6 +56,7 @@ class Display extends Base implements DisplayControllerInterface
 
         $this->viewport('controller', $this);
         $this->viewport('user_messages', $this->get('HexMakina\BlackBox\StateAgentInterface')->messages());
+        $this->viewport('errors', $this->errors());
 
         $engine->addData($this->viewport());
         return $engine->render($template);
@@ -62,7 +64,7 @@ class Display extends Base implements DisplayControllerInterface
 
     protected function find_template($engine, $template_name): string
     {
-        $controller_template_path = $this->className();
+        $controller_template_path = $this->nid();
         // $template_extension = $engine->getFileExtension();
         $name = "$template_name";
         if($engine->exists($name))

@@ -13,35 +13,20 @@ class Reception extends Kadro
         return false;
     }
 
+
+    // throws RouterException if no match
+    // throws Exception if no controller found
     public function welcome(OperatorInterface $operator): void
     {
-        $this->router()->match(); // throws RouterException if no match
+        $this->router()->match(); 
+
+        // do we need to identify the operator ?
         if ($this->router()->name() === 'identify') {
             $this->identify($operator);
         }
-        // dd($this->router()->targetMethod(), $this->router()->targetController());
 
+        $target_controller = $this->instantiateTargetController();
 
-        $try = ['Controllers\\' . $this->router()->targetController()];
-
-        if($this->router()->params('nid'))
-            $try[]= 'Controllers\\' . $this->router()->targetController() . $this->router()->params('nid');
-
-        $target_controller = null;
-        foreach ($try as $target_controller) {
-            try {
-                // MVC Cascade
-                $target_controller = $this->get($target_controller);
-                break;
-            } 
-            catch (Throwable $t) {
-                // faster than calling ::has() then ::get()
-            }
-        }
-        
-        if(!class_exists($target_controller)){
-            throw new \Exception(sprintf('Unable to run %s::%s, class does not exist', $target_controller, $this->router()->targetMethod()));
-        }
 
         // Check if the target controller requires authentication
         if ($target_controller instanceof \HexMakina\BlackBox\Controllers\AuthControllerInterface) {
@@ -123,4 +108,31 @@ class Reception extends Kadro
             $this->router()->hop('checkin');
         }
     }
+
+
+    private function instantiateTargetController(){
+        $try = ['Controllers\\' . $this->router()->targetController()];
+
+        if($this->router()->params('nid')) // Generic routes
+            $try[]= 'Controllers\\' . $this->router()->targetController() . $this->router()->params('nid');
+
+        $target_controller = null;
+        foreach ($try as $target_controller) {
+            try {
+                // MVC Cascade
+                $target_controller = $this->get($target_controller);
+                break;
+            } 
+            catch (Throwable $t) {
+                // faster than calling ::has() then ::get()
+            }
+        }
+        
+        if(!class_exists($target_controller)){
+            throw new \Exception(sprintf('Unable to run %s::%s, class does not exist', $target_controller, $this->router()->targetMethod()));
+        }
+
+        return $target_controller;
+    }
+
 }

@@ -130,10 +130,10 @@ class Lingvo extends TightModel
             $select->where($wc);
         }
 
-        $select->orderBy([self::TABLE_NAME, self::ISO_1, 'DESC']);
-        $select->orderBy([self::TABLE_NAME, self::ISO_2T, 'DESC']);
-        $select->orderBy([self::TABLE_NAME, self::ISO_3, 'DESC']);
-        $select->orderBy([self::TABLE_NAME, self::ISO_NAME, 'DESC']);
+        $select->orderBy([self::ISO_1, 'DESC']);
+        $select->orderBy([self::ISO_2T, 'DESC']);
+        $select->orderBy([self::ISO_3, 'DESC']);
+        $select->orderBy([self::ISO_NAME, 'DESC']);
 
         return $select;
     }

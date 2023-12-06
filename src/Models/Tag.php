@@ -12,14 +12,9 @@ class Tag extends TightModel
         return $this->get('label');
     }
 
-    public function reference(): string
-    {
-        return $this->get('reference');
-    }
-
     public function slug(): string
     {
-        return $this->get('reference');
+        return $this->get('slug');
     }
 
     public function label(): string
@@ -42,12 +37,12 @@ class Tag extends TightModel
         $query = parent::query_retrieve($filters, $options);
 
         if (isset($filters['parent'])) {
-            $column_name = is_numeric($filters['parent']) ? 'id' : 'reference';
+            $query->join(['tag', 'parent'], [['parent', 'id', 'tag', 'parent_id']]);
+            $column_name = is_numeric($filters['parent']) ? 'id' : 'slug';
             $query->whereEQ($column_name, $filters['parent'], 'parent');
         }
 
         $query->orderBy('label');
-        
         return $query;
     }
 }

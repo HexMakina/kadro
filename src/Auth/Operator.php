@@ -94,10 +94,13 @@ class Operator extends TightModel implements OperatorInterface
         $select = static::table()->select();
         if (isset($options['eager']) && $options['eager'] === true) {
             $select->groupBy('id');
-
+            
             AutoJoin::join($select, [ACL::table(), 'acl'], null, 'LEFT OUTER');
             AutoJoin::join($select, [Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
-            $select->selectAlso(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
+            $select->selectAlso([
+                'permission_ids' => ["GROUP_CONCAT(DISTINCT kadro_permission.id)"], 
+                'permission_names' => ["GROUP_CONCAT(DISTINCT kadro_permission.name)"]
+            ]);
         }
 
         if (isset($filters['model']) && !empty($filters['model'])) {
@@ -105,7 +108,7 @@ class Operator extends TightModel implements OperatorInterface
             $select->whereFieldsEQ(['model_id' => $filters['model']->getId(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
         }
 
-        $select->orderBy([$select->tableLabel(), 'name', 'ASC']);
+        $select->orderBy(['name', 'ASC']);
 
 
         return $select;

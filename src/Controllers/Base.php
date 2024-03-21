@@ -102,6 +102,16 @@ class Base implements BaseControllerInterface, ContainerInterface
     {
     }
 
+    public function headers(): void
+    {
+        if(!$this->has('settings.app.headers'))
+            return;
+        
+        $headers = $this->get('settings.app.headers');
+        foreach($headers as $key => $header)
+            header($key.': '.(is_array($header)? implode(' ', $header) : $header));
+
+    }
   /*
    * returns string, a URL formatted by RouterInterface::pre_hop()
    *

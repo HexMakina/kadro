@@ -141,7 +141,7 @@ abstract class ORM extends Kadro implements ORMInterface
             $filters['date_stop'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_stop');
         }
 
-        $listing = $this->modelClassName()::filter($filters);
+        $listing = $this->modelClassName()::any($filters);
 
         $this->viewport_listing($this->modelClassName(), $listing, $this->find_template($this->get('\Smarty'), __FUNCTION__));
     }

@@ -27,21 +27,21 @@ class Tag extends TightModel
         return $this->get('content') ?? '';
     }
 
-    public static function queryListing($filters = [], $options = []): SelectInterface{
-        return self::query_retrieve($filters, $options);
-    }
+    // public static function filter($filters = [], $options = []): SelectInterface{
+    //     return self::filter($filters, $options);
+    // }
 
-    public static function query_retrieve($filters = [], $options = []): SelectInterface
+    public static function filter($filters = [], $options = []): SelectInterface
     {
         //---- JOIN & FILTER SERVICE
-        $query = parent::query_retrieve($filters, $options);
+        $query = parent::filter($filters, $options);
 
         if (isset($filters['parent'])) {
             $query->join(['tag', 'parent'], [['parent', 'id', 'tag', 'parent_id']]);
             $column_name = is_numeric($filters['parent']) ? 'id' : 'slug';
             $query->whereEQ($column_name, $filters['parent'], 'parent');
         }
-
+        
         $query->orderBy('label');
         return $query;
     }

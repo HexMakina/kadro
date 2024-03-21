@@ -60,7 +60,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
     public function dashboard(): void
     {
         $real_operator_class = get_class($this->operator());
-        $this->viewport('users', $real_operator_class::filter([], ['order_by' => [null,'username', 'ASC']]));
+        $this->viewport('users', $real_operator_class::any([], ['order_by' => [null,'username', 'ASC']]));
     }
 
     public function destroy(): void

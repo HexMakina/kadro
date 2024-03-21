@@ -28,10 +28,10 @@ class ACL extends \HexMakina\TightORM\TightModel
         return in_array($permission_name, self::permissions_names_for($operator));
     }
 
-    public static function query_retrieve($filters = [], $options = []): SelectInterface
+    public static function filter($filters = [], $options = []): SelectInterface
     {
         $options['eager'] = false;
-        $select = parent::query_retrieve($filters, $options);
+        $select = parent::filter($filters, $options);
         $eager_params = [];
         $eager_params[Permission::relationalMappingName()] = Permission::tableAlias();
         $eager_params[Operator::relationalMappingName()] = Operator::tableAlias();
@@ -54,7 +54,7 @@ class ACL extends \HexMakina\TightORM\TightModel
         foreach ($res as $re) {
             $permission_ids[] = $re->get('permission_id');
         }
-        return Permission::filter(['ids' => $permission_ids]);
+        return Permission::any(['ids' => $permission_ids]);
     }
 
     public static function permissions_names_for(OperatorInterface $operator) : array

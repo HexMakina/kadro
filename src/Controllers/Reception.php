@@ -81,7 +81,7 @@ class Reception extends Kadro
             $username = $this->router()->submitted('username');
             $password = $this->router()->submitted('password');
             $operator = get_class($op)::exists('username', $username);
-            
+
             if (is_null($operator)) {
                 throw new \Exception('OPERATOR_DOES_NOT_EXIST');
             }

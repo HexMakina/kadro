@@ -31,19 +31,21 @@ class Display extends Base implements DisplayControllerInterface
         elseif (!isset($this->template_variables[$key]) || $coercion === true) {
             $this->template_variables[$key] = $value;
         }
-        
+
         return $ret ?? $this->template_variables[$key] ?? null;
     }
 
-    public function display($custom_template = null, $standalone = false): bool
+    public function display($custom_template, $standalone = false): string
     {
         $smarty = $this->get('\Smarty');
 
         $template = $this->find_template($smarty, $custom_template); // throws Exception if nothing found
-
         $this->viewport('controller', $this);
 
-        $this->viewport('user_messages', $this->get('HexMakina\BlackBox\StateAgentInterface')->messages());
+        $messages_session_key = \HexMakina\LogLaddy\LogLaddy::OSD_SESSION_KEY;
+        
+        $messages = $this->get('HexMakina\BlackBox\StateAgentInterface')->get($messages_session_key);
+        $this->viewport('user_messages', $messages);
 
         $this->viewport('web_root', $this->router()->webRoot());
         $this->viewport('view_path', $this->router()->filePath() . $this->get('settings.smarty.template_path') . 'app/');
@@ -94,7 +96,6 @@ class Display extends Base implements DisplayControllerInterface
         $templates ['default_3'] = sprintf('%s/edit.html', $controller_template_path);
         $templates ['default_4'] = 'edit.tpl';
         $templates = array_unique($templates);
-
         while (!is_null($tpl_path = array_shift($templates))) {
             if ($smarty->templateExists($tpl_path)) {
                 return $tpl_path;

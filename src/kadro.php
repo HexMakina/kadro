@@ -42,10 +42,6 @@ class kadro
 
         //-- session
         $StateAgent = $this->box->get('HexMakina\BlackBox\StateAgentInterface');
-        $StateAgent->addRuntimeFilters((array)$this->box->get('settings.filter'));
-        $StateAgent->addRuntimeFilters((array)($_SESSION['filter'] ?? []));
-        $StateAgent->addRuntimeFilters((array)($_REQUEST['filter'] ?? []));
-
 
         $this->internationalisation();
 
@@ -155,6 +151,7 @@ class kadro
         }
 
         $smarty->registerClass('Lezer', '\HexMakina\Lezer\Lezer');
+        $smarty->registerClass('Element', '\HexMakina\Marker\Element');
         $smarty->registerClass('Marker', '\HexMakina\Marker\Marker');
         $smarty->registerClass('Form', '\HexMakina\Marker\Form');
         $smarty->registerClass('TableToForm', '\HexMakina\kadro\TableToForm');

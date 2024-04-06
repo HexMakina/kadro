@@ -13,25 +13,24 @@ class Reception extends Kadro
         return false;
     }
 
-    public function welcome(OperatorInterface $operator) : void
+    public function welcome(OperatorInterface $operator): void
     {
         $this->router()->match(); // throws RouterException if no match
-
         if ($this->router()->name() === 'identify') {
             $this->identify($operator);
         }
 
         // MVC Cascade
         $target_controller = $this->get('Controllers\\' . $this->router()->targetController());
-
+        // vd($target_controller);
         if ($target_controller->requiresOperator()) {
-
             $operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
+
             if (empty($operator_id)) {
                 $this->checkin();
+
                 die;
-            }
-            else{
+            } else {
                 $operator = get_class($operator)::exists($operator_id);
                 if (is_null($operator) || !$operator->isActive()) {
                     $this->checkout();
@@ -44,7 +43,7 @@ class Reception extends Kadro
     public function checkin(): void
     {
         $this->display('checkin', 'standalone');
-        $this->get('HexMakina\BlackBox\StateAgentInterface')->resetMessages();
+        // $this->get('HexMakina\BlackBox\StateAgentInterface')->resetMessages();
     }
 
     // GET
@@ -57,12 +56,15 @@ class Reception extends Kadro
     // POST
     public function identify($op): void
     {
+        // vd($this->router()->submitted());
         try {
             $username = $this->router()->submitted('username');
             $password = $this->router()->submitted('password');
             $operator = get_class($op)::exists('username', $username);
+            // vd($operator);
 
-            if (is_null($operator) ) {
+
+            if (is_null($operator)) {
                 throw new \Exception('OPERATOR_DOES_NOT_EXIST');
             }
 
@@ -73,11 +75,10 @@ class Reception extends Kadro
             if (!$operator->passwordVerify($password)) {
                 throw new \Exception('WRONG_LOGIN_OR_PASSWORD');
             }
-
             $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId($operator->getId());
-            $this->logger()->notice('PAGE_CHECKIN_WELCOME', [$operator->name()]);
-            $this->router()->hop();
 
+            // $this->logger()->notice('PAGE_CHECKIN_WELCOME', [$operator->name()]);
+            $this->router()->hop('dash');
         } catch (\Exception $exception) {
             $this->logger()->warning('KADRO_operator_' . $exception->getMessage());
             $this->router()->hop('checkin');

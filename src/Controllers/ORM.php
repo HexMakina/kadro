@@ -135,14 +135,6 @@ abstract class ORM extends Kadro implements ORMInterface
             $this->modelClassName();
         }
 
-        if (!isset($filters['date_start'])) {
-            $filters['date_start'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_start');
-        }
-
-        if (!isset($filters['date_stop'])) {
-            $filters['date_stop'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_stop');
-        }
-
         $listing = $this->modelClassName()::filter($filters);
 
         $this->viewport_listing($this->modelClassName(), $listing, $this->find_template($this->get('\Smarty'), __FUNCTION__));
@@ -211,7 +203,7 @@ abstract class ORM extends Kadro implements ORMInterface
     }
 
     public function save()
-    {
+    {   
         $model = $this->persist_model($this->formModel());
         if (empty($this->errors())) {
             $this->routeBack($model);
@@ -230,7 +222,7 @@ abstract class ORM extends Kadro implements ORMInterface
         }
 
         foreach ($this->errors() as $field => $error_msg) {
-            $this->logger()->warning($this->l($error_msg, [$field]));
+            $this->logger()->warning("$field: $error_msg");
         }
 
         return null;

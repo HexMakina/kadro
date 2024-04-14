@@ -99,7 +99,7 @@ class Lingvo extends TightModel
     }
 
 
-    public static function query_retrieve($filter = [], $options = []): SelectInterface
+    public static function filter($filter = [], $options = []): SelectInterface
     {
 
         $searchable_fields = [self::ISO_NAME, self::ISO_3, self::ISO_2B, self::ISO_2T, self::ISO_1];
@@ -130,10 +130,10 @@ class Lingvo extends TightModel
             $select->where($wc);
         }
 
-        $select->orderBy([self::TABLE_NAME, self::ISO_1, 'DESC']);
-        $select->orderBy([self::TABLE_NAME, self::ISO_2T, 'DESC']);
-        $select->orderBy([self::TABLE_NAME, self::ISO_3, 'DESC']);
-        $select->orderBy([self::TABLE_NAME, self::ISO_NAME, 'DESC']);
+        $select->orderBy([self::ISO_1, 'DESC']);
+        $select->orderBy([self::ISO_2T, 'DESC']);
+        $select->orderBy([self::ISO_3, 'DESC']);
+        $select->orderBy([self::ISO_NAME, 'DESC']);
 
         return $select;
     }
@@ -143,7 +143,7 @@ class Lingvo extends TightModel
      */
     public static function search_language($term, $authority = null): array
     {
-        $rows = self::query_retrieve(['term' => $term, 'requires_authority' => $authority])->retAss();
+        $rows = self::filter(['term' => $term, 'requires_authority' => $authority])->retAss();
         $ret = [];
         foreach ($rows as $row) {
             $ret[$row[self::ISO_3]] = $row[self::ISO_NAME];

@@ -28,10 +28,10 @@ class ACL extends \HexMakina\TightORM\TightModel
         return in_array($permission_name, self::permissions_names_for($operator));
     }
 
-    public static function query_retrieve($filters = [], $options = []): SelectInterface
+    public static function filter($filters = [], $options = []): SelectInterface
     {
         $options['eager'] = false;
-        $select = parent::query_retrieve($filters, $options);
+        $select = parent::filter($filters, $options);
         $eager_params = [];
         $eager_params[Permission::relationalMappingName()] = Permission::tableAlias();
         $eager_params[Operator::relationalMappingName()] = Operator::tableAlias();
@@ -39,7 +39,6 @@ class ACL extends \HexMakina\TightORM\TightModel
 
         // why ? why dont you comment.. is the real question
         AutoJoin::eager($select, $eager_params);
-
         return $select;
     }
 
@@ -48,13 +47,13 @@ class ACL extends \HexMakina\TightORM\TightModel
      */
     public static function permissions_for(OperatorInterface $operator): array
     {
-        $res = self::any(['operator_id' => $operator->getId()]);
-
+        $res = self::any(['operator_id' => $operator->id()]);
+        
         $permission_ids = [];
         foreach ($res as $re) {
             $permission_ids[] = $re->get('permission_id');
         }
-        return Permission::filter(['ids' => $permission_ids]);
+        return Permission::any(['ids' => $permission_ids]);
     }
 
     public static function permissions_names_for(OperatorInterface $operator) : array
@@ -62,7 +61,7 @@ class ACL extends \HexMakina\TightORM\TightModel
         if($operator->isNew())
             return [];
 
-        $operator_with_perms = get_class($operator)::exists($operator->getId());
+        $operator_with_perms = get_class($operator)::exists($operator->id());
         // $operator_with_perms = get_class($op)::retrieve($operator_with_perms);
         if (is_null($operator_with_perms)) {
             return [];
@@ -73,9 +72,9 @@ class ACL extends \HexMakina\TightORM\TightModel
     public static function allow_in(OperatorInterface $operator, Permission $permission): \HexMakina\kadro\Auth\ACL
     {
         $acl = new ACL();
-        $acl->set('operator_id', $operator->getId());
-        $acl->set('permission_id', $permission->getId());
-        $acl->save($operator->getId());
+        $acl->set('operator_id', $operator->id());
+        $acl->set('permission_id', $permission->id());
+        $acl->save($operator->id());
         return $acl;
     }
 }

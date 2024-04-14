@@ -12,7 +12,7 @@ abstract class ORM extends Kadro implements ORMInterface
 
     protected $model_type;
 
-    protected ?\HexMakina\BlackBox\ORM\ModelInterface $load_model = null;
+    protected ?ModelInterface $load_model = null;
 
     protected $form_model;
 
@@ -71,7 +71,6 @@ abstract class ORM extends Kadro implements ORMInterface
         parent::prepare();
 
         $this->model_type = $this->modelClassName()::model_type();
-
         $pk_values = [];
 
         if ($this->router()->submits()) {
@@ -80,9 +79,14 @@ abstract class ORM extends Kadro implements ORMInterface
 
             $this->load_model = $this->modelClassName()::exists($pk_values);
         } elseif ($this->router()->requests()) {
+            
             $pk_values = $this->modelClassName()::table()->primaryKeysMatch($this->router()->params());
+            if(!empty($pk_values)){
 
-            if (!is_null($this->load_model = $this->modelClassName()::exists($pk_values))) {
+                $this->load_model = $this->modelClassName()::exists($pk_values);
+            }
+            
+            if (!is_null($this->load_model)) {
                 $this->formModel(clone $this->load_model);
             }
         }
@@ -108,7 +112,6 @@ abstract class ORM extends Kadro implements ORMInterface
             preg_match(Configuration::RX_MVC, static::class, $m);
             $this->model_class_name = $this->get('Models\\' . $m[2] . '::class');
         }
-
         return $this->model_class_name;
     }
 
@@ -134,9 +137,8 @@ abstract class ORM extends Kadro implements ORMInterface
         if (is_null($model)) {
             $this->modelClassName();
         }
-
-        $listing = $this->modelClassName()::filter($filters);
-
+        $listing = $this->modelClassName()::any($filters);
+        
         $this->viewport_listing($this->modelClassName(), $listing, $this->find_template($this->get('\Smarty'), __FUNCTION__));
     }
 
@@ -215,7 +217,7 @@ abstract class ORM extends Kadro implements ORMInterface
 
     public function persist_model($model): ?ModelInterface
     {
-        $this->errors = $model->save($this->operator()->getId()); // returns [errors]
+        $this->errors = $model->save($this->operator()->id()); // returns [errors]
         if (empty($this->errors())) {
             $this->logger()->notice($this->l('CRUDITES_INSTANCE_ALTERED', [$this->l('MODEL_' . get_class($model)::model_type() . '_INSTANCE')]));
             return $model;
@@ -282,7 +284,7 @@ abstract class ORM extends Kadro implements ORMInterface
             throw new \Exception('KADRO_ROUTER_MUST_SUBMIT');
         }
 
-        if ($this->load_model->destroy($this->operator()->getId()) === false) {
+        if ($this->load_model->destroy($this->operator()->id()) === false) {
             $this->logger()->info($this->l('CRUDITES_ERR_INSTANCE_IS_UNDELETABLE', ['' . $this->load_model]));
             $this->routeBack($this->load_model);
         } else {
@@ -363,7 +365,7 @@ abstract class ORM extends Kadro implements ORMInterface
             $route_name .= 'new';
         } else {
             $route_name .= 'default';
-            $route_params = ['id' => $model->getId()];
+            $route_params = ['id' => $model->id()];
         }
 
         return $this->router()->hyp($route_name, $route_params);

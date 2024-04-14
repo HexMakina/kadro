@@ -6,7 +6,7 @@ use HexMakina\BlackBox\Database\SelectInterface;
 use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\Crudites\Queries\AutoJoin;
 
-use HexMakina\TightORM\{TightModel,RelationManyToMany};
+use HexMakina\TightORM\TightModel;
 
 class Operator extends TightModel implements OperatorInterface
 {
@@ -23,9 +23,6 @@ class Operator extends TightModel implements OperatorInterface
 
     protected $permissions;
 
-    // use Permissionability;
-    use \HexMakina\TightORM\RelationManyToMany;
-
     public function __toString()
     {
         return $this->get('username');
@@ -38,7 +35,7 @@ class Operator extends TightModel implements OperatorInterface
 
     public function operatorId()
     {
-        return $this->getId();
+        return $this->id();
     }
 
     public function username()
@@ -89,29 +86,33 @@ class Operator extends TightModel implements OperatorInterface
         return $op;
     }
 
-    public static function query_retrieve($filters = [], $options = []): SelectInterface
+    public static function filter($filters = [], $options = []): SelectInterface
     {
-        $select = static::table()->select();
-        if (isset($options['eager']) && $options['eager'] === true) {
-            $select->groupBy('id');
+        $select = parent::filter($filters, $options);
             
-            AutoJoin::join($select, [ACL::table(), 'acl'], null, 'LEFT OUTER');
-            AutoJoin::join($select, [Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
-            $select->selectAlso([
-                'permission_ids' => ["GROUP_CONCAT(DISTINCT kadro_permission.id)"], 
-                'permission_names' => ["GROUP_CONCAT(DISTINCT kadro_permission.name)"]
-            ]);
-        }
+        $select->groupBy('id');
+        AutoJoin::join($select, [ACL::table(), 'acl'], null, 'LEFT OUTER');
+        AutoJoin::join($select, [Permission::table(), 'permission'], null, 'LEFT OUTER');
+        $select->selectAlso([
+            'permission_ids' => ["GROUP_CONCAT(DISTINCT permission.id)"], 
+            'permission_names' => ["GROUP_CONCAT(DISTINCT permission.name)"]
+        ]);
 
-        if (isset($filters['model']) && !empty($filters['model'])) {
-            $select->join([static::otm('t'), static::otm('a')], [[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
-            $select->whereFieldsEQ(['model_id' => $filters['model']->getId(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
+
+        if (isset($filters['active'])) {
+            $select->whereEQ('active', (int)$filters['active']);
         }
 
         $select->orderBy(['name', 'ASC']);
 
-
         return $select;
+    }
+    
+    public static function otm($k = null)
+    {
+        $type = static::model_type();
+        $d = ['t' => $type . 's_models', 'k' => $type . '_id', 'a' => $type . 's_otm'];
+        return is_null($k) ? $d : $d[$k];
     }
 
     public function immortal(): bool
@@ -182,7 +183,7 @@ class Operator extends TightModel implements OperatorInterface
         $permission_id = null;
         if (is_subclass_of($p, '\HexMakina\kadro\Auth\Permission')) {
             $permission_name = $p->get('name');
-            $permission_id = $p->getId();
+            $permission_id = $p->id();
         } elseif (preg_match('#\d+#', $p)) {
             $permission_id = $p;
         } else {

@@ -19,7 +19,8 @@ CREATE TABLE `kadro_operator` (
   `password` varchar(255) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'dont delete operators',
   `name` varchar(255) NOT NULL,
-  `email` text,
+  `home` varchar(255) DEFAULT NULL COMMENT 'route after checkin',
+  `email` varchar(255),
   `phone` varchar(30) DEFAULT NULL,
   `language_code` varchar(3) NOT NULL DEFAULT 'fra' COMMENT 'iso-639-3 code',
   `note` text

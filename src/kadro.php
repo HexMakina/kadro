@@ -29,6 +29,7 @@ class kadro
     {
         //-- loading the Debugger class and therefor shorthands
         new Debugger();
+        // dd($_SESSION);
 
         $this->box = LeMarchand::box($settings);
 

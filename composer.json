@@ -4,8 +4,7 @@
     "type": "package",
     "require": {
         "php": ">=7.4",
-        "smarty/smarty": "4.2.0",
-
+        "league/plates": "^3.4",
         "hexmakina/crudites": "0.0.*",
         "hexmakina/lezer" : "0.0.*",
         "hexmakina/local-fs" : "0.0.*",

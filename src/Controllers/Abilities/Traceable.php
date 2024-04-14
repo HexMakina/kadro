@@ -34,8 +34,8 @@ trait Traceable
             $trace->isUpdate(true);
         }
 
-        $trace->tablePk($this->formModel()->getId());
-        $trace->operatorId($this->operator()->getId());
+        $trace->tablePk($this->formModel()->pk());
+        $trace->operatorId($this->operator()->id());
 
         $this->getTracer()->trace($trace);
     }

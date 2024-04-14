@@ -36,17 +36,17 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         return $this->operator ?? new $op_class;
     }
 
-    public function bootstrap()
-    {
-        $target_controller = $this->get('HexMakina\BlackBox\RouterInterface')->targetController();
-        $target_controller = $this->get('Controllers\\' . $target_controller);
+    // public function bootstrap()
+    // {
+    //     $target_controller = $this->get('HexMakina\BlackBox\RouterInterface')->targetController();
+    //     $target_controller = $this->get('Controllers\\' . $target_controller);
 
-        $smith = $target_controller->get('HexMakina\BlackBox\StateAgentInterface');
+    //     $smith = $target_controller->get('HexMakina\BlackBox\StateAgentInterface');
 
 
-        $this->common_viewport($target_controller);
-        $target_controller->execute($this->get('HexMakina\BlackBox\RouterInterface')->targetMethod());
-    }
+    //     $this->common_viewport($target_controller);
+    //     $target_controller->execute($this->get('HexMakina\BlackBox\RouterInterface')->targetMethod());
+    // }
     
     // returns true or throws AccessRefusedException
     public function authorize($permission = null): bool

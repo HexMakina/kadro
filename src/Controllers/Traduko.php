@@ -4,8 +4,13 @@ namespace HexMakina\kadro\Controllers;
 
 use HexMakina\LocalFS\Text\JSON;
 
+use \HexMakina\kadro\Models\Traduko as Model;
+
 class Traduko extends \HexMakina\kadro\Controllers\ORM
 {
+    use \App\Controllers\Abilities\RequiresAdmin;
+    use \App\Controllers\Abilities\RequiresKomerco;
+    use \App\Controllers\Abilities\CommonViewport;
 
     /**
      * @var string
@@ -38,7 +43,7 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
 
     public static function create_file($locale_path, $lang): void
     {
-        $res = \HexMakina\kadro\Models\Traduko::filter(['lang' => $lang]);
+        $res = \HexMakina\kadro\Models\Traduko::any(['lang' => $lang]);
         $assoc = [];
         foreach ($res as $re) {
             if (!isset($assoc[$re->kategorio])) {
@@ -63,10 +68,7 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
      */
     public static function init($locale_path): array
     {
-        // use DI through instance's get() method to get the database
-        
-        $languages = array_keys(array_slice(Traduko::database()->inspect(Traduko::relationalMappingName())->columns(), 4));
-
+        $languages = array_keys(array_slice(Model::database()->table(Model::relationalMappingName())->columns(), 4));
         foreach ($languages as $language) {
             self::create_file($locale_path, $language);
         }

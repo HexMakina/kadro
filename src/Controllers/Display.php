@@ -8,11 +8,13 @@ class Display extends Base implements DisplayControllerInterface
 {
     protected array $template_variables = [];
 
-  // Display is Base with a display function
-    public function execute($method): bool
+    // Display is Base with a display function
+    public function execute($method):bool
     {
         $custom_template = parent::execute($method);
-        return $this->display($custom_template);
+        echo $this->display($custom_template);
+
+        return true;
     }
 
     public function viewport($key = null, $value = null, $coercion = false)
@@ -31,6 +33,7 @@ class Display extends Base implements DisplayControllerInterface
         elseif (!isset($this->template_variables[$key]) || $coercion === true) {
             $this->template_variables[$key] = $value;
         }
+
 
         return $ret ?? $this->template_variables[$key] ?? null;
     }

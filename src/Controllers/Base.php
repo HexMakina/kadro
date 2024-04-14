@@ -15,12 +15,22 @@ class Base implements BaseControllerInterface, ContainerInterface
     use \HexMakina\Traitor\Traitor;
 
     protected $route_back;
-
+    protected $nid;
     protected array $errors = [];
 
     /**
      * @return mixed[][]
      */
+
+    // returns the Unified Resource Name of the controller
+    public function nid(): string
+    {
+        if(empty($this->nid))
+            $this->nid = (new \ReflectionClass(static::class))->getShortName();
+
+        return $this->nid;
+    }
+
     public function errors(): array
     {
         return $this->errors;
@@ -78,6 +88,7 @@ class Base implements BaseControllerInterface, ContainerInterface
 
         foreach ($chain as $chainling) {
 
+
             $this->traitor($chainling);
 
             if (method_exists($this, $chainling) && empty($this->errors())) {
@@ -99,6 +110,16 @@ class Base implements BaseControllerInterface, ContainerInterface
     {
     }
 
+    public function headers(): void
+    {
+        if(!$this->has('settings.app.headers'))
+            return;
+        
+        $headers = $this->get('settings.app.headers');
+        foreach($headers as $key => $header)
+            header($key.': '.(is_array($header)? implode(' ', $header) : $header));
+
+    }
   /*
    * returns string, a URL formatted by RouterInterface::pre_hop()
    *

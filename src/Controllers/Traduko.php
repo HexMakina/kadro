@@ -6,6 +6,8 @@ use HexMakina\LocalFS\Text\JSON;
 
 use \HexMakina\kadro\Models\Traduko as Model;
 
+use \HexMakina\kadro\Models\Traduko as Model;
+
 class Traduko extends \HexMakina\kadro\Controllers\ORM
 {
     use \App\Controllers\Abilities\RequiresAdmin;

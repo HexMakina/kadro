@@ -98,7 +98,6 @@ class Operator extends TightModel implements OperatorInterface
             'permission_names' => ["GROUP_CONCAT(DISTINCT permission.name)"]
         ]);
 
-
         if (isset($filters['active'])) {
             $select->whereEQ('active', (int)$filters['active']);
         }

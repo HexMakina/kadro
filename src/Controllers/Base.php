@@ -99,7 +99,6 @@ class Base implements BaseControllerInterface, ContainerInterface
                 }
             }
         }
-
         $this->conclude();
         $this->traitor('conclude');
 

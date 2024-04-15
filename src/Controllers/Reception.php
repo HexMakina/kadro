@@ -17,7 +17,9 @@ class Reception extends Kadro
     // throws Exception if no controller found
     public function welcome(OperatorInterface $operator): void
     {
-        $this->router()->match(); // throws RouterException if no match
+        $this->router()->match(); 
+
+        // do we need to identify the operator ?
         if ($this->router()->name() === 'identify') {
             $this->identify($operator);
         }
@@ -76,7 +78,7 @@ class Reception extends Kadro
             $username = $this->router()->submitted('username');
             $password = $this->router()->submitted('password');
             $operator = get_class($op)::exists('username', $username);
-            
+
             if (is_null($operator)) {
                 throw new \Exception('OPERATOR_DOES_NOT_EXIST');
             }

@@ -50,7 +50,7 @@ class kadro
         $this->templating();
 
         // ----     lingva
-        $this->locale();
+        // $this->locale();
 
     }
 

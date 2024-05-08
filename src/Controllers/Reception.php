@@ -32,9 +32,9 @@ class Reception extends Kadro
         if ($target_controller instanceof \HexMakina\BlackBox\Controllers\AuthControllerInterface) {
             // If authentication is required, check if an operator is logged in
             if ($target_controller->requiresOperator()) {
-
                 // Get the operator ID from the state agent
                 $operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
+
 
                 // If no operator is logged in, redirect to the checkin page
                 if (empty($operator_id)) {
@@ -43,6 +43,7 @@ class Reception extends Kadro
                 } else {
                     // If an operator is logged in, check if the operator is active
                     $operator = get_class($operator)::exists($operator_id);
+
                     if (is_null($operator) || !$operator->isActive()) {
                         // If the operator is not active, log them out and redirect to the checkin page
                         $this->checkout();
@@ -96,11 +97,7 @@ class Reception extends Kadro
 
             $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId($operator->id());
             $this->logger()->notice('PAGE_CHECKIN_WELCOME', [$operator->name()]);
-
-            if($operator->get('route') && $this->router()->routeExists($operator->get('route')))
-                $this->router()->hop($operator->get('route'));
-            else 
-                $this->router()->hop();
+            $this->router()->hop('dashboard');
 
         } catch (\Exception $exception) {
 

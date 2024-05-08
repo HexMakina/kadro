@@ -88,7 +88,16 @@ class Operator extends TightModel implements OperatorInterface
 
     public static function filter($filters = [], $options = []): SelectInterface
     {
-        $select = static::table()->select();
+        $select = parent::filter($filters, $options);
+        // $select = static::table()->select();
+
+        if (isset($filters['active'])) {
+            $select->whereEQ('active', (int)$filters['active']);
+        }
+
+        // if (isset($filters['username'])) {
+        //     $select->whereEQ('username', $filters['username']);
+        // }
 
         if (isset($options['eager'])) {
             trigger_error("DEPRECATED query option: use options['withPermissions'] instead of options['eager']", E_USER_WARNING);
@@ -106,12 +115,8 @@ class Operator extends TightModel implements OperatorInterface
             AutoJoin::join($select, [Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
         }
 
-        if (isset($filters['active'])) {
-            $select->whereEQ('active', (int)$filters['active']);
-        }
         
         $select->orderBy(['name', 'ASC']);
-
         return $select;
     }
     

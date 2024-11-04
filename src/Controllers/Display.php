@@ -10,13 +10,8 @@ class Display extends Base implements DisplayControllerInterface
 
     // Display is Base with a display function
     public function execute($method):bool
-    // Display is Base with a display function
-    public function execute($method):bool
     {
         $custom_template = parent::execute($method);
-        echo $this->display($custom_template);
-
-        return true;
         echo $this->display($custom_template);
 
         return true;
@@ -66,13 +61,10 @@ class Display extends Base implements DisplayControllerInterface
         }
 
         if ($standalone === false) {
-            $smarty->display(sprintf('%s|%s', $this->get('settings.smarty.template_inclusion_path'), $template));
-        } else {
-            $smarty->display($template);
-        }
-
-
-        return true;
+            return $smarty->fetch(sprintf('%s|%s', $this->get('settings.smarty.template_inclusion_path'), $template));
+        } 
+        
+        return $smarty->fetch($template);
     }
 
     protected function template_base(): string

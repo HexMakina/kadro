@@ -8,19 +8,10 @@ use HexMakina\Lezer\Lezer;
 
 class kadro
 {
-    /**
-     * @var string
-     */
     private const ENV_PRODUCTION = 'production';
 
-    /**
-     * @var string
-     */
     private const ENV_STAGING = 'staging';
 
-    /**
-     * @var string
-     */
     private const ENV_DEVELOPPEMENT = 'dev';
 
     private \Psr\Container\ContainerInterface $box; // PSR-11 Service Locator, ugly until DI is ready
@@ -29,20 +20,24 @@ class kadro
     {
         //-- loading the Debugger class and therefor shorthands
         new Debugger();
-        // dd($_SESSION);
 
         $this->box = LeMarchand::box($settings);
 
         $this->setErrorReporting();
 
-        $log_laddy = $this->box->get('Psr\Log\LoggerInterface');
+        //--- Setup database
+        $env = $this->isProduction() ? self::ENV_PRODUCTION : ($this->isStaging() ? self::ENV_STAGING : self::ENV_DEVELOPPEMENT);
+        
+        $connection = new \HexMakina\Crudites\Connection($this->box->get('settings.env.'.$env.'.database.dsn'), $this->box->get('settings.env.'.$env.'.database.user'), $this->box->get('settings.env.'.$env.'.database.pass'), []);
+        $database = new \HexMakina\Crudites\Database($connection);
+        \HexMakina\Crudites\Crudites::setDatabase($database); // removable ?
 
+        
         //-- router
         $router = $this->box->get('HexMakina\BlackBox\RouterInterface');
         $router->addRoutes(require(__DIR__ . '/routes.php'));
 
-        //-- session
-        $StateAgent = $this->box->get('HexMakina\BlackBox\StateAgentInterface');
+
 
         $this->internationalisation();
 
@@ -50,7 +45,7 @@ class kadro
         $this->templating();
 
         // ----     lingva
-        // $this->locale();
+        $this->locale();
 
     }
 

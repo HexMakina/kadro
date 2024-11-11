@@ -7,6 +7,7 @@ use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\BlackBox\Controllers\AuthControllerInterface;
 use HexMakina\BlackBox\Controllers\IntlControllerInterface;
 
+// kadro controller is a display controller with authentification and intl
 class Kadro extends Display implements AuthControllerInterface, IntlControllerInterface
 {
     private string $translation_function_name = 'L';
@@ -36,18 +37,6 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
         return $this->operator ?? new $op_class;
     }
 
-    // public function bootstrap()
-    // {
-    //     $target_controller = $this->get('HexMakina\BlackBox\RouterInterface')->targetController();
-    //     $target_controller = $this->get('Controllers\\' . $target_controller);
-
-    //     $smith = $target_controller->get('HexMakina\BlackBox\StateAgentInterface');
-
-
-    //     $this->common_viewport($target_controller);
-    //     $target_controller->execute($this->get('HexMakina\BlackBox\RouterInterface')->targetMethod());
-    // }
-    
     // returns true or throws AccessRefusedException
     public function authorize($permission = null): bool
     {
@@ -73,7 +62,7 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
 
     public function execute($method): bool
     {
-      // kadro controller is a display controller with authentification and intl
+        // kadro controller is a display controller with authentification and intl
         $this->authorize();
         return parent::execute($method);
     }

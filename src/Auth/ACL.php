@@ -29,10 +29,8 @@ class ACL extends \HexMakina\TightORM\TightModel
     }
 
     public static function filter($filters = [], $options = []): SelectInterface
-    public static function filter($filters = [], $options = []): SelectInterface
     {
         $options['eager'] = false;
-        $select = parent::filter($filters, $options);
         $select = parent::filter($filters, $options);
         $eager_params = [];
         $eager_params[Permission::relationalMappingName()] = Permission::tableAlias();

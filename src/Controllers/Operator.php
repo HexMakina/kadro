@@ -12,7 +12,6 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\Crudites\Crudites;
 use HexMakina\kadro\Auth\{ACL,AccessRefusedException};
 
 class Operator extends \HexMakina\kadro\Controllers\ORM

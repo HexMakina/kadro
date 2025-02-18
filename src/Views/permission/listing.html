@@ -1,9 +1,9 @@
 {extends '_layouts/listing.html'}
 
-{block name=listing_title}{L('MODEL_permission_INSTANCES')}{/block}
+{block name=listing_title}{$controller->l('MODEL_permission_INSTANCES')}{/block}
 
 {block name=listing_thead}
-  <th scope="col">{L('MODEL_permission_FIELD_name')}</th>
+  <th scope="col">{$controller->l('MODEL_permission_FIELD_name')}</th>
   <th scope="col"></th>
 
 {/block}
@@ -14,8 +14,8 @@
 {foreach $listing as $looper}
   {$route_looper = $controller->router()->hyp('acl_toggle', ['username' => $operator->username(), 'permission_id' => $looper->getId()])}
   <tr>
-    <td>{ucfirst(L('MODEL_permission_'|cat:$looper->get('name')))}</td>
-    <td><a class="w3-button w3-primary " href="{$route_looper}">{if array_key_exists($looper->getId(),$selected_permissions)}{L('PAGE_ACTION_DESTROY')}{else}{L('PAGE_ACTION_ADD')}{/if}</a></td>
+    <td>{ucfirst($controller->l('MODEL_permission_'|cat:$looper->get('name')))}</td>
+    <td><a class="w3-button w3-primary " href="{$route_looper}">{if array_key_exists($looper->getId(),$selected_permissions)}{$controller->l('PAGE_ACTION_DESTROY')}{else}{$controller->l('PAGE_ACTION_ADD')}{/if}</a></td>
   </tr>
 {/foreach}
 

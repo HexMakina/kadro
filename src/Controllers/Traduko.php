@@ -2,12 +2,15 @@
 
 namespace HexMakina\kadro\Controllers;
 
-use HexMakina\LocalFS\Text\JSON;
-
 use \HexMakina\kadro\Models\Traduko as Model;
+use \HexMakina\LocalFS\Text\JSON;
 
 class Traduko extends \HexMakina\kadro\Controllers\ORM
 {
+    use \App\Controllers\Abilities\RequiresAdmin;
+    use \App\Controllers\Abilities\RequiresKomerco;
+    use \App\Controllers\Abilities\CommonViewport;
+
     /**
      * @var string
      */
@@ -39,7 +42,7 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
 
     public static function create_file($locale_path, $lang): void
     {
-        $res = \HexMakina\kadro\Models\Traduko::filter(['lang' => $lang]);
+        $res = \HexMakina\kadro\Models\Traduko::any(['lang' => $lang]);
         $assoc = [];
         foreach ($res as $re) {
             if (!isset($assoc[$re->kategorio])) {

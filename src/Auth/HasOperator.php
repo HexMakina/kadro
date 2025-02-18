@@ -45,13 +45,13 @@ trait HasOperator
     {
         AutoJoin::join($Query,[ACL::table(),'ACL'], null, 'LEFT OUTER');
         $permission_alias = AutoJoin::join($Query,[Permission::table(), 'permission'], null, 'LEFT OUTER');
+        $Query->selectAlso([
+            $permission_alias . '_ids' => [sprintf('GROUP_CONCAT(DISTINCT %s.%s)', $permission_alias, 'id')],
+            $permission_alias . '_names' => [sprintf('GROUP_CONCAT(DISTINCT %s.%s)', $permission_alias, 'name')],
+            'operator_name' => ['operator', 'name'],
+            'operator_active' => ['operator', 'active']
+        ]);
 
-        $permission_ids_and_names = [];
-        $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'id', $permission_alias . '_ids');
-        $permission_ids_and_names [] = sprintf('GROUP_CONCAT(DISTINCT %s.%s) as %s', $permission_alias, 'name', $permission_alias . '_names');
-        $Query->selectAlso($permission_ids_and_names);
-
-        $Query->selectAlso(['operator.name as operator_name', 'operator.active as operator_active']);
 
         if (isset($filters['username'])) {
             $Query->whereEQ('username', $filters['username'], 'operator');

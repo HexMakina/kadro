@@ -79,8 +79,13 @@ abstract class ORM extends Kadro implements ORMInterface
 
             $this->load_model = $this->modelClassName()::exists($pk_values);
         } elseif ($this->router()->requests()) {
+            
             $pk_values = $this->modelClassName()::table()->primaryKeysMatch($this->router()->params());
-            $this->load_model = $this->modelClassName()::exists($pk_values);
+            if(!empty($pk_values)){
+
+                $this->load_model = $this->modelClassName()::exists($pk_values);
+            }
+            
             if (!is_null($this->load_model)) {
                 $this->formModel(clone $this->load_model);
             }
@@ -132,17 +137,8 @@ abstract class ORM extends Kadro implements ORMInterface
         if (is_null($model)) {
             $this->modelClassName();
         }
-
-        if (!isset($filters['date_start'])) {
-            $filters['date_start'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_start');
-        }
-
-        if (!isset($filters['date_stop'])) {
-            $filters['date_stop'] = $this->get('HexMakina\BlackBox\StateAgentInterface')->filters('date_stop');
-        }
-
-        $listing = $this->modelClassName()::filter($filters);
-
+        $listing = $this->modelClassName()::any($filters);
+        
         $this->viewport_listing($this->modelClassName(), $listing, $this->find_template($this->get('\Smarty'), __FUNCTION__));
     }
 
@@ -209,7 +205,7 @@ abstract class ORM extends Kadro implements ORMInterface
     }
 
     public function save()
-    {
+    {   
         $model = $this->persist_model($this->formModel());
         if (empty($this->errors())) {
             $this->routeBack($model);
@@ -228,7 +224,7 @@ abstract class ORM extends Kadro implements ORMInterface
         }
 
         foreach ($this->errors() as $field => $error_msg) {
-            $this->logger()->warning($this->l($error_msg, [$field]));
+            $this->logger()->warning("$field: $error_msg");
         }
 
         return null;

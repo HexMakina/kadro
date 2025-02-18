@@ -18,17 +18,23 @@ div{position:absolute; left:50%; top:50%; transform: translate(-50%,-50%);}
   <div>
     <h2>Oops.</h1>
     {if isset($message)}
-      <p>{$message}</p>
+      {if is_array($message)}
+        {foreach $message as $k => $m}
+          <p id="{$k}">{$m}</p>
+        {/foreach}
+      {else}
+        <p>{$message}</p>
+      {/if}
     {/if}
-    
+
     {if isset($user_messages)}
       {foreach $user_messages as $level => $messages}
         {foreach $messages as $message}
           <p>{$message}</p>
         {/foreach}
       {/foreach}
-    {/if}    
+    {/if}
   </div>
-  
+
   <footer>Powered by <a href="https://hexmakina.eu">HexMakina.eu</a></footer>
 {/block}

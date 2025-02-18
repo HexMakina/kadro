@@ -8,19 +8,10 @@ use HexMakina\Lezer\Lezer;
 
 class kadro
 {
-    /**
-     * @var string
-     */
     private const ENV_PRODUCTION = 'production';
 
-    /**
-     * @var string
-     */
     private const ENV_STAGING = 'staging';
 
-    /**
-     * @var string
-     */
     private const ENV_DEVELOPPEMENT = 'dev';
 
     private \Psr\Container\ContainerInterface $box; // PSR-11 Service Locator, ugly until DI is ready
@@ -34,17 +25,18 @@ class kadro
 
         $this->setErrorReporting();
 
-        $log_laddy = $this->box->get('Psr\Log\LoggerInterface');
+        //--- Setup database
+        $env = $this->isProduction() ? self::ENV_PRODUCTION : ($this->isStaging() ? self::ENV_STAGING : self::ENV_DEVELOPPEMENT);
+        
+        $connection = new \HexMakina\Crudites\Connection($this->box->get('settings.env.'.$env.'.database.dsn'), $this->box->get('settings.env.'.$env.'.database.user'), $this->box->get('settings.env.'.$env.'.database.pass'), []);
+        $database = new \HexMakina\Crudites\Database($connection);
+        \HexMakina\Crudites\Crudites::setDatabase($database); // removable ?
 
+        
         //-- router
         $router = $this->box->get('HexMakina\BlackBox\RouterInterface');
         $router->addRoutes(require(__DIR__ . '/routes.php'));
 
-        //-- session
-        $StateAgent = $this->box->get('HexMakina\BlackBox\StateAgentInterface');
-        $StateAgent->addRuntimeFilters((array)$this->box->get('settings.filter'));
-        $StateAgent->addRuntimeFilters((array)($_SESSION['filter'] ?? []));
-        $StateAgent->addRuntimeFilters((array)($_REQUEST['filter'] ?? []));
 
 
         $this->internationalisation();
@@ -53,7 +45,7 @@ class kadro
         $this->templating();
 
         // ----     lingva
-        // $this->locale();
+        $this->locale();
 
     }
 
@@ -130,11 +122,40 @@ class kadro
 
     private function templating()
     {
-        $engine = $this->box->get('HexMakina\BlackBox\TemplateInterface');
-        foreach ($this->box->get('settings.template.extraDirectories') as $name => $template_dir) {
-            $engine->addFolder($name, $template_dir, true);
+        $smarty = $this->box->get('\Smarty');
+      // Load smarty template parser
+        $smarty->setTemplateDir($this->box->get('settings.smarty.template_app_directory'));
+
+        foreach ($this->box->get('settings.smarty.template_extra_directories') as $template_dir) {
+            $smarty->addTemplateDir($template_dir);
         }
 
+        $smarty->addTemplateDir(__DIR__ . '/Views/'); //kadro templates
+
+        $setting = 'settings.smarty.compiled_path';
+        if (is_string($this->box->get($setting))) {
+            $smarty->setCompileDir($this->box->get($setting));
+        } else {
+            throw new \UnexpectedValueException($setting);
+        }
+
+        $setting = 'settings.smarty.debug';
+        if (is_bool($this->box->get($setting))) {
+            $smarty->setDebugging($this->box->get($setting));
+        } else {
+            throw new \UnexpectedValueException($setting);
+        }
+
+        $smarty->registerClass('Lezer', '\HexMakina\Lezer\Lezer');
+        $smarty->registerClass('Element', '\HexMakina\Marker\Element');
+        $smarty->registerClass('Marker', '\HexMakina\Marker\Marker');
+        $smarty->registerClass('Form', '\HexMakina\Marker\Form');
+        $smarty->registerClass('TableToForm', '\HexMakina\kadro\TableToForm');
+        $smarty->registerClass('Dato', '\HexMakina\Tempus\Dato');
+
+        $smarty->assign('APP_NAME', $this->box->get('settings.app.name'));
+
+        return $smarty;
     }
 
     private function setErrorReporting(): void

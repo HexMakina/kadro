@@ -7,14 +7,14 @@
   {$collection_found = null}
   {foreach $related_listings as $model_type => $listing}
     {if current($listing)}
-      <a class="w3-bar-item w3-button {if is_null($collection_found)}w3-primary{else}w3-secondary{/if} w3-padding ox-tabs-link" href="#related_{$model_type}" role="tab">{L('MODEL_'|cat:$model_type|cat:'_INSTANCES')} {Marker::span(count($listing), ['class'=>'w3-badge'])}</a>
+      <a class="w3-bar-item w3-button {if is_null($collection_found)}w3-primary{else}w3-secondary{/if} w3-padding ox-tabs-link" href="#related_{$model_type}" role="tab">{$controller->l('MODEL_'|cat:$model_type|cat:'_INSTANCES')} {Marker::span(count($listing), ['class'=>'w3-badge'])}</a>
       {if is_null($collection_found)}{$collection_found = $model_type}{/if}
     {/if}
   {/foreach}
   
   {foreach $related_listings as $model_type => $listing}
     {if !current($listing)}
-      <a class="w3-bar-item w3-button w3-secondary w3-padding ox-tabs-link" href="#related_{$model_type}" role="tab">{L('MODEL_'|cat:$model_type|cat:'_INSTANCES')} <span class="w3-badge w3-badge-alias">{count($listing)}</span></a>
+      <a class="w3-bar-item w3-button w3-secondary w3-padding ox-tabs-link" href="#related_{$model_type}" role="tab">{$controller->l('MODEL_'|cat:$model_type|cat:'_INSTANCES')} <span class="w3-badge w3-badge-alias">{count($listing)}</span></a>
     {/if}
   {/foreach}
   

@@ -12,13 +12,13 @@
   
   <ul>
     <li class="w3-row">
-      <span class="w3-col l4">{L('MODEL_common_FIELD_occured_on')}</span>
+      <span class="w3-col l4">{$controller->l('MODEL_common_FIELD_occured_on')}</span>
       <span class="w3-col l4">2</span>
       <span class="w3-col l4">3</span>
     </li>
     
     {block name=listing_thead}
-    {foreach $listing_fields as $field => $label}<th scope="col">{L($label)}</th>{/foreach}
+    {foreach $listing_fields as $field => $label}<th scope="col">{$controller->l($label)}</th>{/foreach}
     {/block}
   </ul>
 
@@ -27,7 +27,7 @@
   <thead>
     <tr {block name=listing_thead_row_attribute}{/block}>
     {block name=listing_thead}
-    {foreach $listing_fields as $field => $label}<th scope="col">{L($label)}</th>{/foreach}
+    {foreach $listing_fields as $field => $label}<th scope="col">{$controller->l($label)}</th>{/foreach}
     {/block}
   </tr>
   </thead>
@@ -53,7 +53,7 @@
 {* <header {block name=page_header_attribute}{/block}>
   {block name=page_header_content}
   <div {block name=page_header_content_1_attribute}style="float:left"{/block}>{block name=page_header_content_1}{count($listing)}{/block}</div>
-  <div {block name=page_header_content_2_attribute}style="float:left"{/block}>{block name=page_header_content_2}{L('KADRO_LISTO')}{/block}</div>
+  <div {block name=page_header_content_2_attribute}style="float:left"{/block}>{block name=page_header_content_2}{$controller->l('KADRO_LISTO')}{/block}</div>
   <div {block name=page_header_content_3_attribute}style="float:left"{/block}>{block name=page_header_content_3}
     {if isset($listing_actions)} {foreach $listing_actions as $action_url => $action_label}<a href="{$action_url}">{$action_label}</a>{/foreach}{/if}
     {if isset($route_new)}<a href="{$route_new}">new</a>{/if}

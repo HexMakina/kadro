@@ -83,9 +83,18 @@ class Base implements BaseControllerInterface, ContainerInterface
     {
         $ret = null;
 
-      // before and after hooks, should they be in basecontroller ?
-      // i think so, but pascal just proposed me pastis.. tomorrow
-        foreach (['prepare', sprintf('before_%s', $method), $method, sprintf('after_%s', $method)] as $chainling) {
+        // before and after hooks, should they be in basecontroller ?
+        // i think so, but pascal just proposed me pastis.. tomorrow
+        $chain = [
+            'prepare', 
+            'before_'.$method, 
+            $method, 
+            'after_'.$method, 
+        ];
+
+        foreach ($chain as $chainling) {
+
+
             $this->traitor($chainling);
 
             if (method_exists($this, $chainling) && empty($this->errors())) {

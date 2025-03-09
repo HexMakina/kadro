@@ -7,6 +7,7 @@ use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\BlackBox\Controllers\AuthControllerInterface;
 use HexMakina\BlackBox\Controllers\IntlControllerInterface;
 
+// kadro controller is a display controller with authentification and intl
 class Kadro extends Display implements AuthControllerInterface, IntlControllerInterface
 {
     private string $translation_function_name = 'L';

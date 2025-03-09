@@ -1,5 +1,5 @@
 {block name=html_title append}
-  {if $form_model->isNew()} {$html_title_subsection = L('PAGE_ACTION_CREATE')}
+  {if $form_model->isNew()} {$html_title_subsection = $controller->l('PAGE_ACTION_CREATE')}
   {else} {$html_title_subsection = $form_model}{/if}
   {$controller->model_type_to_label($form_model)} | {$html_title_subsection}
 {/block}

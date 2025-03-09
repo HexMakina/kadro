@@ -45,13 +45,13 @@
 
   <form action="{block name=form_action}{$controller->router()->hyp('identify')}{/block}" method="POST">
     {Form::input('username', '', ['required', 'autofocus'])}
-    <label for="username">{block name=label_username}{L('USERNAME')}{/block}</label>
+    <label for="username">{block name=label_username}{$controller->l('USERNAME')}{/block}</label>
 
 
     {Form::password('password')}
-    <label for="password">{block name=label_password}{L('PASSWORD')}{/block}</label>
+    <label for="password">{block name=label_password}{$controller->l('PASSWORD')}{/block}</label>
 
-    <button type="submit">{block name=label_submit}{L('SUBMIT')}{/block}</button>
+    <button type="submit">{block name=label_submit}{$controller->l('SUBMIT')}{/block}</button>
   </form>
 </div>
 

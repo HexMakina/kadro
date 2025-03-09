@@ -27,9 +27,6 @@ class Tag extends TightModel
         return $this->get('content') ?? '';
     }
 
-    // public static function filter($filters = [], $options = []): SelectInterface{
-    //     return self::filter($filters, $options);
-    // }
 
     public static function filter($filters = [], $options = []): SelectInterface
     {
@@ -43,6 +40,7 @@ class Tag extends TightModel
         }
         
         $query->orderBy('label');
+        
         return $query;
     }
 }

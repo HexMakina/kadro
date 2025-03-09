@@ -42,10 +42,6 @@ class kadro
 
         //-- session
         $StateAgent = $this->box->get('HexMakina\BlackBox\StateAgentInterface');
-        $StateAgent->addRuntimeFilters((array)$this->box->get('settings.filter'));
-        $StateAgent->addRuntimeFilters((array)($_SESSION['filter'] ?? []));
-        $StateAgent->addRuntimeFilters((array)($_REQUEST['filter'] ?? []));
-
 
         $this->internationalisation();
 

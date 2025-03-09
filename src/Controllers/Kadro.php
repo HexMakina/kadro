@@ -7,6 +7,7 @@ use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\BlackBox\Controllers\AuthControllerInterface;
 use HexMakina\BlackBox\Controllers\IntlControllerInterface;
 
+// kadro controller is a display controller with authentification and intl
 class Kadro extends Display implements AuthControllerInterface, IntlControllerInterface
 {
     private string $translation_function_name = 'L';
@@ -30,7 +31,9 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
     {
         $op_class = get_class($this->get('HexMakina\BlackBox\Auth\OperatorInterface'));
         if (is_null($this->operator) && !empty($op_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId())) {
-            $this->operator = $op_class::safeLoading($op_id);
+            $res = $op_class::any(['id' => $op_id, 'active' => 1], ['withPermissions' => true]);
+            if (is_array($res))
+                $this->operator = array_shift($res);
         }
 
         return $this->operator ?? new $op_class;
@@ -61,7 +64,7 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
 
     public function execute($method): bool
     {
-      // kadro controller is a display controller with authentification and intl
+        // kadro controller is a display controller with authentification and intl
         $this->authorize();
         return parent::execute($method);
     }
@@ -80,15 +83,15 @@ class Kadro extends Display implements AuthControllerInterface, IntlControllerIn
 
     private function trim_request_data(): void
     {
-        array_walk_recursive($_GET, static function (&$value) : void {
+        array_walk_recursive($_GET, static function (&$value): void {
             $value = trim($value);
         });
-        array_walk_recursive($_REQUEST, static function (&$value) : void {
+        array_walk_recursive($_REQUEST, static function (&$value): void {
             $value = trim($value);
         });
 
         if ($this->router()->submits()) {
-            array_walk_recursive($_POST, static function (&$value) : void {
+            array_walk_recursive($_POST, static function (&$value): void {
                 $value = trim($value);
             });
         }

@@ -6,7 +6,7 @@ use HexMakina\BlackBox\Database\SelectInterface;
 use HexMakina\BlackBox\Auth\OperatorInterface;
 use HexMakina\Crudites\Queries\AutoJoin;
 
-use HexMakina\TightORM\{TightModel,RelationManyToMany};
+use HexMakina\TightORM\TightModel;
 
 class Operator extends TightModel implements OperatorInterface
 {
@@ -22,9 +22,6 @@ class Operator extends TightModel implements OperatorInterface
 
 
     protected $permissions;
-
-    // use Permissionability;
-    use \HexMakina\TightORM\RelationManyToMany;
 
     public function __toString()
     {
@@ -89,26 +86,42 @@ class Operator extends TightModel implements OperatorInterface
         return $op;
     }
 
-    public static function query_retrieve($filters = [], $options = []): SelectInterface
+    public static function filter($filters = [], $options = []): SelectInterface
     {
-        $select = static::table()->select();
-        if (isset($options['eager']) && $options['eager'] === true) {
+        $select = parent::filter($filters, $options);
+        // $select = static::table()->select();
+
+        if (isset($filters['active'])) {
+            $select->whereEQ('active', (int)$filters['active']);
+        }
+
+        // if (isset($filters['username'])) {
+        //     $select->whereEQ('username', $filters['username']);
+        // }
+
+        if (isset($options['eager'])) {
+            trigger_error("DEPRECATED query option: use options['withPermissions'] instead of options['eager']", E_USER_WARNING);
+        }
+        
+        if (isset($options['withPermissions']) && $options['withPermissions'] === true) {
+
             $select->groupBy('id');
+            $select->addColumn('GROUP_CONCAT(DISTINCT kadro_permission.id)', 'permission_ids', -1);
+            $select->addColumn('GROUP_CONCAT(DISTINCT kadro_permission.name)', 'permission_names', -1);
 
             AutoJoin::join($select, [ACL::table(), 'acl'], null, 'LEFT OUTER');
             AutoJoin::join($select, [Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
-            $select->selectAlso(["GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids", "GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names"]);
-        }
-
-        if (isset($filters['model']) && !empty($filters['model'])) {
-            $select->join([static::otm('t'), static::otm('a')], [[static::otm('a'),static::otm('k'), 't_from','id']], 'INNER');
-            $select->whereFieldsEQ(['model_id' => $filters['model']->id(), 'model_type' => get_class($filters['model'])::model_type()], static::otm('a'));
         }
 
         $select->orderBy(['name', 'ASC']);
-
-
         return $select;
+    }
+
+    public static function otm($k = null)
+    {
+        $type = static::model_type();
+        $d = ['t' => $type . 's_models', 'k' => $type . '_id', 'a' => $type . 's_otm'];
+        return is_null($k) ? $d : $d[$k];
     }
 
     public function immortal(): bool
@@ -119,13 +132,12 @@ class Operator extends TightModel implements OperatorInterface
     /**
      * @return string[]|mixed[]
      */
-    public function permission_names() : array
+    public function permission_names(): array
     {
         $ret = [];
         if (property_exists($this, 'permission_names') && !is_null($this->get('permission_names'))) {
             $ret = explode(',', $this->get('permission_names') ?? '');
-        }
-        elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
+        } elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
             $ids = explode(',', $this->get('permission_ids') ?? '');
             $ret = [];
             $permissions = Permission::get_many_by_AIPK($ids);
@@ -134,10 +146,8 @@ class Operator extends TightModel implements OperatorInterface
             }
 
             return $ret;
-        }
-        else {
+        } else {
             $ret = ACL::permissions_names_for($this);
-
         }
 
         return $ret;
@@ -145,7 +155,6 @@ class Operator extends TightModel implements OperatorInterface
 
     public function permissions()
     {
-
         if (!is_null($this->permissions)) {
             return $this->permissions;
         }
@@ -167,11 +176,7 @@ class Operator extends TightModel implements OperatorInterface
     public function hasPermission($p): bool
     {
         // new instances or inactive operators, none shall pass
-        if ($this->isNew() === true) {
-            return false;
-        }
-
-        if ($this->isActive()  === false) {
+        if ($this->isNew() === true || $this->isActive()  === false) {
             return false;
         }
 

@@ -33,9 +33,9 @@ class ACL extends \HexMakina\TightORM\TightModel
         $options['eager'] = false;
         $select = parent::query_retrieve($filters, $options);
         $eager_params = [];
-        $eager_params[Permission::relationalMappingName()] = Permission::tableAlias();
-        $eager_params[Operator::relationalMappingName()] = Operator::tableAlias();
-        $eager_params[ACL::relationalMappingName()] = ACL::tableAlias();
+        $eager_params[Permission::table()] = Permission::tableAlias();
+        $eager_params[Operator::table()] = Operator::tableAlias();
+        $eager_params[ACL::table()] = ACL::tableAlias();
 
         // why ? why dont you comment.. is the real question
         AutoJoin::eager($select, $eager_params);

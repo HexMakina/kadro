@@ -48,7 +48,13 @@ class ACL extends \HexMakina\TightORM\TightModel
      */
     public static function permissions_for(OperatorInterface $operator): array
     {
+        if($operator->isNew() || !$operator->id())
+            return [];
+
         $res = self::any(['operator_id' => $operator->id()]);
+        
+        if(empty($res))
+            return [];
 
         $permission_ids = [];
         foreach ($res as $re) {
@@ -67,7 +73,7 @@ class ACL extends \HexMakina\TightORM\TightModel
         if (is_null($operator_with_perms)) {
             return [];
         }
-        return explode(',', $operator_with_perms->get('permission_names'));
+        return $operator_with_perms->get('permission_names') ? explode(',', $operator_with_perms->get('permission_names')) : [];
     }
 
     public static function allow_in(OperatorInterface $operator, Permission $permission): \HexMakina\kadro\Auth\ACL

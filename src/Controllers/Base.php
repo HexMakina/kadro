@@ -12,7 +12,7 @@ use HexMakina\LeMarchand\LeMarchand;
 
 class Base implements BaseControllerInterface, ContainerInterface
 {
-    use \HexMakina\Traitor\Traitor;
+    use Traitor;
 
     protected $route_back;
     protected $nid;
@@ -79,9 +79,7 @@ class Base implements BaseControllerInterface, ContainerInterface
 
       // before and after hooks, should they be in basecontroller ?
       // i think so, but pascal just proposed me pastis.. tomorrow
-
         foreach (['prepare', sprintf('before_%s', $method), $method, sprintf('after_%s', $method)] as $chainling) {
-
             $this->traitor($chainling);
 
             if (method_exists($this, $chainling) && empty($this->errors())) {
@@ -94,7 +92,6 @@ class Base implements BaseControllerInterface, ContainerInterface
         }
         $this->conclude();
         $this->traitor('conclude');
-
         return $ret;
     }
 

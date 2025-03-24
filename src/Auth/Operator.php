@@ -102,24 +102,21 @@ class Operator extends TightModel implements OperatorInterface
         if (isset($options['eager'])) {
             trigger_error("DEPRECATED query option: use options['withPermissions'] instead of options['eager']", E_USER_WARNING);
         }
+        
+        if (isset($options['withPermissions']) && $options['withPermissions'] === true) {
 
-        if(isset($options['withPermissions']) && $options['withPermissions'] === true) {
             $select->groupBy('id');
-
-            $select->selectAlso([
-                'GROUP_CONCAT(DISTINCT kadro_permission.id) as permission_ids', 
-                'GROUP_CONCAT(DISTINCT kadro_permission.name) as permission_names'
-            ]);
+            $select->addColumn('GROUP_CONCAT(DISTINCT kadro_permission.id)', 'permission_ids', -1);
+            $select->addColumn('GROUP_CONCAT(DISTINCT kadro_permission.name)', 'permission_names', -1);
 
             AutoJoin::join($select, [ACL::table(), 'acl'], null, 'LEFT OUTER');
             AutoJoin::join($select, [Permission::table(), 'kadro_permission'], null, 'LEFT OUTER');
         }
 
-        
         $select->orderBy(['name', 'ASC']);
         return $select;
     }
-    
+
     public static function otm($k = null)
     {
         $type = static::model_type();
@@ -135,13 +132,12 @@ class Operator extends TightModel implements OperatorInterface
     /**
      * @return string[]|mixed[]
      */
-    public function permission_names() : array
+    public function permission_names(): array
     {
         $ret = [];
         if (property_exists($this, 'permission_names') && !is_null($this->get('permission_names'))) {
             $ret = explode(',', $this->get('permission_names') ?? '');
-        }
-        elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
+        } elseif (property_exists($this, 'permission_ids') && !is_null($this->get('permission_ids'))) {
             $ids = explode(',', $this->get('permission_ids') ?? '');
             $ret = [];
             $permissions = Permission::get_many_by_AIPK($ids);
@@ -150,10 +146,8 @@ class Operator extends TightModel implements OperatorInterface
             }
 
             return $ret;
-        }
-        else {
+        } else {
             $ret = ACL::permissions_names_for($this);
-
         }
 
         return $ret;
@@ -161,7 +155,6 @@ class Operator extends TightModel implements OperatorInterface
 
     public function permissions()
     {
-
         if (!is_null($this->permissions)) {
             return $this->permissions;
         }
@@ -183,11 +176,7 @@ class Operator extends TightModel implements OperatorInterface
     public function hasPermission($p): bool
     {
         // new instances or inactive operators, none shall pass
-        if ($this->isNew() === true) {
-            return false;
-        }
-
-        if ($this->isActive()  === false) {
+        if ($this->isNew() === true || $this->isActive()  === false) {
             return false;
         }
 

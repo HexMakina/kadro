@@ -24,7 +24,7 @@ class Tag extends TightModel
 
     public function content(): string
     {
-        return $this->get('content') ?? '';
+        return $this->get('content') ?? $this->get('label');
     }
 
     // public static function filter($filters = [], $options = []): SelectInterface{
@@ -36,13 +36,18 @@ class Tag extends TightModel
         //---- JOIN & FILTER SERVICE
         $query = parent::filter($filters, $options);
 
-        if (isset($filters['parent'])) {
-            $query->join(['tag', 'parent'], [['parent', 'id', 'tag', 'parent_id']]);
-            $column_name = is_numeric($filters['parent']) ? 'id' : 'slug';
-            $query->whereEQ($column_name, $filters['parent'], 'parent');
+        if (array_key_exists('parent', $filters) && $filters['parent'] === null) {
+            $query->whereIsNull('parent_id');
+        } else {
+            $query->join(['tag', 'parent'], [['parent', 'id', 'tag', 'parent_id']], 'LEFT');
+            $query->selectAlso(['parent_label' => ['parent', 'label']]);
+
+            if (array_key_exists('parent', $filters)) {
+                $column_name = is_numeric($filters['parent']) ? 'id' : 'slug';
+                $query->whereEQ($column_name, $filters['parent'], 'parent');
+            }
         }
-        
-        $query->orderBy('label');
+        $query->orderBy('content ASC, label ASC');
         return $query;
     }
 }

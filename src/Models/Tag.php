@@ -47,7 +47,7 @@ class Tag extends TightModel
                 $query->whereEQ($column_name, $filters['parent'], 'parent');
             }
         }
-        $query->orderBy('content ASC, label ASC');
+        $query->orderBy(sprintf('%s.content ASC, %s.label ASC', (string)$query->table(), (string)$query->table()));
         return $query;
     }
 }

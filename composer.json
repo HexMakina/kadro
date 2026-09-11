@@ -4,17 +4,19 @@
     "type": "package",
     "require": {
         "php": ">=7.4",
+        "psr/container": "^1.0",
+        "psr/log": "^1.1",
         "league/plates": "^3.4",
         "hexmakina/crudites": "0.1.0",
         "hexmakina/lezer" : "0.1.1",
         "hexmakina/local-fs" : "0.1.0",
-        "hexmakina/log-laddy": "0.0.*",
-        "hexmakina/tempus": "0.0.*",
-        "hexmakina/tight-orm": "0.1.1",
+        "hexmakina/log-laddy": "0.1.0",
+        "hexmakina/tempus": "0.0.3",
+        "hexmakina/tight-orm": "0.1.2",
 
         "hexmakina/debugger": "0.2.0",
         "hexmakina/hopper": "0.1.4",
-        "hexmakina/le-marchand": "0.2.1",
+        "hexmakina/le-marchand": "0.3.0",
         "hexmakina/marker": "0.4.0",
         "hexmakina/traitor": "0.2.0",
         "hexmakina/tracer": "0.1.*",
@@ -32,7 +34,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "HexMakina\\kadro\\": "/src"
+            "HexMakina\\kadro\\": "src/"
         }
     }
 }

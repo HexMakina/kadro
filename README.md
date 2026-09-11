@@ -9,20 +9,12 @@
 # kadro
 PHP MVC framework for building web applications
 
-# install 
+# Install
 `composer require hexmakina/kadro`
 
-then run `vendor/hexmakina/kadro/install.php` to initialise the application with base tables and data
-
-for instance: 
-
-`php vendor/hexmakina/kadro/install.php -db DATABASE_NAME -u DATABASE_USER -p DATABASE_PASSWORD`
-
-or, if the password contains a blank space
-
-`php vendor/hexmakina/kadro/install.php -db DATABASE_NAME -u DATABASE_USER -p "DATABASE_PASSWORD"`
-
-it creates a default root user "root" with password "root"
+The package does not initialize an application database automatically. SQL schema
+and data fixtures are available under `vendor/hexmakina/kadro/src/BaseData/` for
+consuming applications to apply as appropriate.
 
 ## 1. Auth
 ### Operators

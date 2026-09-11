@@ -19,9 +19,11 @@
         "hexmakina/le-marchand": "0.3.0",
         "hexmakina/marker": "0.4.0",
         "hexmakina/traitor": "0.2.0",
-        "hexmakina/tracer": "0.1.*",
         "hexmakina/black-box": "0.1.*",
         "hexmakina/state-agent": "0.3.0"
+    },
+    "suggest": {
+        "hexmakina/tracer": "Install this only when using the optional Controllers\\Abilities\\Traceable trait."
     },
     "license": "mit",
     "authors": [

@@ -8,9 +8,6 @@ return [
   ['GET', 'operator/[*:username]/toggle/active', 'Operator::change_active', 'operator_change_active'],
   ['GET', 'operator/[*:username]/change-acl/[i:permission_id]', 'Operator::change_acl', 'acl_toggle'],
 
-  // --- TRADUKO
-  ['POST', 'traduko/update_file', 'Traduko::update_file', 'traduko_update_file'],
-
   // --- LOCALE JSON
   ['GET', 'locale/language_codes.[a:format]', 'Export::otto_languages', 'otto_languages'],
 

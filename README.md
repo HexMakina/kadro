@@ -25,39 +25,20 @@ or, if the password contains a blank space
 it creates a default root user "root" with password "root"
 
 ## 1. Auth
-### Operator
-### Permission
+### Operators
+### Permissions
 ### ACL
 
-## 2. Models
+## 2. Model
 ### PSR-3 Logger
 ### PSR-4 Autoloader
+### PSR-11 Container
 
 ## 3. Views
 
 ## 4. Controllers
+
 ### Base
-### Displays
-### Kadro
-### ORM
-### Reception
-
-### Router
-### Chainlings & Traitor
-### Container (PSR-11 )
-### Errors
-
-
-Base
-- Routing
-- Container & Invoker
-- Logger & Errors
-
-
-- Hopper
-- LeMarchand
-- Traitor
-- LogLaddy
 
 handles errors, routing, logging & container
 

@@ -2,38 +2,39 @@
 
 namespace HexMakina\kadro\Controllers;
 
+use HexMakina\kadro\Auth\{Operator};
 use HexMakina\BlackBox\Auth\OperatorInterface;
-use HexMakina\BlackBox\Controllers\AuthControllerInterface;
-use HexMakina\BlackBox\Controllers\BaseControllerInterface;
+use Throwable;
+
 class Reception extends Kadro
 {
-    // as it welcomes operators, no operator required
     public function requiresOperator(): bool
     {
         return false;
     }
 
+
     // throws RouterException if no match
     // throws Exception if no controller found
     public function welcome(OperatorInterface $operator): void
     {
-        $this->router()->match(); 
-
+        $this->router()->match();
         // do we need to identify the operator ?
         if ($this->router()->name() === 'identify') {
             $this->identify($operator);
         }
-
+        
         $target_controller = $this->instantiateTargetController();
-
+        
+        
         // Check if the target controller requires authentication
-        if ($target_controller instanceof AuthControllerInterface) {
+        if ($target_controller instanceof \HexMakina\BlackBox\Controllers\AuthControllerInterface) {
             // If authentication is required, check if an operator is logged in
             if ($target_controller->requiresOperator()) {
                 // Get the operator ID from the state agent
                 $operator_id = $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId();
-
-
+    
+                
                 // If no operator is logged in, redirect to the checkin page
                 if (empty($operator_id)) {
                     $this->checkin();
@@ -42,15 +43,16 @@ class Reception extends Kadro
                     // If an operator is logged in, check if the operator is active
                     $operator = get_class($operator)::exists($operator_id);
 
-                    if (is_null($operator) || !$operator->isActive()) {
+                    if (!$operator || !$operator->isActive()) {
                         // If the operator is not active, log them out and redirect to the checkin page
                         $this->checkout();
                     }
+
                 }
             }
         }
-        
-        if ($target_controller instanceof BaseControllerInterface) {
+
+        if ($target_controller instanceof \HexMakina\BlackBox\Controllers\BaseControllerInterface) {
             $target_controller->execute($this->router()->targetMethod());
         }
         else{
@@ -61,8 +63,8 @@ class Reception extends Kadro
     // GET
     public function checkin(): void
     {
-        $this->display('checkin', 'standalone');
-        // $this->get('HexMakina\BlackBox\StateAgentInterface')->resetMessages();
+        $res = $this->display(__FUNCTION__);
+        die($res);
     }
 
     // GET
@@ -93,8 +95,8 @@ class Reception extends Kadro
             }
 
             $this->get('HexMakina\BlackBox\StateAgentInterface')->operatorId($operator->id());
-            $this->logger()->notice('PAGE_CHECKIN_WELCOME', [$operator->name()]);
-            $this->router()->hop('dash');
+            $this->logger()->notice('Hello '.$operator->name());
+            $this->router()->hop('dashboard');
 
         } catch (\Exception $exception) {
 
@@ -105,24 +107,21 @@ class Reception extends Kadro
 
 
     private function instantiateTargetController(){
-        
-        $try = [];
-        
-        $try []= 'Controllers\\' . $this->router()->targetController();
-        if($this->router()->params('nid')) // Generic routes
-            $try[]= 'Controllers\\' . $this->router()->targetController() . $this->router()->params('nid');
+        $try = ['Controllers\\' . $this->router()->targetController()];
+
+        $dashboard_controller = $this->dashboardControllerClassFor($this->router()->params('nid'));
+        if(!is_null($dashboard_controller)) // Generic routes
+            $try[]= $dashboard_controller;
 
         $target_controller = null;
         foreach ($try as $target_controller) {
             try {
                 // MVC Cascade
                 $target_controller = $this->get($target_controller);
-                
                 break;
             } 
-            catch (\Throwable $t) {
+            catch (Throwable $t) {
                 // faster than calling ::has() then ::get()
-                // vd($t);
             }
         }
         
@@ -131,6 +130,17 @@ class Reception extends Kadro
         }
 
         return $target_controller;
+    }
+
+    private function dashboardControllerClassFor($nid): ?string
+    {
+        $dashboard_nids = '\App\Controllers\Secret\DashboardNids';
+
+        if (!class_exists($dashboard_nids) || !$dashboard_nids::isAllowed($nid)) {
+            return null;
+        }
+
+        return $dashboard_nids::controllerClass($nid);
     }
 
 }

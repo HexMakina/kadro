@@ -8,7 +8,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 use HexMakina\BlackBox\Controllers\BaseControllerInterface;
-use HexMakina\BlackBox\StateAgentInterface;
 use HexMakina\LeMarchand\LeMarchand;
 
 class Base implements BaseControllerInterface, ContainerInterface
@@ -70,11 +69,6 @@ class Base implements BaseControllerInterface, ContainerInterface
         return $this->get('HexMakina\BlackBox\RouterInterface');
     }
 
-    public function state(): StateAgentInterface
-    {
-        return $this->get('HexMakina\BlackBox\StateAgentInterface');
-    }
-
     public function prepare(): void
     {
     }
@@ -83,18 +77,9 @@ class Base implements BaseControllerInterface, ContainerInterface
     {
         $ret = null;
 
-        // before and after hooks, should they be in basecontroller ?
-        // i think so, but pascal just proposed me pastis.. tomorrow
-        $chain = [
-            'prepare', 
-            'before_'.$method, 
-            $method, 
-            'after_'.$method, 
-        ];
-
-        foreach ($chain as $chainling) {
-
-
+      // before and after hooks, should they be in basecontroller ?
+      // i think so, but pascal just proposed me pastis.. tomorrow
+        foreach (['prepare', sprintf('before_%s', $method), $method, sprintf('after_%s', $method)] as $chainling) {
             $this->traitor($chainling);
 
             if (method_exists($this, $chainling) && empty($this->errors())) {

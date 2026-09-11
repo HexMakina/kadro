@@ -2,15 +2,12 @@
 
 namespace HexMakina\kadro\Controllers;
 
+use HexMakina\LocalFS\Text\JSON;
+
 use \HexMakina\kadro\Models\Traduko as Model;
-use \HexMakina\LocalFS\Text\JSON;
 
 class Traduko extends \HexMakina\kadro\Controllers\ORM
 {
-    use \App\Controllers\Abilities\RequiresAdmin;
-    use \App\Controllers\Abilities\RequiresKomerco;
-    use \App\Controllers\Abilities\CommonViewport;
-
     /**
      * @var string
      */
@@ -67,7 +64,7 @@ class Traduko extends \HexMakina\kadro\Controllers\ORM
      */
     public static function init($locale_path): array
     {
-        $languages = array_keys(array_slice(Model::database()->inspect(Model::table())->columns(), 4));
+        $languages = array_keys(array_slice(Model::database()->table(Model::relationalMappingName())->columns(), 4));
         foreach ($languages as $language) {
             self::create_file($locale_path, $language);
         }

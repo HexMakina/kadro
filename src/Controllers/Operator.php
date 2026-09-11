@@ -76,7 +76,7 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
             throw new AccessRefusedException();
         }
 
-        if ($this->modelClassName()::toggleBoolean($this->modelClassName()::table(), 'active', $operator->id()) === true) {
+        if ($this->modelClassName()::toggleBoolean($this->modelClassName()::relationalMappingName(), 'active', $operator->id()) === true) {
             $confirmation_message = $operator->isActive() ? 'KADRO_operator_DISABLED' : 'KADRO_operator_ENABLED';
             $this->logger()->notice($this->l($confirmation_message, [$operator->name()]));
         } else {
@@ -101,7 +101,13 @@ class Operator extends \HexMakina\kadro\Controllers\ORM
         $row = ACL::table()->restore($row_data);
         if ($row->isNew()) {
             $row = ACL::table()->produce($row_data);
-            $row->persist();
+            $errors = $row->persist();
+            if (!empty($errors)) {
+                $this->addErrors($errors);
+                foreach ($errors as $field => $error) {
+                    $this->logger()->warning($this->l(is_string($error) && $error !== '' ? $error : 'CRUDITES_ERR_QUERY_FAILED', [$field]));
+                }
+            }
         } else {
             $row->wipe();
         }

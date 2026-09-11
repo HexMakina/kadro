@@ -34,74 +34,87 @@ class Display extends Base implements DisplayControllerInterface
             $this->template_variables[$key] = $value;
         }
 
-
-
         return $ret ?? $this->template_variables[$key] ?? null;
     }
 
-    public function display($custom_template, $standalone = false): string
+    public function display($template, $standalone = false) : string
     {
-        $smarty = $this->get('\Smarty');
-
-        $template = $this->find_template($smarty, $custom_template); // throws Exception if nothing found
-        $this->viewport('controller', $this);
-
-        $messages_session_key = \HexMakina\LogLaddy\LogLaddy::OSD_SESSION_KEY;
-        
-        $messages = $this->get('HexMakina\BlackBox\StateAgentInterface')->get($messages_session_key);
-        $this->viewport('user_messages', $messages);
-
-        $this->viewport('web_root', $this->router()->webRoot());
-        $this->viewport('view_path', $this->router()->filePath() . $this->get('settings.smarty.template_path') . 'app/');
-        $this->viewport('view_url', $this->router()->webRoot() . $this->get('settings.smarty.template_path'));
-        $this->viewport('images_url', $this->router()->webRoot() . $this->get('settings.smarty.template_path') . 'images/');
-
-        foreach ($this->viewport() as $template_var_name => $value) {
-            $smarty->assign($template_var_name, $value);
-        }
-
-        if ($standalone === false) {
-            return $smarty->fetch(sprintf('%s|%s', $this->get('settings.smarty.template_inclusion_path'), $template));
-        } 
-        
-        return $smarty->fetch($template);
-    }
-
-    protected function template_base(): string
-    {
-        return strtolower(str_replace('Controller', '', (new \ReflectionClass(static::class))->getShortName()));
-    }
-
-    protected function find_template($smarty, $custom_template = null): string
-    {
-        $controller_template_path = $this->template_base();
-        $templates = [];
-
-        if (!empty($custom_template)) {
-          // 1. check for custom template in the current controller directory
-            $templates ['custom_3'] = sprintf('%s/%s.html', $controller_template_path, $custom_template);
-          // 2. check for custom template formatted as controller/view
-            $templates ['custom_2'] = $custom_template . '.html';
-            $templates ['custom_1'] = '_layouts/' . $custom_template . '.html';
-        }
-
-        if (!empty($this->router()->targetMethod())) {
-          // 1. check for template in controller-related directory
-            $templates ['target_1'] = sprintf('%s/%s.html', $controller_template_path, $this->router()->targetMethod());
-          // 2. check for template in app-related directory
-            $templates ['target_2'] = sprintf('_layouts/%s.html', $this->router()->targetMethod());
-          // 3. check for template in kadro directory
-            $templates ['target_3'] = sprintf('%s.html', $this->router()->targetMethod());
-        }
-
-        $templates ['default_3'] = sprintf('%s/edit.html', $controller_template_path);
-        $templates ['default_4'] = 'edit.tpl';
-        $templates = array_unique($templates);
-        while (!is_null($tpl_path = array_shift($templates))) {
-            if ($smarty->templateExists($tpl_path)) {
-                return $tpl_path;
+        $engine = $this->get('HexMakina\BlackBox\TemplateInterface');
+        if($this->has('settings.template.registerClass'))
+        {
+            foreach($this->get('settings.template.registerClass') as $class => $namespaced_class){
+                $engine->registerFunction($class, function() use($namespaced_class){
+                    return $namespaced_class;
+                });
             }
         }
+        foreach($this->get('settings.template.extensions') as $namespaced_class){
+            $engine->loadExtension(new $namespaced_class);
+        }
+        
+        $template = $this->find_template($engine, $template); // throws Exception if nothing found
+        $stateAgent = $this->get('HexMakina\BlackBox\StateAgentInterface');
+
+        // Dashboard messages use the existing StateAgent message API, but must
+        // survive the legacy message reset until the dashboard partial renders.
+        $messages = (array) $stateAgent->messages();
+        $userMessages = [];
+        $dashboardMessages = [];
+        foreach ($messages as $level => $levelMessages) {
+            foreach ((array) $levelMessages as $entry) {
+                $context = is_array($entry[1] ?? null) ? $entry[1] : [];
+                if (array_key_exists('_dashboard_id', $context)
+                    && array_key_exists('parameters', $context)) {
+                    $dashboardMessages[$level][] = [
+                        (string) ($entry[0] ?? ''),
+                        $context,
+                    ];
+                    continue;
+                }
+                $userMessages[$level][] = $entry;
+            }
+        }
+
+        $this->viewport('controller', $this);
+        $this->viewport('user_messages', $userMessages);
+        $stateAgent->resetMessages();
+        foreach ($dashboardMessages as $level => $entries) {
+            foreach ($entries as [$message, $context]) {
+                $stateAgent->addMessage($level, $message, $context);
+            }
+        }
+        $this->viewport('errors', $this->errors());
+
+        $engine->addData($this->viewport());
+        return $engine->render($template);
+    }
+
+    public function h($v): string {
+        return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
+    }
+    
+    protected function find_template($engine, $template_name): string
+    {
+        $controller_template_path = $this->nid();
+        // $template_extension = $engine->getFileExtension();
+        $name = "$template_name";
+        if($engine->exists($name))
+          return $name;
+
+        $name = "$controller_template_path/$template_name";
+        if($engine->exists($name))
+          return $name;
+
+        foreach($this->get('settings.template.extraDirectories') as $folder => $path){
+          $name = "$folder::$template_name";
+          if($engine->exists($name))
+            return $name;
+
+          $name = "$folder::$controller_template_path/$template_name";
+          if($engine->exists($name))
+            return $name;
+        }
+
 
         throw new \Exception('KADRO_ERR_NO_TEMPLATE_TO_DISPLAY');
     }
